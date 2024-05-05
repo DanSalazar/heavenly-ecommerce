@@ -1,8 +1,6 @@
 import Link from "next/link"
-import { Marcellus } from "next/font/google"
 import { HeartIcon, ShoppingBagIcon } from "./icons"
-
-const marcellus = Marcellus({ subsets: ["latin"], weight: "400" })
+import HeavenlyIcon from "./heavenly-icon"
 
 type NavLinks = {
   id: string
@@ -23,13 +21,6 @@ const links: NavLinks[] = [
   }
 ]
 
-
-const Heavenly = () => (
-  <Link href={'/'} className={marcellus.className + ' text-2xl uppercase'} >
-    Heavenly
-  </Link>
-)
-
 export default function Navbar() {
 	return (
 		<header className="h-16 bg-white border-b border-zinc-200 grid grid-cols-2 md:grid-cols-3 items-center">
@@ -41,7 +32,7 @@ export default function Navbar() {
 				))}
 			</nav>
 			<div className="flex items-center md:justify-center">
-				<Heavenly />
+				<HeavenlyIcon />
 			</div>
 			<div className="flex gap-2 justify-end items-center">
 				<HeartIcon />
