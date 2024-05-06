@@ -1,4 +1,4 @@
-interface Product {
+export interface Product {
   img_src: string;
   title: string;
   price: number;
