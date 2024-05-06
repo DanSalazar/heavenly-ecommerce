@@ -1,6 +1,7 @@
-import { Button } from '../ui/button'
+import { Button, buttonVariants } from '../ui/button'
 import { cn } from '../../lib/utils'
 import Price from '../ecommerce/price'
+import Link from 'next/link'
 
 export default function ShoppingBag() {
   return (
@@ -27,11 +28,11 @@ export default function ShoppingBag() {
         </div>
       </div>
       <footer className="flex px-4 pb-4">
-        <Button
-          className='flex-1'
-          variant={'outline'}>
+        <Link
+          href={'/bag'}
+          className={buttonVariants({variant: 'outline'})}>
           View your bag
-        </Button>
+        </Link>
       </footer>
     </div>
   )
