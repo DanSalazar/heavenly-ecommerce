@@ -2,6 +2,8 @@ import { Button, buttonVariants } from '../ui/button'
 import { cn } from '../../lib/utils'
 import Price from '../ecommerce/price'
 import Link from 'next/link'
+import { product } from '@/lib/data'
+import ProductBag from './product-bag'
 
 export default function ShoppingBag() {
   return (
@@ -17,6 +19,11 @@ export default function ShoppingBag() {
           1
         </span>
       </header>
+      <div className="flex max-h-[220px] scrollbar scrollbar-rounded scrollbar-thin scrollbar-thumb-zinc-200 scrollbar-track-zinc-50 overflow-y-auto flex-col gap-4 px-4">
+        <ProductBag product={product} />
+        <ProductBag product={product} />
+        <ProductBag product={product} />
+      </div>
       <div className="flex flex-col gap-1 p-4">
         <div className="flex justify-between">
           <p className="font-medium text-sm">Shipping:</p>
@@ -30,7 +37,7 @@ export default function ShoppingBag() {
       <footer className="flex px-4 pb-4">
         <Link
           href={'/bag'}
-          className={buttonVariants({variant: 'outline'})}>
+          className={buttonVariants({ variant: 'outline' }) + ' flex-1'}>
           View your bag
         </Link>
       </footer>
