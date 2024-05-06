@@ -9,7 +9,7 @@ export default function ShoppingBag() {
   return (
     <div
       className={cn(
-        '-z-10 bg-white w-[350px] flex flex-col absolute right-0 top-0 -translate-y-[400px] group-hover:translate-y-16 transition-transform ease-in-out duration-500 border-b border-r border-l border-zinc-200'
+        '-z-10 bg-white w-[300px] md:w-[350px] flex flex-col absolute right-0 top-0 -translate-y-[400px] group-hover:translate-y-16 transition-transform ease-in-out duration-500 border-b border-r border-l border-zinc-200'
       )}>
       <header className="p-4 flex justify-between">
         <p className="font-semibold uppercase">
