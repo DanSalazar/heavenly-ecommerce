@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { HeartIcon, ShoppingBagIcon } from './icons'
 import HeavenlyIcon from './heavenly-icon'
+import ShoppingBag from './shopping-bag'
 
 type NavLinks = {
   id: string
@@ -23,7 +24,7 @@ const links: NavLinks[] = [
 
 export default function Navbar() {
   return (
-    <header className="h-16 bg-white border-b border-zinc-200 grid grid-cols-2 md:grid-cols-3 items-center">
+    <header className="h-16 border-b border-zinc-200 grid grid-cols-2 md:grid-cols-3 items-center">
       <nav className="hidden md:flex gap-4">
         {links.map(link => (
           <Link className="uppercase font-medium" href={link.path}>
@@ -34,9 +35,12 @@ export default function Navbar() {
       <div className="flex items-center md:justify-center">
         <HeavenlyIcon />
       </div>
-      <div className="flex gap-2 justify-end items-center">
+      <div className="z-20 self-stretch flex gap-2 justify-end items-center">
         <HeartIcon />
-        <ShoppingBagIcon />
+        <div className='relative h-full flex items-center group'>
+          <ShoppingBagIcon />
+          <ShoppingBag/>
+        </div>
       </div>
     </header>
   )

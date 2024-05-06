@@ -8,14 +8,14 @@ export default function Page() {
     <main className="flex flex-col gap-8">
       <div className="relative flex md:items-center md:justify-center overflow-hidden h-[520px]">
         <div
-          className="absolute top-0 right-0 bottom-0 left-0 z-10"
+          className="absolute top-0 right-0 bottom-0 left-0 -z-20"
           style={{
             backgroundColor: 'rgba(0, 0, 0, 0.5)'
           }}></div>
         <Image
           alt="Hero"
           objectPosition="bottom"
-          className="object-cover"
+          className="object-cover -z-30"
           src={Hero}
         />
         <p className="absolute top-[40%] px-8 z-20 text-white font-semibold text-2xl md:text-5xl xl:text-6xl text-center">
