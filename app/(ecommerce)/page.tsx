@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 export default function Page() {
   return (
     <main className="flex flex-col gap-8">
-      <div className="relative flex md:items-center md:justify-center overflow-hidden h-[520px]">
+      <div className="-z-10 relative flex md:items-center md:justify-center overflow-hidden h-[520px]">
         <div
           className="absolute top-0 right-0 bottom-0 left-0 -z-20"
           style={{
@@ -14,7 +14,6 @@ export default function Page() {
           }}></div>
         <Image
           alt="Hero"
-          objectPosition="bottom"
           className="object-cover -z-30"
           src={Hero}
         />

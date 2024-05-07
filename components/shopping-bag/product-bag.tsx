@@ -6,8 +6,12 @@ export default function ProductBag({ product }: { product: Product }) {
 	return (
     <div className="relative flex gap-2.5">
       <Image
-        width={96}
-        height={96}
+        width={72}
+        height={72}
+        style={{
+          height: 'auto',
+          width: '100%'
+        }}
         src={product.img_src}
         alt={product.title}
       />
