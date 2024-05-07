@@ -1,9 +1,14 @@
-import Price from "@/components/ecommerce/price"
-import { Truck } from "@/components/icons"
-import ProductRow from "@/components/shopping-bag/product-row"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Button } from "@/components/ui/button"
-import { product } from "@/lib/data"
+import Price from '@/components/ecommerce/price'
+import { Truck } from '@/components/icons'
+import ProductRow from '@/components/shopping-bag/product-row'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
+} from '@/components/ui/accordion'
+import { Button } from '@/components/ui/button'
+import { product } from '@/lib/data'
 
 type SumProps = {
   description: string
@@ -21,10 +26,10 @@ function Sum({ description, price }: SumProps) {
 }
 
 export default function Page() {
-  const SHIPPING_PRICE = 0.00
+  const SHIPPING_PRICE = 0.0
   const total = 4.99
 
-	return (
+  return (
     <div className="mt-12 flex flex-col md:grid md:grid-cols-3 gap-8">
       <div className="col-span-2">
         <header className="mb-8 flex gap-1 items-start">
@@ -33,9 +38,9 @@ export default function Page() {
         </header>
         <div>
           <ProductRow product={product} />
-           <ProductRow product={product} />
-            <ProductRow product={product} />
-             <ProductRow product={product} />
+          <ProductRow product={product} />
+          <ProductRow product={product} />
+          <ProductRow product={product} />
         </div>
       </div>
       <div className="flex flex-col gap-4">
@@ -51,16 +56,16 @@ export default function Page() {
           <AccordionItem value="item-1">
             <AccordionTrigger>
               <span className="flex gap-2">
-                <Truck/> Free Shipping
+                <Truck /> Free Shipping
               </span>
             </AccordionTrigger>
             <AccordionContent>
-              Your order qualifies for free shipping. Join US for free
-              shipping on every order, every time
+              Your order qualifies for free shipping. Join US for free shipping
+              on every order, every time
             </AccordionContent>
           </AccordionItem>
         </Accordion>
       </div>
     </div>
-	)
+  )
 }

@@ -1,4 +1,4 @@
-import HeavenlyIcon from "./heavenly-icon";
+import HeavenlyIcon from './heavenly-icon'
 
 const NavigationList: { title: string; list: string[] }[] = [
   {
@@ -27,11 +27,10 @@ export default function Footer() {
   return (
     <footer className="flex flex-col gap-8 md:flex-row justify-between border-t border-zinc-200 pt-6 pb-12 mt-12">
       <div className="flex flex-col gap-4 md:gap-2 md:w-2/6">
-        <HeavenlyIcon/>
+        <HeavenlyIcon />
         <p className="text-sm">
-          Online brand clothing store Heavenly focuses
-          on seling only qualify and branded items, limited edition collections
-          by fashion designers
+          Online brand clothing store Heavenly focuses on seling only qualify
+          and branded items, limited edition collections by fashion designers
         </p>
       </div>
       <div className="flex flex-wrap justify-between md:gap-16">

@@ -12,9 +12,7 @@ export default function ShoppingBag() {
         '-z-10 bg-white w-[300px] md:w-[350px] flex flex-col absolute right-0 top-0 -translate-y-[400px] group-hover:translate-y-16 transition-transform ease-in-out duration-500 border-b border-r border-l border-zinc-200'
       )}>
       <header className="p-4 flex justify-between">
-        <p className="font-semibold uppercase">
-          Your Bag
-        </p>
+        <p className="font-semibold uppercase">Your Bag</p>
         <span className="py-1 px-2.5 bg-black font-semibold text-white text-sm rounded-md">
           1
         </span>

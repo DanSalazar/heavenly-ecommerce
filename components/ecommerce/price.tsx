@@ -24,12 +24,7 @@ type PriceProps = VariantProps<typeof priceStyles> & {
   className?: string
 }
 
-export default function Price({
-  variant,
-  size,
-  price,
-  className,
-}: PriceProps) {
+export default function Price({ variant, size, price, className }: PriceProps) {
   return (
     <div
       className={cn(
@@ -37,10 +32,7 @@ export default function Price({
         'flex gap-x-2 flex-wrap',
         className
       )}>
-      <p
-        className={'text-zinc-600 font-medium'}>
-        £{price}
-      </p>
+      <p className={'text-zinc-600 font-medium'}>£{price}</p>
     </div>
   )
 }

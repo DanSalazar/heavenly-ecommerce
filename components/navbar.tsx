@@ -37,9 +37,9 @@ export default function Navbar() {
       </div>
       <div className="self-stretch flex gap-2 justify-end items-center bg-white">
         <HeartIcon />
-        <div className='relative h-full flex items-center group'>
+        <div className="relative h-full flex items-center group">
           <ShoppingBagIcon />
-          <ShoppingBag/>
+          <ShoppingBag />
         </div>
       </div>
     </header>

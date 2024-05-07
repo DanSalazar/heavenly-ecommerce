@@ -12,11 +12,7 @@ export default function Page() {
           style={{
             backgroundColor: 'rgba(0, 0, 0, 0.5)'
           }}></div>
-        <Image
-          alt="Hero"
-          className="object-cover -z-30"
-          src={Hero}
-        />
+        <Image alt="Hero" className="object-cover -z-30" src={Hero} />
         <p className="absolute top-[40%] px-8 z-20 text-white font-semibold text-2xl md:text-5xl xl:text-6xl text-center">
           Level up your style with our collections
         </p>
