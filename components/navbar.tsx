@@ -36,7 +36,9 @@ export default function Navbar() {
         <HeavenlyIcon />
       </div>
       <div className="self-stretch flex gap-2 justify-end items-center bg-white">
-        <HeartIcon />
+        <Link href={'/favorites'}>
+          <HeartIcon />
+        </Link>
         <div className="relative h-full flex items-center group">
           <ShoppingBagIcon />
           <ShoppingBag />
