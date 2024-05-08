@@ -51,7 +51,6 @@ export default function Page() {
         </div>
         <Sum description="Total" price={SHIPPING_PRICE + total} />
         <Button className="h-10">Checkout</Button>
-
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger>

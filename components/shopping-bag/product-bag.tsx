@@ -33,3 +33,4 @@ export default function ProductBag({ product }: { product: Product }) {
     </div>
   )
 }
+
