@@ -3,12 +3,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import Price from './price'
+import { usePathname } from 'next/navigation'
 
 export default function ProductComponent({ product }: { product: Product }) {
+  const pathname = usePathname()
   return (
     <Link
-      href="/"
-      className="md:w-[300px] flex flex-col gap-4 cursor-pointer hover:opacity-80 transition-opacity group">
+      href={pathname + '/' + 1}
+      className="md:w-[300px] flex flex-col gap-2 cursor-pointer hover:opacity-80 transition-opacity group">
       <div className="flex overflow-hidden">
         <Image
           src={product.img_src}

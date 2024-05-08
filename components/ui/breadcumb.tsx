@@ -13,10 +13,9 @@ export default function Breadcumb() {
   return (
     <div className="flex gap-2">
       {pathObject.map((path, i) => (
-        <div className="flex items-center gap-2 overflow-hidden">
+        <div key={path.href + i} className="flex items-center gap-2 overflow-hidden">
           <Link
             href={path.href}
-            key={path.name}
             className={clsx('text-zinc-500 uppercase text-sm md:text-base hover:text-black truncate', {
               'text-primary font-semibold pointer-events-none': i === pathObject.length - 1
             })}>

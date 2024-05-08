@@ -16,9 +16,13 @@ export default function Page({ params }: { params: { department: string } }) {
 
   return (
     <main className="flex flex-col gap-4 mt-12">
-      <h2 className="text-6xl font-semibold uppercase">{params.department}</h2>
+      <h2 className="text-7xl font-semibold uppercase break-words">
+        {params.department}
+      </h2>
       <div className="h-10 relative flex gap-2">
-        <Button className="uppercase" onClick={handleOpen}>Filters</Button>
+        <Button className="uppercase" onClick={handleOpen}>
+          Filters
+        </Button>
         <div className="my-1 border-r border-zinc-300" />
         <div className="hidden md:flex gap-2 w-[80%] overflow-hidden">
           <Button variant={'custom'}>
@@ -28,10 +32,13 @@ export default function Page({ params }: { params: { department: string } }) {
             Size M <MarkIcon className="ml-1" />
           </Button>
         </div>
-        <SortBy/>
-        <Filter onClose={handleOpen} className='absolute top-12 left-0 w-full md:w-[300px]' open={open}>
-          <FilterChildren title='Sizes'>
-            <Input placeholder='Size'/>
+        <SortBy />
+        <Filter
+          onClose={handleOpen}
+          className="absolute top-12 left-0 w-full md:w-[300px]"
+          open={open}>
+          <FilterChildren title="Sizes">
+            <Input placeholder="Size" />
           </FilterChildren>
         </Filter>
       </div>
