@@ -11,6 +11,7 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
+import useLightbox from '@/hooks/useLightbox'
 import { product } from '@/lib/data'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -19,11 +20,18 @@ import 'yet-another-react-lightbox/styles.css'
 
 export default function Page() {
   const [open, setOpen] = useState(false)
+  const { openLightbox, renderLightbox } = useLightbox()
+
+  const slides = [
+    { src: product.img_src },
+    { src: product.img_src },
+    { src: product.img_src }
+  ]
 
   return (
     <main className="flex flex-col md:grid grid-cols-2 md:px-24 gap-8">
       <div className="grid grid-cols-2 gap-4">
-        <button className="col-span-2" onClick={() => setOpen(true)}>
+        <button className="col-span-2" onClick={openLightbox}>
           <Image
             width={800}
             height={1020}
@@ -45,16 +53,7 @@ export default function Page() {
           src={product.img_src}
           alt={product.title}
         />
-        <Lightbox
-          open={open}
-          close={() => setOpen(false)}
-          slides={[
-            { src: product.img_src },
-            { src: product.img_src },
-            { src: product.img_src }
-          ]}
-          render={{ slide: NextJsImage }}
-        />
+        {renderLightbox({ slides, render: { slide: NextJsImage } })}
       </div>
       <div className="flex flex-col gap-2">
         <p className={marcellus.className + ' text-3xl uppercase'}>
