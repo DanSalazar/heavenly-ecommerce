@@ -1,9 +1,7 @@
-'use client'
-
 import Price from '@/components/ecommerce/price'
-import NextJsImage from '@/components/gallery/next-js-image'
+import ProductImagesContainer from '@/components/ecommerce/product-images-container'
 import { marcellus } from '@/components/heavenly-icon'
-import { HeartIcon, Package, Truck } from '@/components/icons'
+import { Package, Truck } from '@/components/icons'
 import {
   Accordion,
   AccordionContent,
@@ -11,53 +9,21 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
-import useLightbox from '@/hooks/useLightbox'
-import { product } from '@/lib/data'
-import Image from 'next/image'
-import { useState } from 'react'
-import Lightbox from 'yet-another-react-lightbox'
-import 'yet-another-react-lightbox/styles.css'
+import { getProductById } from '@/server/actions'
 
-export default function Page() {
-  const [open, setOpen] = useState(false)
-  const { openLightbox, renderLightbox } = useLightbox()
+export default async function Page({ params }: { params: { id: string }}) {
+  const product = await getProductById(Number(params.id))
 
-  const slides = [
-    { src: product.img_src },
-    { src: product.img_src },
-    { src: product.img_src }
-  ]
+  if (!product) return <div>
+    No product
+  </div>
 
   return (
     <main className="flex flex-col md:grid grid-cols-2 md:px-24 gap-8">
-      <div className="grid grid-cols-2 gap-4">
-        <button className="col-span-2" onClick={openLightbox}>
-          <Image
-            width={800}
-            height={1020}
-            src={product.img_src}
-            alt={product.title}
-          />
-        </button>
-        <Image
-          className="hidden md:block"
-          width={400}
-          height={500}
-          src={product.img_src}
-          alt={product.title}
-        />
-        <Image
-          className="hidden md:block"
-          width={400}
-          height={500}
-          src={product.img_src}
-          alt={product.title}
-        />
-        {renderLightbox({ slides, render: { slide: NextJsImage } })}
-      </div>
+      <ProductImagesContainer image={product.image} alt={product.name} />
       <div className="flex flex-col gap-2">
         <p className={marcellus.className + ' text-3xl uppercase'}>
-          {product.title}
+          {product.name}
         </p>
         <Price price={product.price} />
         <p>

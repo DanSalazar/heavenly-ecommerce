@@ -1,6 +1,6 @@
 import Price from '@/components/ecommerce/price'
 import { Truck } from '@/components/icons'
-import ProductRow from '@/components/shopping-bag/product-row'
+// import ProductRow from '@/components/shopping-bag/product-row'
 import {
   Accordion,
   AccordionContent,
@@ -8,7 +8,6 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
-import { product } from '@/lib/data'
 
 type SumProps = {
   description: string
@@ -36,12 +35,6 @@ export default function Page() {
           <h2 className="font-semibold uppercase text-6xl">Bag</h2>
           <span className="font-medium mt-2">1</span>
         </header>
-        <div>
-          <ProductRow product={product} />
-          <ProductRow product={product} />
-          <ProductRow product={product} />
-          <ProductRow product={product} />
-        </div>
       </div>
       <div className="flex flex-col gap-4">
         <h2 className="text-4xl font-semibold break-words">Summary</h2>

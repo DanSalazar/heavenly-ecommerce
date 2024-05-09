@@ -1,4 +1,4 @@
-import { Product } from '@/lib/data'
+import { Product } from '@/lib/types'
 import Price from '../ecommerce/price'
 import Image from 'next/image'
 
@@ -12,12 +12,12 @@ export default function ProductBag({ product }: { product: Product }) {
           height: 'auto',
           width: '100%'
         }}
-        src={product.img_src}
-        alt={product.title}
+        src={product.image}
+        alt={product.name}
       />
       <div className="flex flex-col relative gap-1 overflow-hidden">
         <p className="font-semibold text-sm uppercase truncate">
-          {product.title}
+          {product.name}
         </p>
         <div className="flex justify-between items-center">
           <div className="flex flex-col gap-1">
