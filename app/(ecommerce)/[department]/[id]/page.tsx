@@ -1,7 +1,7 @@
 import Price from '@/components/ecommerce/price'
 import ProductImagesContainer from '@/components/ecommerce/product-images-container'
 import { marcellus } from '@/components/heavenly-icon'
-import { Package, Truck } from '@/components/icons'
+import { PackageIcon, TruckIcon, HeartIcon } from '@/components/icons'
 import {
   Accordion,
   AccordionContent,
@@ -11,12 +11,10 @@ import {
 import { Button } from '@/components/ui/button'
 import { getProductById } from '@/server/actions'
 
-export default async function Page({ params }: { params: { id: string }}) {
+export default async function Page({ params }: { params: { id: string } }) {
   const product = await getProductById(Number(params.id))
 
-  if (!product) return <div>
-    No product
-  </div>
+  if (!product) return <div>No product</div>
 
   return (
     <main className="flex flex-col md:grid grid-cols-2 md:px-24 gap-8">
@@ -47,14 +45,19 @@ export default async function Page({ params }: { params: { id: string }}) {
             </Button>
           </div>
         </div>
-        <Button className="h-10 w- uppercase">Add To Bag</Button>
+        <div className="flex flex-wrap gap-2">
+          <Button className="flex-1 uppercase">Add To Bag</Button>
+          <Button variant={'outline'}>
+            <HeartIcon width={18} height={18} />
+          </Button>
+        </div>
         <div className="p-4 border border-zinc-200 rounded-md font-medium">
           <p className="flex gap-2 mb-4">
-            <Truck />
+            <TruckIcon />
             Free delivery on qualifying orders.
           </p>
           <p className="flex gap-2">
-            <Package />
+            <PackageIcon />
             Free returns.
           </p>
         </div>

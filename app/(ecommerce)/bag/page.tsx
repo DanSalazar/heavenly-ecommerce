@@ -1,5 +1,5 @@
 import Price from '@/components/ecommerce/price'
-import { Truck } from '@/components/icons'
+import { TruckIcon } from '@/components/icons'
 // import ProductRow from '@/components/shopping-bag/product-row'
 import {
   Accordion,
@@ -49,7 +49,7 @@ export default function Page() {
           <AccordionItem value="item-1">
             <AccordionTrigger>
               <span className="flex gap-2">
-                <Truck /> Free Shipping
+                <TruckIcon /> Free Shipping
               </span>
             </AccordionTrigger>
             <AccordionContent>

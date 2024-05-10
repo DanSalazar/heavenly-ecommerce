@@ -1,4 +1,5 @@
 import ProductComponent from '@/components/ecommerce/product'
+import FilterProducts from '@/components/filter/filter-products'
 import { getProducts } from '@/server/actions'
 
 export default async function Page({ params }: { params: { department: string } }) {
@@ -13,6 +14,7 @@ export default async function Page({ params }: { params: { department: string } 
       <h2 className="text-7xl font-semibold uppercase break-words">
         {params.department}
       </h2>
+      <FilterProducts/>
       <div className="flex flex-wrap gap-4 border-t py-4 border-zinc-200">
         {data.map(item => (
           <ProductComponent product={item} />

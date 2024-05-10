@@ -21,7 +21,7 @@ export default function Breadcumb() {
             })}>
             {path.name}
           </Link>
-          {i + 1 < pathObject.length && <ArrowRight />}
+          {i + 1 < pathObject.length && <ArrowRight width={14} height={14} />}
         </div>
       ))}
     </div>

@@ -5,7 +5,7 @@ import { Button } from '../ui/button'
 import { MarkIcon } from '../icons'
 import SortBy from './sort-by'
 import { Filter, FilterChildren } from '.'
-import { Input } from 'postcss'
+import { Input } from '../ui/input'
 
 export default function FilterProducts() {
   const [open, setOpen] = useState(false)
