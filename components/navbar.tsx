@@ -70,7 +70,7 @@ export default function Navbar() {
       <nav
         onMouseLeave={() => setNavOpen({ open: false, title: '' })}
         className="hidden bg-white md:flex  items-center gap-4">
-        {links.map(link => (
+        {links.map((link, i) => (
           <Link
             onMouseOver={() =>
               setNavOpen({
@@ -78,6 +78,7 @@ export default function Navbar() {
                 title: link.link
               })
             }
+            key={link.id}
             className="uppercase font-medium"
             href={link.path}>
             {link.link}
