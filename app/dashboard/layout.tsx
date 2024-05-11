@@ -18,9 +18,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className + ' flex gap-8'}>
+      <body className={inter.className + ' flex'}>
         <Navbar />
-        <main className="flex-1 py-6">
+        <main className="flex-1 flex flex-col gap-4 p-6">
           <Title />
           {children}
         </main>

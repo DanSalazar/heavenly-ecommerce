@@ -17,10 +17,6 @@ const Links = [
     title: 'Products'
   },
   {
-    href: '/dashboard/customers',
-    title: 'Customers'
-  },
-  {
     href: '/dashboard/orders',
     title: 'Orders'
   },
