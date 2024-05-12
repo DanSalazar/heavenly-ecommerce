@@ -1,3 +1,9 @@
-export default function Page() {
-  return <div>Dashboard</div>
+import ChartDashboard from './_components/chart-dashboard'
+
+export default async function Page() {
+  return (
+    <div>
+      <ChartDashboard />
+    </div>
+  )
 }
