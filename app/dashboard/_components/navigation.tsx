@@ -32,7 +32,7 @@ export default function Navigation() {
   return (
     <nav
       className={cn(
-        'fixed xl:static top-0 bottom-0 left-0 w-4/6 xl:w-auto flex p-8 xl:p-0 flex-col gap-4'
+        'fixed xl:static top-0 bottom-0 left-0 w-4/6 xl:w-auto hidden md:flex p-8 xl:p-0 flex-col gap-4'
       )}>
       <div className="flex xl:hidden items-center justify-between">
         <HeavenlyIcon />
