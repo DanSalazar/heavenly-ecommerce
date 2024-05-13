@@ -1,5 +1,12 @@
 'use client'
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card'
 import dynamic from 'next/dynamic'
 import { Suspense } from 'react'
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
@@ -86,21 +93,26 @@ const chartConfig = {
 
 export default function ChartDashboard() {
   return (
-    <div className="flex flex-col gap-2 border border-zinc-100 rounded-md p-4">
-      <h2 className="px-4 text-2xl font-semibold">Sales</h2>
-      <Chart
-        type="line"
-        options={{
-          ...chartConfig.options,
-          stroke: {
-            lineCap: 'round',
-            curve: 'smooth'
-          }
-        }}
-        series={[...chartConfig.series]}
-        height={450}
-        width={'100%'}
-      />
-    </div>
+    <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-2xl">Sales</CardTitle>
+        <CardDescription>Sales by month</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Chart
+          type="line"
+          options={{
+            ...chartConfig.options,
+            stroke: {
+              lineCap: 'round',
+              curve: 'smooth'
+            }
+          }}
+          series={[...chartConfig.series]}
+          height={450}
+          width={'100%'}
+        />
+      </CardContent>
+    </Card>
   )
 }

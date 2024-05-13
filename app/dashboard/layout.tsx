@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className + ' flex flex-col md:flex-row'}>
         <Navbar />
-        <main className="flex-1 flex flex-col gap-4 p-6">
+        <main className="bg-zinc-50 flex-1 flex flex-col gap-4 p-6">
           <Title />
           {children}
         </main>

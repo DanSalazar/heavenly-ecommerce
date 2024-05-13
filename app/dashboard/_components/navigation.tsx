@@ -1,7 +1,13 @@
 'use client'
 
 import HeavenlyIcon from '@/components/heavenly-icon'
-import { HomeIcon, MarkIcon, PackageIcon, SettingsIcon, ShoppingBagIcon } from '@/components/icons'
+import {
+  HomeIcon,
+  MarkIcon,
+  PackageIcon,
+  SettingsIcon,
+  ShoppingBagIcon
+} from '@/components/icons'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
@@ -11,22 +17,22 @@ const Links = [
   {
     href: '/dashboard',
     title: 'Dashboard',
-    icon: <HomeIcon/>
+    icon: <HomeIcon />
   },
   {
     href: '/dashboard/products',
     title: 'Products',
-    icon: <ShoppingBagIcon/>
+    icon: <ShoppingBagIcon />
   },
   {
     href: '/dashboard/orders',
     title: 'Orders',
-    icon: <PackageIcon/>
+    icon: <PackageIcon />
   },
   {
     href: '/dashboard/settings',
     title: 'Settings',
-    icon: <SettingsIcon/>
+    icon: <SettingsIcon />
   }
 ]
 
