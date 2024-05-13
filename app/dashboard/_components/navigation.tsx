@@ -1,7 +1,7 @@
 'use client'
 
 import HeavenlyIcon from '@/components/heavenly-icon'
-import { MarkIcon } from '@/components/icons'
+import { HomeIcon, MarkIcon, PackageIcon, SettingsIcon, ShoppingBagIcon } from '@/components/icons'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
@@ -10,19 +10,23 @@ import { usePathname } from 'next/navigation'
 const Links = [
   {
     href: '/dashboard',
-    title: 'Dashboard'
+    title: 'Dashboard',
+    icon: <HomeIcon/>
   },
   {
     href: '/dashboard/products',
-    title: 'Products'
+    title: 'Products',
+    icon: <ShoppingBagIcon/>
   },
   {
     href: '/dashboard/orders',
-    title: 'Orders'
+    title: 'Orders',
+    icon: <PackageIcon/>
   },
   {
     href: '/dashboard/settings',
-    title: 'Settings'
+    title: 'Settings',
+    icon: <SettingsIcon/>
   }
 ]
 
@@ -53,7 +57,7 @@ export default function Navigation() {
                 (pathname.includes(link.href) && link.href !== '/dashboard')
             }
           )}>
-          {link.title}
+          {link.icon} {link.title}
         </Link>
       ))}
     </nav>
