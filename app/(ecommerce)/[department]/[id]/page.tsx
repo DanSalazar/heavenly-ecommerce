@@ -1,3 +1,4 @@
+import AddProductInBag from '@/components/ecommerce/add-product-bag'
 import Price from '@/components/ecommerce/price'
 import ProductImagesContainer from '@/components/ecommerce/product-images-container'
 import { marcellus } from '@/components/heavenly-icon'
@@ -9,7 +10,7 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
-import { getProductById } from '@/server/actions'
+import { addProductInBag, getProductById } from '@/server/actions'
 
 export default async function Page({ params }: { params: { id: string } }) {
   const product = await getProductById(Number(params.id))
@@ -45,12 +46,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             </Button>
           </div>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Button className="flex-1 uppercase">Add To Bag</Button>
-          <Button variant={'outline'}>
-            <HeartIcon width={18} height={18} />
-          </Button>
-        </div>
+        <AddProductInBag productId={product.id} />
         <div className="p-4 border border-zinc-200 rounded-md font-medium">
           <p className="flex gap-2 mb-4">
             <TruckIcon />
