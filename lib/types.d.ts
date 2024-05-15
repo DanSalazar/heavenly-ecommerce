@@ -12,3 +12,10 @@ export interface Product {
   department: 'Men' | 'Women'
   category: string
 }
+
+export interface BagItem {
+  id: string
+  productId: number
+  quantity: number
+  createdAt: Date
+}

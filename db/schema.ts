@@ -1,4 +1,4 @@
-import { boolean, integer, pgTableCreator, text, varchar, } from 'drizzle-orm/pg-core'
+import { boolean, date, integer, pgTableCreator, text, varchar, } from 'drizzle-orm/pg-core'
 
 export const createTable = pgTableCreator(name => 'heavenly_' + name)
 
@@ -15,4 +15,11 @@ export const product = createTable('product', {
   sizes: varchar("sizes", { length: 255 }).notNull(),
   department: varchar("department", { length: 20, enum: ['Men', 'Women'] }).notNull(),
   category: varchar("category", { length: 20 }).notNull()
+})
+
+export const bagItem = createTable('bag_item', {
+  id: varchar('id', { length: 100 }),
+  productId: integer('productId').unique().references(() => product.id),
+  quantity: integer('quantity'),
+  createdAt: date("createdAt").defaultNow()
 })
