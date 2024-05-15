@@ -55,7 +55,7 @@ export default async function Page() {
 
             if (!product) return <></>
 
-            return <ProductRow product={product} />
+            return <ProductRow key={product.id} product={product} />
           })}
         </div>
       </div>

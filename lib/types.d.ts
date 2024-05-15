@@ -9,7 +9,7 @@ export interface Product {
   image: string
   color: string
   sizes: string
-  department: 'Men' | 'Women'
+  department: 'men' | 'women'
   category: string
 }
 

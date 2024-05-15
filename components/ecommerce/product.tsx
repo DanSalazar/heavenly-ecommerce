@@ -9,9 +9,10 @@ import { Product } from '@/lib/types'
 
 export default function ProductComponent({ product }: { product: Product }) {
   const pathname = usePathname()
+
   return (
     <Link
-      href={pathname + '/' + 1}
+      href={pathname + '/' + product.id}
       className="md:w-[300px] flex flex-col gap-2 cursor-pointer hover:opacity-80 transition-opacity group">
       <div className="flex overflow-hidden">
         <Image

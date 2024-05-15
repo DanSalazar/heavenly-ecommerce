@@ -13,7 +13,7 @@ export const product = createTable('product', {
   image: varchar("image", { length: 255 }).notNull(),
   color: varchar("color", { length: 20 }).notNull(),
   sizes: varchar("sizes", { length: 255 }).notNull(),
-  department: varchar("department", { length: 20, enum: ['Men', 'Women'] }).notNull(),
+  department: varchar("department", { length: 20, enum: ['men', 'women'] }).notNull(),
   category: varchar("category", { length: 20 }).notNull()
 })
 

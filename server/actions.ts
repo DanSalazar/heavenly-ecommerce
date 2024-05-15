@@ -6,10 +6,16 @@ import { eq, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
-export const getProducts = async () => {
-  const data = await db.select().from(product)
+const paramsResolver = z.enum(['men', 'women'])
 
-  return data
+export const getProducts = async (deparment: string) => {
+  try {
+    const parse = paramsResolver.parse(deparment)
+    const data = await db.select().from(product).where(eq(product.department, parse))
+    return data
+  } catch (err) {
+    return null
+  }
 }
 
 export const getProductById = async (id: number) => {

@@ -3,10 +3,12 @@ import FilterProducts from '@/components/filter/filter-products'
 import { getProducts } from '@/server/actions'
 
 export default async function Page({ params }: { params: { department: string } }) {
-  const data = await getProducts()
+  const data = await getProducts(params.department)
 
-  if (!data) return <div>
-    No products
+  if (!data) return <div className='h-[400px] flex items-center justify-center'>
+    <h2 className='text-5xl font-semibold'>
+      Department not Available
+    </h2>
   </div>
 
   return (

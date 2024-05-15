@@ -42,7 +42,7 @@ export default function ShoppingBag({ bag }: { bag: any[] }) {
         {bag.map(item => {
           const { bag_item, product } = item
           return (
-            <ProductBag key={bag_item.id} product={product} bagItem={bag_item} />
+            <ProductBag key={bag_item.productId} product={product} bagItem={bag_item} />
           )
         })}
       </div>
