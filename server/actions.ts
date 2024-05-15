@@ -11,7 +11,10 @@ const paramsResolver = z.enum(['men', 'women'])
 export const getProducts = async (deparment: string) => {
   try {
     const parse = paramsResolver.parse(deparment)
-    const data = await db.select().from(product).where(eq(product.department, parse))
+    const data = await db
+      .select()
+      .from(product)
+      .where(eq(product.department, parse))
     return data
   } catch (err) {
     return null

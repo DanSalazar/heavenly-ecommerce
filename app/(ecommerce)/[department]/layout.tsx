@@ -1,4 +1,4 @@
-import Breadcumb from "@/components/ui/breadcumb"
+import Breadcumb from '@/components/ui/breadcumb'
 
 export default function Layout({
   children
@@ -6,8 +6,8 @@ export default function Layout({
   children: React.ReactNode
 }>) {
   return (
-    <> 
-      <Breadcumb/>
+    <>
+      <Breadcumb />
       {children}
     </>
   )

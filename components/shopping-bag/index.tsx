@@ -28,8 +28,9 @@ export default function ShoppingBag({ bag }: { bag: any[] }) {
   return (
     <div
       className={cn(
-        '-z-10 bg-white w-[300px] md:w-[350px] flex flex-col absolute right-0 top-0 -translate-y-[400px] group-hover:translate-y-16 transition-transform ease-in-out duration-700 border-b border-r border-l border-zinc-200', {
-        'translate-y-16': open
+        '-z-10 bg-white w-[300px] md:w-[350px] flex flex-col absolute right-0 top-0 -translate-y-[400px] group-hover:translate-y-16 transition-transform ease-in-out duration-700 border-b border-r border-l border-zinc-200',
+        {
+          'translate-y-16': open
         }
       )}>
       <header className="p-4 flex justify-between">
@@ -42,7 +43,11 @@ export default function ShoppingBag({ bag }: { bag: any[] }) {
         {bag.map(item => {
           const { bag_item, product } = item
           return (
-            <ProductBag key={bag_item.productId} product={product} bagItem={bag_item} />
+            <ProductBag
+              key={bag_item.productId}
+              product={product}
+              bagItem={bag_item}
+            />
           )
         })}
       </div>

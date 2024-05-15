@@ -26,8 +26,6 @@ type PriceProps = VariantProps<typeof priceStyles> & {
 
 export default function Price({ variant, size, price, className }: PriceProps) {
   return (
-    <p className={cn(priceStyles({ variant, size }), className)}>
-      {price}$
-    </p>
+    <p className={cn(priceStyles({ variant, size }), className)}>{price}$</p>
   )
 }

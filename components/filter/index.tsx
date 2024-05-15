@@ -31,13 +31,7 @@ const FilterChildren = ({
   </div>
 )
 
-function Filter({
-  className,
-  children,
-  onClose,
-  open,
-  ...props
-}: FilterProps) {
+function Filter({ className, children, onClose, open, ...props }: FilterProps) {
   return (
     <div
       className={cn(
@@ -53,9 +47,7 @@ function Filter({
           <MarkIcon />
         </button>
       </header>
-      <div className={cn('p-3 flex flex-col gap-4')}>
-        {children}
-      </div>
+      <div className={cn('p-3 flex flex-col gap-4')}>{children}</div>
       <footer className="flex justify-end gap-2 p-3 border-t border-zinc-200 dark:border-zinc-800">
         <Button variant={'outline'}>Reset All</Button>
         <Button>Apply Now</Button>

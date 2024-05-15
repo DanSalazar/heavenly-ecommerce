@@ -1,5 +1,5 @@
 export type BreadcumbPath = {
-  name: string,
+  name: string
   href: string
 }
 
