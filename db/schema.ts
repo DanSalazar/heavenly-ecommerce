@@ -7,7 +7,7 @@ import {
   varchar
 } from 'drizzle-orm/pg-core'
 
-export const createTable = pgTableCreator(name => 'heavenly_' + name)
+const createTable = pgTableCreator(name => 'heavenly_' + name)
 
 export const product = createTable('product', {
   id: integer('id').primaryKey(),

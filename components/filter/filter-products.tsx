@@ -45,7 +45,7 @@ export default function FilterProducts() {
   const handleChange = (title: string, value: string) => {
     const newParams = new URLSearchParams(params)
 
-    if (value) newParams.set(title.toLowerCase(), value)
+    if (value) newParams.set(title.toLowerCase(), value.toLowerCase())
     else newParams.delete(title.toLowerCase())
 
     replace(pathname + '?' + newParams.toString())
@@ -58,8 +58,8 @@ export default function FilterProducts() {
       </Button>
       <div className="my-1 border-r border-zinc-300" />
       <div className="hidden md:flex gap-2 w-[80%] overflow-hidden">
-        {[...params.values()].map(filter => (
-          <Button className="capitalize" variant={'custom'}>
+        {[...params.values()].map((filter, i) => (
+          <Button key={filter + i} className="capitalize" variant={'custom'}>
             {filter} <MarkIcon className="ml-1" />
           </Button>
         ))}
@@ -70,13 +70,13 @@ export default function FilterProducts() {
         className="absolute top-12 left-0 w-full md:w-[300px]"
         open={open}>
         <FilterSelect title="Sizes" handleChange={handleChange}>
-          {['XS', 'S', 'M', 'L'].map(item => (
-            <SelectItem value={item}>{item}</SelectItem>
+          {['XS', 'S', 'M', 'L'].map((item, i) => (
+            <SelectItem key={item + i} value={item}>{item}</SelectItem>
           ))}
         </FilterSelect>
         <FilterSelect title="Category" handleChange={handleChange}>
-          {['Shoes', 'Sneakers', 'Shirts', 'Jeans'].map(item => (
-            <SelectItem value={item}>{item}</SelectItem>
+          {['Shoes', 'Sneakers', 'Shirts', 'Jeans'].map((item, i) => (
+            <SelectItem key={item + i} value={item}>{item}</SelectItem>
           ))}
         </FilterSelect>
       </Filter>
