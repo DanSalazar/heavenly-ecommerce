@@ -8,7 +8,10 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import dynamic from 'next/dynamic'
-import { Suspense } from 'react'
+import {
+  useThemeContext
+} from '@/components/providers/theme-provider'
+
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 const chartConfig = {
@@ -21,7 +24,6 @@ const chartConfig = {
     dataLabels: {
       enabled: false
     },
-    colors: ['#020617'],
     markers: {
       size: 0
     },
@@ -92,8 +94,10 @@ const chartConfig = {
 }
 
 export default function ChartDashboard() {
+  const theme = useThemeContext()
+
   return (
-    <Card>
+    <Card className="h-[580px]">
       <CardHeader className="pb-2">
         <CardTitle className="text-2xl">Sales</CardTitle>
         <CardDescription>Sales by month</CardDescription>
@@ -103,6 +107,7 @@ export default function ChartDashboard() {
           type="line"
           options={{
             ...chartConfig.options,
+            colors: [theme?.isDarkTheme ? '#ecf0f1' : '#020617'],
             stroke: {
               lineCap: 'round',
               curve: 'smooth'

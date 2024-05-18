@@ -1,9 +1,9 @@
-import { Button } from '@/components/ui/button'
+import ToggleTheme from '../_components/toggle-theme'
 
 export default function Page() {
   return (
     <div>
-      <Button>Toggle Theme</Button>
+      <ToggleTheme />
     </div>
   )
 }

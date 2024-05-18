@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import '../globals.css'
 import Navbar from './_components/navbar'
 import Title from './_components/title'
+import Providers from '@/components/providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,13 +19,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className + ' flex flex-col md:flex-row'}>
-        <Navbar />
-        <main className="bg-zinc-50 flex-1 flex flex-col gap-4 p-6">
-          <Title />
-          {children}
-        </main>
-      </body>
+      <Providers>
+        <body className={inter.className + ' flex flex-col md:flex-row'}>
+          <Navbar />
+          <main className="background flex-1 flex flex-col gap-4 p-6">
+            <Title />
+            {children}
+          </main>
+        </body>
+      </Providers>
     </html>
   )
 }

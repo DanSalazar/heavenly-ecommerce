@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import { getProducts } from '@/server/actions'
+// import { getProducts } from '@/server/actions'
 
 const TableHeaderData = [
   'Product Name',
@@ -20,7 +20,7 @@ const TableHeaderData = [
 ]
 
 export default async function Page() {
-  const products = await getProducts()
+  // const products = await getProducts()
 
   return (
     <>
@@ -37,7 +37,7 @@ export default async function Page() {
             ))}
           </TableRow>
         </TableHeader>
-        <TableBody>
+        {/*  <TableBody>
           {products.map((product, i) => (
             <TableRow>
               <TableCell className="">
@@ -53,7 +53,7 @@ export default async function Page() {
               </TableCell>
             </TableRow>
           ))}
-        </TableBody>
+        </TableBody>*/}
       </Table>
     </>
   )
