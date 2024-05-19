@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body className={inter.className + ' flex flex-col md:flex-row'}>
+        <body className={inter.className + ' flex flex-col lg:flex-row'}>
           <Navbar />
           <main className="background flex-1 flex flex-col gap-4 p-6">
             <Title />

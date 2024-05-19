@@ -1,5 +1,3 @@
-'use client'
-
 import HeavenlyIcon from '@/components/heavenly-icon'
 import {
   HomeIcon,
@@ -36,36 +34,65 @@ const Links = [
   }
 ]
 
-export default function Navigation() {
+export const Overlay = ({
+  open,
+  onClose
+}: {
+  open: boolean
+  onClose: () => void
+}) => {
+  return (
+    <div
+      className={cn('z-10 hidden fixed top-0 left-0 bottom-0 right-0', {
+        block: open
+      })}
+      style={{
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+      }}
+      onClick={onClose}></div>
+  )
+}
+
+export default function Navigation({
+  mobileOpen,
+  onClose
+}: {
+  mobileOpen: boolean
+  onClose: () => void
+}) {
   const pathname = usePathname()
 
   return (
-    <nav
-      className={cn(
-        'fixed xl:static top-0 bottom-0 left-0 w-4/6 xl:w-auto hidden md:flex p-8 xl:p-0 flex-col gap-4'
-      )}>
-      <div className="flex xl:hidden items-center justify-between">
-        <HeavenlyIcon />
-        {/* <Button className="self-end" variant={'ghost'}>
-          <MarkIcon width={24} height={24} />
-        </Button>*/}
-      </div>
-      {Links.map((link, i) => (
-        <Link
-          href={link.href}
-          key={link.href + i}
-          className={cn(
-            buttonVariants({ variant: 'ghost' }),
-            'justify-start gap-2 h-0 py-6 text-base',
-            {
-              'text-background hover:text-background bg-primary hover:bg-primary dark:hover:bg-primary dark:hover:text-background':
-                link.href === pathname ||
-                (pathname.includes(link.href) && link.href !== '/dashboard')
-            }
-          )}>
-          {link.icon} {link.title}
-        </Link>
-      ))}
-    </nav>
+    <>
+      <Overlay open={mobileOpen} onClose={onClose} />
+      <nav
+        className={cn(
+          'z-20 transition-transform -translate-x-[750px] fixed lg:static lg:translate-x-0 top-0 bottom-0 left-0 w-4/6 lg:w-auto bg-background flex p-6 lg:p-0 flex-col gap-4',
+          {
+            'translate-x-0': mobileOpen
+          }
+        )}>
+        <div className="flex justify-end lg:hidden">
+          <Button onClick={onClose} variant={'ghost'} size={'sm'}>
+            <MarkIcon />
+          </Button>
+        </div>
+        {Links.map((link, i) => (
+          <Link
+            href={link.href}
+            key={link.href + i}
+            className={cn(
+              buttonVariants({ variant: 'ghost' }),
+              'justify-start gap-2 h-0 py-6 text-base',
+              {
+                'text-background hover:text-background bg-primary hover:bg-primary dark:hover:bg-primary dark:hover:text-background':
+                  link.href === pathname
+              }
+            )}>
+            {link.icon} {link.title}
+          </Link>
+        ))}
+      </nav>
+    </>
   )
 }
