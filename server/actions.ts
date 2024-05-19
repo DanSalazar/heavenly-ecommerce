@@ -2,19 +2,36 @@
 
 import { db } from '@/db'
 import { bagItem, product } from '@/db/schema'
-import { eq, sql } from 'drizzle-orm'
+import { and, eq, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 const paramsResolver = z.enum(['men', 'women'])
+const searchParamsSchema = z.record(z.string(), z.string())
 
-export const getProducts = async (deparment: string) => {
+const makeFiltersBySearchParams = (
+  filters: z.infer<typeof searchParamsSchema>
+) => {
+  return Object.entries(filters)
+    .map(([key, val]) => `${key} = '${val}'`)
+    .join(' and ')
+}
+
+export const getProducts = async (deparment: string, searchParams: unknown) => {
   try {
+    const parsedSearchParams = searchParamsSchema.parse(searchParams)
+    const filtersByParams = makeFiltersBySearchParams(parsedSearchParams)
     const parse = paramsResolver.parse(deparment)
+
     const data = await db
       .select()
       .from(product)
-      .where(eq(product.department, parse))
+      .where(
+        filtersByParams.length
+          ? and(eq(product.department, parse), sql.raw(filtersByParams))
+          : eq(product.department, parse)
+      )
+
     return data
   } catch (err) {
     return null

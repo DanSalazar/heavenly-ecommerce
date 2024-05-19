@@ -3,11 +3,13 @@ import FilterProducts from '@/components/filter/filter-products'
 import { getProducts } from '@/server/actions'
 
 export default async function Page({
-  params
+  params,
+  searchParams
 }: {
-  params: { department: string }
+  params: { department: string },
+  searchParams: unknown
 }) {
-  const data = await getProducts(params.department)
+  const data = await getProducts(params.department, searchParams)
 
   if (!data)
     return (

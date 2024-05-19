@@ -69,11 +69,11 @@ export default function FilterProducts() {
         onClose={handleOpen}
         className="absolute top-12 left-0 w-full md:w-[300px]"
         open={open}>
-        <FilterSelect title="Sizes" handleChange={handleChange}>
+      {/*  <FilterSelect title="Sizes" handleChange={handleChange}>
           {['XS', 'S', 'M', 'L'].map((item, i) => (
             <SelectItem key={item + i} value={item}>{item}</SelectItem>
           ))}
-        </FilterSelect>
+        </FilterSelect>*/}
         <FilterSelect title="Category" handleChange={handleChange}>
           {['Shoes', 'Sneakers', 'Shirts', 'Jeans'].map((item, i) => (
             <SelectItem key={item + i} value={item}>{item}</SelectItem>
