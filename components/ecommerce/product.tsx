@@ -25,7 +25,11 @@ export default function ProductComponent({ product }: { product: Product }) {
       <div>
         <p className="uppercase font-medium">{product.brand}</p>
         <p className="uppercase font-medium">{product.name}</p>
-        <Price price={product.price} />
+        <Price
+          price={product.price}
+          discount={product.discount}
+          discount_percentage={product.percentage_off}
+        />
       </div>
     </Link>
   )

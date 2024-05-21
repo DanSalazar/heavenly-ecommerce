@@ -19,3 +19,13 @@ export const createPathObject = (pathname: string): BreadcumbPath[] => {
 
   return result
 }
+
+export const getDiscountPrice = (price: number, discount: number) => {
+  const discountPrice = price - (price * discount) / 100
+
+  return discountPrice.toLocaleString('en', {
+    style: 'decimal',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })
+}
