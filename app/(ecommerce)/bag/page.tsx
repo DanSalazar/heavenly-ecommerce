@@ -32,9 +32,9 @@ export default async function Page() {
   if (!bag.length) return <BagEmpty />
 
   const SHIPPING_PRICE = 0.0
-  const total = bag.reduce((acc, item) => {
-    const { bag_item, product } = item
-    const price = product ? product.price : 0
+  const total = bag.reduce((acc, bag_item) => {
+    const { product_variant } = bag_item
+    const price = product_variant.product ? product_variant.product.price : 0
     const quantity = Number(bag_item.quantity)
 
     return acc + quantity * price
@@ -50,12 +50,17 @@ export default async function Page() {
           </span>
         </header>
         <div>
-          {bag.map(item => {
-            const { bag_item: _, product } = item
+          {bag.map(bag_item => {
+            const { product_variant } = bag_item
 
-            if (!product) return <></>
+            if (!product_variant.product) return <></>
 
-            return <ProductRow key={product.id} product={product} />
+            return (
+              <ProductRow
+                key={product_variant.id}
+                product={product_variant.product}
+              />
+            )
           })}
         </div>
       </div>

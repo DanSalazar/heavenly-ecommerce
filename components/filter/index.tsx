@@ -10,7 +10,7 @@ type FilterProps = ComponentPropsWithoutRef<'div'> & {
 }
 
 const FilterTitle = ({ title }: { title: string }) => (
-  <p className="font-medium text-sm truncate">{title}</p>
+  <p className="font-medium text-sm truncate capitalize">{title}</p>
 )
 
 const FilterChildren = ({

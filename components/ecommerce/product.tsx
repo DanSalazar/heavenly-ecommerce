@@ -5,7 +5,7 @@ import Link from 'next/link'
 import React from 'react'
 import Price from './price'
 import { usePathname } from 'next/navigation'
-import { Product } from '@/lib/types'
+import { Product } from '@/db/schema'
 
 export default function ProductComponent({ product }: { product: Product }) {
   const pathname = usePathname()
@@ -16,7 +16,7 @@ export default function ProductComponent({ product }: { product: Product }) {
       className="md:w-[300px] flex flex-col gap-2 cursor-pointer hover:opacity-80 transition-opacity group">
       <div className="flex overflow-hidden">
         <Image
-          src={product.image}
+          src={product.image!}
           width={400}
           height={400}
           alt={product.name}

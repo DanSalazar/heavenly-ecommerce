@@ -1,12 +1,12 @@
 import ProductComponent from '@/components/ecommerce/product'
-import FilterProducts from '@/components/filter/filter-products'
+// import FilterProducts from '@/components/filter/filter-products'
 import { getProducts } from '@/server/actions'
 
 export default async function Page({
   params,
   searchParams
 }: {
-  params: { department: string },
+  params: { department: string }
   searchParams: unknown
 }) {
   const data = await getProducts(params.department, searchParams)
@@ -23,7 +23,7 @@ export default async function Page({
       <h2 className="text-7xl font-semibold uppercase break-words">
         {params.department}
       </h2>
-      <FilterProducts />
+      {/*<FilterProducts />*/}
       <div className="flex flex-wrap gap-4 border-t py-4 border-zinc-200">
         {data.map(item => (
           <ProductComponent product={item} />

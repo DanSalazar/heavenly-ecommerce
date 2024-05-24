@@ -1,14 +1,15 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Button, buttonVariants } from '../ui/button'
+import { buttonVariants } from '../ui/button'
 import { cn } from '../../lib/utils'
 import Price from '../ecommerce/price'
 import Link from 'next/link'
 import ProductBag from './product-bag'
 import useMounted from '@/hooks/useMounted'
+import { BagWithProduct } from '@/db/schema'
 
-export default function ShoppingBag({ bag }: { bag: any[] }) {
+export default function ShoppingBag({ bag }: { bag: BagWithProduct[] }) {
   const [open, setOpen] = useState(false)
   const isMounted = useMounted()
 
@@ -40,12 +41,10 @@ export default function ShoppingBag({ bag }: { bag: any[] }) {
         </span>
       </header>
       <div className="flex max-h-[220px] scrollbar scrollbar-rounded scrollbar-thin scrollbar-thumb-zinc-200 scrollbar-track-zinc-50 overflow-y-auto flex-col gap-4 px-4">
-        {bag.map(item => {
-          const { bag_item, product } = item
+        {bag.map(bag_item => {
           return (
             <ProductBag
-              key={bag_item.productId}
-              product={product}
+              key={bag_item.id}
               bagItem={bag_item}
             />
           )
