@@ -1,4 +1,3 @@
-// import AddProductInBag from '@/components/ecommerce/add-product-bag'
 import Price from '@/components/ecommerce/price'
 import ProductImagesContainer from '@/components/ecommerce/product-images-container'
 import { marcellus } from '@/components/heavenly-icon'
@@ -9,11 +8,13 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion'
-import { Button } from '@/components/ui/button'
 import { getProductById } from '@/server/actions'
+import AddProductInBag from './_components/add-product-bag'
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const product = await getProductById(Number(params.id))
+  const data = await getProductById(params.id)
+
+  const product = data[0]?.product
 
   if (!product) return <div>No product</div>
 
@@ -25,6 +26,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           {product.name}
         </p>
         <Price
+          className="text-xl"
           price={product.price}
           discount={product.discount}
           discount_percentage={product.percentage_off}
@@ -33,24 +35,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           adidas performance needs no introduction. The brand’s famous 3-Stripes
           can be seen on the track, field and in the latest streetwear trends.
         </p>
-        <p>
-          <span className="font-semibold text-xl mr-1">Color:</span> Green
-        </p>
-        <div>
-          <p className="text-xl font-semibold mb-2">Sizes:</p>
-          <div className="flex flex-wrap gap-2">
-            <Button variant={'outline'} size={'sm'}>
-              XS
-            </Button>
-            <Button variant={'outline'} size={'sm'}>
-              S
-            </Button>
-            <Button variant={'outline'} size={'sm'}>
-              M
-            </Button>
-          </div>
-        </div>
-        {/*<AddProductInBag productId={product.id} />*/}
+        <AddProductInBag data={data} />
         <div className="p-4 border border-zinc-200 rounded-md font-medium">
           <p className="flex gap-2 mb-4">
             <TruckIcon />
