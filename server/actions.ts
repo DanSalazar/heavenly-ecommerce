@@ -1,7 +1,14 @@
 'use server'
 
 import { db } from '@/db'
-import { bagItem, product } from '@/db/schema'
+import {
+    BagWithProduct,
+  Product,
+  ProductVariantWithJoins,
+  bagItem,
+  product,
+  productVariations
+} from '@/db/schema'
 import { and, eq, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
@@ -17,7 +24,10 @@ const makeFiltersBySearchParams = (
     .join(' and ')
 }
 
-export const getProducts = async (deparment: string, searchParams: unknown) => {
+export const getProducts = async (
+  deparment: string,
+  searchParams: unknown
+) => {
   try {
     const parsedSearchParams = searchParamsSchema.parse(searchParams)
     const filtersByParams = makeFiltersBySearchParams(parsedSearchParams)
@@ -34,47 +44,68 @@ export const getProducts = async (deparment: string, searchParams: unknown) => {
 
     return data
   } catch (err) {
+    return []
+  }
+}
+
+export const getProductById = async (
+  id: string
+) => {
+  const data =
+    await db.query.productVariations.findMany({
+      columns: {
+        id: true
+      },
+      where: eq(productVariations.product_id, id),
+      with: {
+        product: true,
+        size: true,
+        color: true,
+        category: true
+      }
+    })
+
+  return data
+}
+
+const productInBagSchema = z.object({
+  productVariationId: z.number()
+})
+
+export const addProductInBag = async (productVariationId: number) => {
+  try {
+    const parse = productInBagSchema.parse({ productVariationId })
+
+    await db
+      .insert(bagItem)
+      .values({
+        item_id: parse.productVariationId,
+        quantity: 1
+      })
+      .onConflictDoUpdate({
+        target: bagItem.item_id,
+        set: { quantity: sql`heavenly_bag_item.quantity + 1` }
+      })
+
+    revalidatePath('/[department]/[id]', 'page')
+  } catch (err) {
     return null
   }
 }
 
-export const getProductById = async (id: number) => {
-  const data = await db.select().from(product).where(eq(product.id, id))
-
-  return data[0]
-}
-
-// const productInBagSchema = z.object({
-//   bagId: z.string(),
-//   productId: z.number(),
-//   quantity: z.number()
-// })s
-
-// export const addProductInBag = async (
-//   bagId: string,
-//   productId: number,
-//   quantity: number
-// ) => {
-//   const parse = productInBagSchema.parse({ bagId, productId, quantity })
-
-//   await db
-//     .insert(bagItem)
-//     .values({
-//       id: parse.bagId,
-//       productId: parse.productId,
-//       quantity: parse.quantity
-//     })
-//     .onConflictDoUpdate({
-//       target: bagItem.item_id,
-//       set: { quantity: sql`heavenly_bag_item.quantity + 1` }
-//     })
-
-//   revalidatePath('/[department]/[id]', 'page')
-// }
-
 export const getBag = async () => {
-  const data = await db
-    .select()
-    .from(bagItem)
+  const data = await db.query.bagItem.findMany({
+    with: {
+      product_variant: {
+        columns: {
+          id: true
+        },
+        with: {
+          product: true
+        }
+      }
+    }
+  })
+
   return data
 }
