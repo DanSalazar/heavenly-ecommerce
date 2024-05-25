@@ -2,13 +2,10 @@ import { BagWithProduct } from '@/db/schema'
 import Price from '../ecommerce/price'
 import Image from 'next/image'
 
-export default function ProductBag({
-  bagItem
-}: {
-  bagItem: BagWithProduct
-}) {
-  const { product_variant: { product } } = bagItem
-
+export default function ProductBag({ bagItem }: { bagItem: BagWithProduct }) {
+  const {
+    product_variant: { product }
+  } = bagItem
   if (!product) return <></>
 
   return (
@@ -20,9 +17,7 @@ export default function ProductBag({
         </p>
         <div className="flex justify-between items-center">
           <div className="flex flex-col gap-1">
-            <span className="text-xs uppercase font-semibold">
-              Size
-            </span>
+            <span className="text-xs uppercase font-semibold">Size</span>
             <span className="text-xs uppercase font-semibold">
               Qty: {bagItem.quantity}
             </span>

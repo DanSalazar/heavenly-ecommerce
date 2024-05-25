@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { getBag } from '@/server/actions'
 import BagEmpty from '../_components/bag-empty'
 import ProductRow from '@/components/shopping-bag/product-row'
+import { reduceBagPrice } from '@/utils'
 
 type SumProps = {
   description: string
@@ -32,13 +33,7 @@ export default async function Page() {
   if (!bag.length) return <BagEmpty />
 
   const SHIPPING_PRICE = 0.0
-  const total = bag.reduce((acc, bag_item) => {
-    const { product_variant } = bag_item
-    const price = product_variant.product ? product_variant.product.price : 0
-    const quantity = Number(bag_item.quantity)
-
-    return acc + quantity * price
-  }, 0)
+  const total = reduceBagPrice(bag)
 
   return (
     <div className="mt-12 flex flex-col md:grid md:grid-cols-3 gap-8">

@@ -11,11 +11,11 @@ export default function ProductRow({ product }: { product: Product }) {
       <Image
         className="self-center"
         src={product.image!}
-        width={180}
-        height={230}
+        width={200}
+        height={200}
         alt={product.name}
       />
-      <div className="col-span-2 flex flex-col gap-2 overflow-hidden">
+      <div className="col-span-2 flex flex-col gap-2">
         <Link
           href={'/'}
           className="font-medium text-zinc-700 hover:text-black truncate">

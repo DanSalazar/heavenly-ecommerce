@@ -8,10 +8,12 @@ import Link from 'next/link'
 import ProductBag from './product-bag'
 import useMounted from '@/hooks/useMounted'
 import { BagWithProduct } from '@/db/schema'
+import { reduceBagPrice } from '@/utils'
 
 export default function ShoppingBag({ bag }: { bag: BagWithProduct[] }) {
   const [open, setOpen] = useState(false)
   const isMounted = useMounted()
+  const total = reduceBagPrice(bag)
 
   useEffect(() => {
     let timer: NodeJS.Timeout
@@ -42,12 +44,7 @@ export default function ShoppingBag({ bag }: { bag: BagWithProduct[] }) {
       </header>
       <div className="flex max-h-[220px] scrollbar scrollbar-rounded scrollbar-thin scrollbar-thumb-zinc-200 scrollbar-track-zinc-50 overflow-y-auto flex-col gap-4 px-4">
         {bag.map(bag_item => {
-          return (
-            <ProductBag
-              key={bag_item.id}
-              bagItem={bag_item}
-            />
-          )
+          return <ProductBag key={bag_item.id} bagItem={bag_item} />
         })}
       </div>
       <div className="flex flex-col gap-1 p-4">
@@ -57,7 +54,7 @@ export default function ShoppingBag({ bag }: { bag: BagWithProduct[] }) {
         </div>
         <div className="flex justify-between">
           <p className="font-medium text-sm">Total:</p>
-          <Price price={150} />
+          <Price price={total} />
         </div>
       </div>
       <footer className="flex px-4 pb-4">
