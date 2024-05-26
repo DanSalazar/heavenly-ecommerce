@@ -14,7 +14,7 @@ export default async function Navbar() {
       <div className="bg-white flex items-center md:justify-center">
         <HeavenlyIcon />
       </div>
-      <div className="self-stretch flex gap-2 justify-end items-center bg-white">
+      <div className="self-stretch flex gap-4 justify-end items-center bg-white">
         <Link href={'/favorites'}>
           <HeartIcon />
         </Link>

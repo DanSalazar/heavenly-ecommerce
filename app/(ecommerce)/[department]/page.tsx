@@ -20,7 +20,7 @@ export default async function Page({
 
   return (
     <main className="flex flex-col gap-4 mt-12">
-      <h2 className="text-7xl font-semibold uppercase break-words">
+      <h2 className="text-7xl md:text-8xl font-medium uppercase break-words">
         {params.department}
       </h2>
       {/*<FilterProducts />*/}

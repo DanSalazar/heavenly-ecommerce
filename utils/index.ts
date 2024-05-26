@@ -22,14 +22,18 @@ export const createPathObject = (pathname: string): BreadcumbPath[] => {
   return result
 }
 
-export const getDiscountPrice = (price: number, discount: number) => {
-  const discountPrice = price - (price * discount) / 100
-
-  return discountPrice.toLocaleString('en', {
+export const formattedPrice = (price: number) => {
+  return price.toLocaleString('en', {
     style: 'decimal',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   })
+}
+
+export const getDiscountPrice = (price: number, discount: number) => {
+  const discountPrice = price - (price * discount) / 100
+
+  return formattedPrice(discountPrice)
 }
 
 export const reduceBagPrice = (bag: BagWithProduct[]) => {

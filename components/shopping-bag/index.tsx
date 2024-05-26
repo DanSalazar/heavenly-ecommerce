@@ -42,7 +42,7 @@ export default function ShoppingBag({ bag }: { bag: BagWithProduct[] }) {
           {bag.length}
         </span>
       </header>
-      <div className="flex max-h-[220px] scrollbar scrollbar-rounded scrollbar-thin scrollbar-thumb-zinc-200 scrollbar-track-zinc-50 overflow-y-auto flex-col gap-4 px-4">
+      <div className="flex max-h-[220px] scrollbar scrollbar-rounded scrollbar-thin scrollbar-thumb-zinc-300 scrollbar-track-zinc-50 overflow-y-auto flex-col gap-4 px-4">
         {bag.map(bag_item => {
           return <ProductBag key={bag_item.id} bagItem={bag_item} />
         })}
@@ -54,13 +54,13 @@ export default function ShoppingBag({ bag }: { bag: BagWithProduct[] }) {
         </div>
         <div className="flex justify-between">
           <p className="font-medium text-sm">Total:</p>
-          <Price price={total} />
+          <Price price={total} size={'lg'} variant={'black'} />
         </div>
       </div>
       <footer className="flex px-4 pb-4">
         <Link
           href={'/bag'}
-          className={buttonVariants({ variant: 'outline' }) + ' flex-1'}>
+          className={buttonVariants({ variant: 'outline' }) + ' border-primary flex-1'}>
           View your bag
         </Link>
       </footer>
