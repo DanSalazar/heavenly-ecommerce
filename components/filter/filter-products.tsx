@@ -5,7 +5,6 @@ import { Button } from '../ui/button'
 import { MarkIcon } from '../icons'
 import SortBy from './sort-by'
 import { Filter, FilterChildren } from '.'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import {
   Select,
   SelectContent,
