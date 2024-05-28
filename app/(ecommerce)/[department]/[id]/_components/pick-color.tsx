@@ -12,7 +12,7 @@ export default function PickColor({
   error: boolean
   cleanErrors: (key: 'color' | 'size') => void
 }) {
-  const { getState, push } = useUrlState('color')
+  const { getState, push } = useUrlState()
   return (
     <div className="flex items-center gap-2">
       <p className={cn('font-medium', { 'text-red-500': error })}>Color:</p>
@@ -27,7 +27,7 @@ export default function PickColor({
                 cleanErrors('size')
                 push('color', color)
               }}
-              variant={getState() === color ? 'default' : 'outline'}>
+              variant={getState('color') === color ? 'default' : 'outline'}>
               {color}
             </Button>
           )

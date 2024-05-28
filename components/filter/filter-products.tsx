@@ -14,6 +14,7 @@ import {
   SelectValue
 } from '../ui/select'
 import { AllFiltersType } from '@/db/schema'
+import useUrlState from '@/hooks/useUrlState'
 
 const FilterSelect = ({
   title,
@@ -41,20 +42,9 @@ export default function FilterProducts({
 }) {
   const { categories, colors, sizes } = filters
   const [open, setOpen] = useState(false)
-  const params = useSearchParams()
-  const { replace } = useRouter()
-  const pathname = usePathname()
+  const { params, push, remove } = useUrlState()
 
   const handleOpen = () => setOpen(!open)
-
-  const handleChange = (title: string, value: string) => {
-    const newParams = new URLSearchParams(params)
-
-    if (value) newParams.set(title.toLowerCase(), value.toLowerCase())
-    else newParams.delete(title.toLowerCase())
-
-    replace(pathname + '?' + newParams.toString())
-  }
 
   return (
     <div className="h-10 relative flex gap-2">
@@ -63,8 +53,12 @@ export default function FilterProducts({
       </Button>
       <div className="my-1 border-r border-zinc-300" />
       <div className="hidden md:flex gap-2 w-[80%] overflow-hidden">
-        {[...params.values()].map((filter, i) => (
-          <Button key={filter + i} className="capitalize" variant={'custom'}>
+        {[...params.entries()].map(([key, filter], i) => (
+          <Button
+            onClick={() => remove(key)}
+            key={filter + i}
+            className="capitalize"
+            variant={'custom'}>
             {filter} <MarkIcon className="ml-1" />
           </Button>
         ))}
@@ -74,21 +68,21 @@ export default function FilterProducts({
         onClose={handleOpen}
         className="absolute top-12 left-0 w-full md:w-[300px]"
         open={open}>
-        <FilterSelect title="Category" handleChange={handleChange}>
+        <FilterSelect title="Category" handleChange={push}>
           {categories.map((ctg, i) => (
             <SelectItem key={ctg.id} value={ctg.name!}>
               <span className="capitalize">{ctg.name}</span>
             </SelectItem>
           ))}
         </FilterSelect>
-        <FilterSelect title="Color" handleChange={handleChange}>
+        <FilterSelect title="Color" handleChange={push}>
           {colors.map((color, i) => (
             <SelectItem key={color.id} value={color.name!}>
               <span className="capitalize">{color.name}</span>
             </SelectItem>
           ))}
         </FilterSelect>
-        <FilterSelect title="Size" handleChange={handleChange}>
+        <FilterSelect title="Size" handleChange={push}>
           {sizes.map((size, i) => (
             <SelectItem key={size.id} value={size.name!}>
               <span className="capitalize">{size.name}</span>

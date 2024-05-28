@@ -12,7 +12,7 @@ export default function PickSize({
   error: boolean
   cleanErrors: (key: 'color' | 'size') => void
 }) {
-  const { getState, push } = useUrlState('size')
+  const { getState, push } = useUrlState()
 
   return (
     <div className="flex items-center gap-2">
@@ -27,7 +27,7 @@ export default function PickSize({
               cleanErrors('size')
               push('size', size)
             }}
-            variant={getState() === size ? 'default' : 'outline'}>
+            variant={getState('size') === size ? 'default' : 'outline'}>
             {size}
           </Button>
         )

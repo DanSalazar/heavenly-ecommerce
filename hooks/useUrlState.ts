@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
-export default function useUrlState(key: string) {
+export default function useUrlState() {
   const params = useSearchParams()
   const { replace } = useRouter()
   const pathname = usePathname()
@@ -20,7 +20,14 @@ export default function useUrlState(key: string) {
     replace(pathname + '?' + newParams.toString())
   }
 
-  const getState = () => params.get(key)
+  const remove = (key: string) => {
+    const newParams = new URLSearchParams(params)
+    if (newParams.get(key)) newParams.delete(key)
 
-  return { getState, push }
+    replace(pathname + '?' + newParams.toString())
+  } 
+
+  const getState = (key: string) => params.get(key)
+
+  return { params, getState, push, remove }
 }
