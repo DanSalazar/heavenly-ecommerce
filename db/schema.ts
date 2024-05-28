@@ -69,6 +69,13 @@ type Size = typeof size.$inferInsert
 type Category = typeof category.$inferInsert
 type ProductType = typeof product_type.$inferInsert
 
+export type AllFiltersType = {
+  categories: Category[]
+  colors: Color[]
+  sizes: Size[]
+  productTypes?: ProductType[]
+}
+
 export const producty_type_relations = relations(product_type, ({ many }) => ({
   productVariations: many(productVariations)
 }))
@@ -76,10 +83,10 @@ export const producty_type_relations = relations(product_type, ({ many }) => ({
 export const productVariations = createTable('product_variations', {
   id: serial('id').primaryKey(),
   product_id: varchar('product_id'),
-  color_id: serial('color_id'),
-  size_id: serial('size_id'),
-  product_type_Id: serial('product_type_id'),
-  category_id: serial('category_id'),
+  color_id: integer('color_id'),
+  size_id: integer('size_id'),
+  product_type_Id: integer('product_type_id'),
+  category_id: integer('category_id'),
   stock: integer('stock')
 })
 
@@ -119,7 +126,7 @@ export type ProductVariantWithJoins = {
 
 export const bagItem = createTable('bag_item', {
   id: serial('id').primaryKey(),
-  item_id: serial('item_id').unique(),
+  item_id: integer('item_id').unique(),
   quantity: integer('quantity'),
   createdAt: date('createdAt').defaultNow(),
   expiresAt: date('expiresAt').default(
@@ -137,7 +144,7 @@ export const bagItemRelations = relations(bagItem, ({ one }) => ({
 export type Bag = typeof bagItem.$inferSelect
 export type BagWithProduct = Bag & {
   product_variant: {
-    id: number,
+    id: number
     product: Product | null
   }
 }

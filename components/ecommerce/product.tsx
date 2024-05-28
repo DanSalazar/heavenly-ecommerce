@@ -7,8 +7,10 @@ import Price from './price'
 import { usePathname } from 'next/navigation'
 import { Product } from '@/db/schema'
 
-export default function ProductComponent({ product }: { product: Product }) {
+export default function ProductComponent({ product }: { product: Product | null }) {
   const pathname = usePathname()
+
+  if (!product) return <></>
 
   return (
     <Link
