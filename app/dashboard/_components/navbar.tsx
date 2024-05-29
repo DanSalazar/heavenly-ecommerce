@@ -10,7 +10,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
-    <header className="border-b lg:border-r border-zinc-200 dark:border-zinc-700 flex lg:min-h-screen lg:w-1/6 p-4 lg:py-6">
+    <header className="border-b lg:border-r border-zinc-200 dark:border-zinc-700 flex lg:min-h-screen lg:w-[200px] p-4 lg:py-6">
       <div className="text-center flex-1 flex lg:flex-col gap-4">
         <Button
           onClick={() => setMobileOpen(true)}

@@ -1,6 +1,5 @@
 import Price from '@/components/ecommerce/price'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Badge } from '@/components/ui/badge'
 import {
   Table,
   TableBody,
@@ -9,26 +8,27 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-// import { getProducts } from '@/server/actions'
+import { getProducts } from '@/server/actions'
+import Header from './_components/header'
 
 const TableHeaderData = [
   'Product Name',
+  'Brand',
   'Department',
-  'Category',
-  'Sizes',
-  'Price'
+  'Price',
+  'Discount'
 ]
 
-export default async function Page() {
-  // const products = await getProducts()
+export default async function Page({
+  searchParams
+}: {
+  searchParams: unknown
+}) {
+  const products = await getProducts('', searchParams)
 
   return (
     <>
-      <div className="flex gap-2">
-        <Input />
-        <Button>Filters</Button>
-        <Button>Add Product</Button>
-      </div>
+      <Header />
       <Table>
         <TableHeader>
           <TableRow className="border-t">
@@ -37,23 +37,28 @@ export default async function Page() {
             ))}
           </TableRow>
         </TableHeader>
-        {/*  <TableBody>
-          {products.map((product, i) => (
-            <TableRow>
-              <TableCell className="">
-                <div className="w-[400px] font-medium truncate">
-                  {product.name}
-                </div>
-              </TableCell>
-              <TableCell className="capitalize">{product.department}</TableCell>
-              <TableCell>{product.category}</TableCell>
-              <TableCell className="">{product.sizes} </TableCell>
-              <TableCell>
-                <Price price={product.price} />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>*/}
+        <TableBody>
+          {!!products.length &&
+            products.map(({ product }, i) => (
+              <TableRow className="h-[60px]">
+                <TableCell className="">
+                  <div className="font-medium truncate">{product.name}</div>
+                </TableCell>
+                <TableCell>{product.brand}</TableCell>
+                <TableCell className="capitalize">
+                  {product.department}
+                </TableCell>
+                <TableCell>
+                  <Price price={product.price} />
+                </TableCell>
+                <TableCell>
+                  <Badge variant={'outline'}>
+                    {product.percentage_off || 0}%
+                  </Badge>
+                </TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
       </Table>
     </>
   )

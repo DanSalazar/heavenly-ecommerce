@@ -2,7 +2,6 @@
 
 import { db } from '@/db'
 import {
-  Product,
   bagItem,
   category,
   color,
@@ -25,43 +24,60 @@ const makeFiltersBySearchParams = (
   if (filters.category) conditions.push(eq(category.name, filters.category))
   if (filters.color) conditions.push(eq(color.name, filters.color))
   if (filters.size) conditions.push(eq(size.name, filters.size))
+  if (filters.department) {
+    const parsedDepartment = paramsResolver.parse(filters.department)
+    conditions.push(eq(product.department, parsedDepartment))
+  }
 
   return conditions
 }
 
-export const getProducts = async (deparment: string, searchParams: unknown) => {
+export const getProducts = async (department: string, searchParams: unknown) => {
   try {
     const parsedSearchParams = searchParamsSchema.parse(searchParams)
     const filtersByParams = makeFiltersBySearchParams(parsedSearchParams)
-    const parsedDepartment = paramsResolver.parse(deparment)
+    const parsedDepartment = department.length ? paramsResolver.parse(department) : ''
 
-    if (filtersByParams) {
+    if (filtersByParams.length) {
       const data = await db
-        .selectDistinctOn([category.name], {
+        .selectDistinctOn([product.id], {
           product: product,
           category: category.name,
           color: color.name,
           size: size.name
         })
         .from(productVariations)
-        .leftJoin(product, eq(productVariations.product_id, product.id))
-        .leftJoin(category, eq(productVariations.category_id, category.id))
-        .leftJoin(color, eq(productVariations.color_id, color.id))
-        .leftJoin(size, eq(productVariations.size_id, size.id))
+        .innerJoin(product, eq(productVariations.product_id, product.id))
+        .innerJoin(category, eq(productVariations.category_id, category.id))
+        .innerJoin(color, eq(productVariations.color_id, color.id))
+        .innerJoin(size, eq(productVariations.size_id, size.id))
         .where(
-          and(eq(product.department, parsedDepartment), ...filtersByParams)
+          parsedDepartment
+          ? and(eq(product.department, parsedDepartment), ...filtersByParams)
+          : and(...filtersByParams)
         )
+
+      return data
+    }
+
+    if (parsedDepartment) {
+      const data = await db
+      .selectDistinct({
+        product
+      })
+      .from(productVariations)
+      .innerJoin(product, eq(productVariations.product_id, product.id))
+      .where(eq(product.department, parsedDepartment))
 
       return data
     }
 
     const data = await db
       .selectDistinct({
-        product: product
+        product
       })
       .from(productVariations)
       .innerJoin(product, eq(productVariations.product_id, product.id))
-      .where(eq(product.department, parsedDepartment))
 
     return data
   } catch (err) {

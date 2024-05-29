@@ -2,6 +2,7 @@ import { ReactNode, ComponentPropsWithoutRef } from 'react'
 import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
 import { MarkIcon } from '../icons'
+import { Select, SelectContent, SelectTrigger, SelectValue } from '../ui/select'
 
 type FilterProps = ComponentPropsWithoutRef<'div'> & {
   children: ReactNode
@@ -29,6 +30,25 @@ const FilterChildren = ({
     </header>
     {children}
   </div>
+)
+
+export const SelectFilter = ({
+  title,
+  children,
+  handleChange
+}: {
+  title: string
+  children: React.ReactNode
+  handleChange: (title: string, value: string) => void
+}) => (
+  <FilterChildren title={title}>
+    <Select onValueChange={value => handleChange(title, value)}>
+      <SelectTrigger>
+        <SelectValue placeholder={title} />
+      </SelectTrigger>
+      <SelectContent>{children}</SelectContent>
+    </Select>
+  </FilterChildren>
 )
 
 function Filter({ className, children, onClose, open, ...props }: FilterProps) {
