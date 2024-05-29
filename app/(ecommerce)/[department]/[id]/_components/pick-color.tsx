@@ -24,7 +24,7 @@ export default function PickColor({
               key={color + i}
               type="button"
               onClick={() => {
-                cleanErrors('size')
+                cleanErrors('color')
                 push('color', color)
               }}
               variant={getState('color') === color ? 'default' : 'outline'}>
