@@ -138,7 +138,8 @@ export const getBag = async () => {
           product: true
         }
       }
-    }
+    },
+    orderBy: (bag, { asc }) => [asc(bag.created_at)]
   })
 
   return data

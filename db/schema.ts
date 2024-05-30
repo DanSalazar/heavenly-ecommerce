@@ -6,6 +6,7 @@ import {
   pgTableCreator,
   serial,
   text,
+  timestamp,
   varchar
 } from 'drizzle-orm/pg-core'
 
@@ -128,8 +129,8 @@ export const bagItem = createTable('bag_item', {
   id: serial('id').primaryKey(),
   item_id: integer('item_id').unique(),
   quantity: integer('quantity'),
-  createdAt: date('createdAt').defaultNow(),
-  expiresAt: date('expiresAt').default(
+  created_at: timestamp('created_at').defaultNow(),
+  expires_at: timestamp('expires_at').default(
     sql`current_timestamp + interval '24 hours'`
   )
 })
