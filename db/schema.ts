@@ -146,5 +146,5 @@ export type BagWithProduct = Bag & {
   product_variant: {
     id: number
     product: Product | null
-  }
+  } | null
 }

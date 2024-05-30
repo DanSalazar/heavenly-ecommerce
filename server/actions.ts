@@ -155,3 +155,15 @@ export const getFilters = async () => {
     sizes
   }
 }
+
+export const updateQuantityInBag = async (id: number, value: number) => {
+  await 
+    db.update(bagItem).set({ quantity: value }).where(eq(bagItem.id, id))
+
+  revalidatePath('/bag')
+}
+
+export const deleteFromBag = async (id: number) => {
+  await db.delete(bagItem).where(eq(bagItem.id,  id))
+  revalidatePath('/bag')
+}

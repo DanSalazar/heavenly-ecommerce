@@ -38,7 +38,9 @@ export const getDiscountPrice = (price: number, discount: number) => {
 
 export const reduceBagPrice = (bag: BagWithProduct[]) => {
   return bag.reduce((acc, bag_item) => {
+    if (!bag_item.product_variant) return acc + 0
     const { product_variant } = bag_item
+
     const price = product_variant.product ? product_variant.product.price : 0
     const quantity = Number(bag_item.quantity)
 

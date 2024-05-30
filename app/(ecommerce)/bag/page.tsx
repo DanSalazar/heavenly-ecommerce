@@ -46,6 +46,7 @@ export default async function Page() {
         </header>
         <div>
           {bag.map(bag_item => {
+            if (!bag_item.product_variant) return <></>
             const { product_variant } = bag_item
 
             if (!product_variant.product) return <></>
@@ -53,6 +54,8 @@ export default async function Page() {
             return (
               <ProductRow
                 key={product_variant.id}
+                id={bag_item.id}
+                quantity={bag_item.quantity!}
                 product={product_variant.product}
               />
             )
