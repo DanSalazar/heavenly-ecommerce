@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
 import { MarkIcon } from '../icons'
 import { Select, SelectContent, SelectTrigger, SelectValue } from '../ui/select'
+import { usePathname, useRouter } from 'next/navigation'
 
 type FilterProps = ComponentPropsWithoutRef<'div'> & {
   children: ReactNode
@@ -52,6 +53,9 @@ export const SelectFilter = ({
 )
 
 function Filter({ className, children, onClose, open, ...props }: FilterProps) {
+  const router = useRouter()
+  const pathname = usePathname()
+
   return (
     <div
       className={cn(
@@ -60,17 +64,22 @@ function Filter({ className, children, onClose, open, ...props }: FilterProps) {
         {
           'opacity-100 pointer-events-auto': open
         }
-      )}>
+      )}
+      {...props}>
       <header className="p-3 flex justify-between items-center border-b border-zinc-200 dark:border-zinc-800">
-        <h2 className="font-medium">Filter</h2>
+        <h2 className="font-medium">Filters</h2>
         <button onClick={onClose}>
           <MarkIcon />
         </button>
       </header>
       <div className={cn('p-3 flex flex-col gap-4')}>{children}</div>
       <footer className="flex justify-end gap-2 p-3 border-t border-zinc-200 dark:border-zinc-800">
-        <Button variant={'outline'}>Reset All</Button>
-        <Button>Apply Now</Button>
+        <Button
+          onClick={() => {
+            router.replace(pathname)
+          }}>
+          Reset All
+        </Button>
       </footer>
     </div>
   )

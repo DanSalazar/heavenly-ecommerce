@@ -7,25 +7,48 @@ export default function useUrlState() {
   const { replace } = useRouter()
   const pathname = usePathname()
 
+  const remove = (key: string, value?: string) => {
+    const newParams = new URLSearchParams(params)
+
+    const valueInParams = newParams.get(key)
+
+    if (!value && valueInParams) {
+      newParams.delete(key)
+    }
+
+    if (value && valueInParams) {
+      const stringWithouthValue =
+          valueInParams
+          .split(',')
+          .filter(val => val !== value)
+          .join(',') || ''
+          
+      if (stringWithouthValue === '') newParams.delete(key)
+      else newParams.set(key, stringWithouthValue)
+    }
+
+    replace(pathname + '?' + newParams.toString())
+  }
+
   const push = (key: string, value: string) => {
     const newParams = new URLSearchParams(params)
     const keyLower = key.toLowerCase()
     const valueLower = value.toLowerCase()
 
-    if (key) {
-      if (newParams.get(key) === value) newParams.delete(keyLower)
-      else newParams.set(keyLower, valueLower)
-    } else newParams.delete(value.toLowerCase())
+    const valueInParams = newParams.get(keyLower)
+
+    if (valueInParams) {
+      if (valueInParams.includes(valueLower)) {
+        remove(keyLower, value)
+        return
+      } else {
+        newParams.set(keyLower, valueInParams + ',' + valueLower)
+      }
+    } else newParams.set(keyLower, valueLower)
+  
 
     replace(pathname + '?' + newParams.toString())
   }
-
-  const remove = (key: string) => {
-    const newParams = new URLSearchParams(params)
-    if (newParams.get(key)) newParams.delete(key)
-
-    replace(pathname + '?' + newParams.toString())
-  } 
 
   const getState = (key: string) => params.get(key)
 

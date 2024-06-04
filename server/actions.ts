@@ -9,21 +9,58 @@ import {
   productVariations,
   size
 } from '@/db/schema'
-import { SQL, and, eq, sql } from 'drizzle-orm'
+import { SQL, and, eq, or, sql } from 'drizzle-orm'
+import { PgColumn } from 'drizzle-orm/pg-core'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 const paramsResolver = z.enum(['men', 'women'])
 const searchParamsSchema = z.record(z.string(), z.string())
 
+const addMultipleConditions = (column: PgColumn, string: string) => {
+  const sqlConditions: SQL[] = [];
+
+  for (const condition of string.split(',')) {
+    sqlConditions.push(eq(column, condition));
+  }
+
+  const sqlQuery = or(...sqlConditions)
+
+  return sqlQuery || sql.empty()
+}
+
 const makeFiltersBySearchParams = (
   filters: z.infer<typeof searchParamsSchema>
 ) => {
   const conditions: SQL[] = []
 
-  if (filters.category) conditions.push(eq(category.name, filters.category))
-  if (filters.color) conditions.push(eq(color.name, filters.color))
-  if (filters.size) conditions.push(eq(size.name, filters.size))
+  if (filters.category) {
+    if (filters.category.includes(',')) {
+      const multipleConditions = addMultipleConditions(category.name, filters.category)
+      conditions.push(multipleConditions)
+    } else {
+      conditions.push(eq(category.name, filters.category))
+    }
+  }
+  
+  if (filters.color) {
+    if (filters.color.includes(',')) {
+      const multipleConditions = addMultipleConditions(color.name, filters.color)
+      conditions.push(multipleConditions)
+    } else {
+      conditions.push(eq(color.name, filters.color))
+    }
+  }
+  
+  if (filters.size) {
+    if (filters.size.includes(',')) {
+      const multipleConditions = addMultipleConditions(size.name, filters.size)
+      conditions.push(multipleConditions)
+    } else {
+      conditions.push(eq(size.name, filters.size))
+    }
+  }
+  
   if (filters.department) {
     const parsedDepartment = paramsResolver.parse(filters.department)
     conditions.push(eq(product.department, parsedDepartment))
