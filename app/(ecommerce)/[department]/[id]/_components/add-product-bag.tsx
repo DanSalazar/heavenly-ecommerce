@@ -4,11 +4,10 @@ import { addProductInBag } from '@/server/actions'
 import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import ButtonAddBag from './button-add-bag'
-import { HeartIcon } from '@/components/icons'
-import { Button } from '@/components/ui/button'
 import PickColor from './pick-color'
 import PickSize from './pick-size'
 import { ProductVariantWithJoins } from '@/db/schema'
+import LikeButton from './like-button'
 
 export default function AddProductInBag({
   data
@@ -58,9 +57,9 @@ export default function AddProductInBag({
       <PickSize data={data} error={errors.size} cleanErrors={cleanErrors} />
       <div className="flex h-10 flex-wrap gap-2">
         <ButtonAddBag />
-        <Button className="h-full" type="button" variant={'outline'}>
-          <HeartIcon width={20} height={20} />
-        </Button>
+        {data[0].product && (
+          <LikeButton id={data[0].product.id /* ! */} />
+        )}
       </div>
       {(errors.size || errors.color) && (
         <div className="bg-red-50 p-4 rounded-md text-red-600 font-medium">

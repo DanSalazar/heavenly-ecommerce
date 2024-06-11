@@ -47,3 +47,34 @@ export const reduceBagPrice = (bag: BagWithProduct[]) => {
     return acc + quantity * price
   }, 0)
 }
+
+function getFromLocalStorage<T>(key: string): T | null {
+  const item = window.localStorage.getItem(key)
+  return item ? (JSON.parse(item) as T) : null
+}
+
+function setToLocalStorage<T>(key: string, value: T): void {
+  window.localStorage.setItem(key, JSON.stringify(value))
+}
+
+export const saveItemInLocal = (id: string) => {
+  const items = getFromLocalStorage<string[]>('items_saved') || []
+  const index = items?.findIndex(item_id => item_id === id)
+
+  if (typeof index === 'number' && index !== -1) {
+    items.splice(index, 1)
+  } else {
+    items.push(id)
+  }
+
+  setToLocalStorage<string[]>('items_saved', items)
+}
+
+export const getItemsFromLocal = (): string[] => {
+  return getFromLocalStorage<string[]>('items_saved') || []
+}
+
+export const isInFavorites = (id: string) => {
+  const favorites = getItemsFromLocal()
+  return Boolean(favorites.find(val => val === id))
+}

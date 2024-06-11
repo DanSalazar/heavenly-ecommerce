@@ -9,7 +9,7 @@ import {
   productVariations,
   size
 } from '@/db/schema'
-import { SQL, and, eq, or, sql } from 'drizzle-orm'
+import { SQL, and, eq, inArray, or, sql } from 'drizzle-orm'
 import { PgColumn } from 'drizzle-orm/pg-core'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
@@ -204,4 +204,11 @@ export const updateQuantityInBag = async (id: number, value: number) => {
 export const deleteFromBag = async (id: number) => {
   await db.delete(bagItem).where(eq(bagItem.id,  id))
   revalidatePath('/bag')
+}
+
+export const getFavorites = async (ids: string[]): Promise<Product[] | []> => {
+  if (!ids.length) return []
+
+  const data = await db.select().from(product).where(inArray(product.id, ids))
+  return data
 }
