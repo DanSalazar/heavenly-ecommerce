@@ -172,7 +172,9 @@ export const getBag = async () => {
           id: true
         },
         with: {
-          product: true
+          product: true,
+          size: true,
+          color: true
         }
       }
     },

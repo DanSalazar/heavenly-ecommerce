@@ -11,21 +11,7 @@ import { getBag } from '@/server/actions'
 import BagEmpty from '../_components/bag-empty'
 import ProductRow from '@/components/shopping-bag/product-row'
 import { reduceBagPrice } from '@/utils'
-
-type SumProps = {
-  description: string
-  price: number
-  discount?: boolean
-}
-
-function Sum({ description, price }: SumProps) {
-  return (
-    <div className="flex py-2 justify-between">
-      <p className="capitalize">{description}</p>
-      <Price price={price} />
-    </div>
-  )
-}
+import { OrderSummary } from '@/components/shopping-bag/order-summary'
 
 export default async function Page() {
   const bag = await getBag()
@@ -65,8 +51,8 @@ export default async function Page() {
       <div className="flex flex-col gap-4">
         <h2 className="text-4xl font-semibold break-words">Summary</h2>
         <div className="border-b border-zinc-200 pb-4">
-          <Sum description="Articles" price={total} />
-          <Sum description="Shipping" price={SHIPPING_PRICE} />
+          <OrderSummary description="Articles" price={total} />
+          <OrderSummary description="Shipping" price={SHIPPING_PRICE} />
         </div>
         <div className="flex py-2 justify-between">
           <p className="font-medium capitalize text-xl">Total</p>

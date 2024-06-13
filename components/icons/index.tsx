@@ -436,3 +436,22 @@ export const ListIcon = (props: IconComponent) => (
       strokeLinejoin="round"></path>
   </svg>
 )
+
+export const CheckIcon = (props: IconComponent) => (
+  <svg
+    width="18px"
+    height="18px"
+    strokeWidth="2"
+    {...props}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    color="currentColor">
+    <path
+      d="M5 13L9 17L19 7"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"></path>
+  </svg>
+)
