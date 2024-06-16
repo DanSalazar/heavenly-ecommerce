@@ -1,8 +1,8 @@
 import { relations, sql } from 'drizzle-orm'
 import {
   boolean,
-  date,
   integer,
+  pgEnum,
   pgTableCreator,
   serial,
   text,
@@ -119,10 +119,11 @@ export const productVariationsRelations = relations(
 
 export type ProductVariantWithJoins = {
   id: number
-  product: Product | null
-  color: Color
-  category: Category
-  size: Size
+  product?: Product | null
+  color?: Color | null
+  category?: Category | null
+  size?: Size | null
+  product_type?: ProductType | null
 }
 
 export const bagItem = createTable('bag_item', {
@@ -149,3 +150,26 @@ export type BagWithProduct = Bag & {
     product: Product | null
   } | null
 }
+
+const orderStatusEnum = pgEnum('order_status', [
+  'pending',
+  'shipped',
+  'delivered',
+  'canceled'
+])
+
+export const order = createTable('order', {
+  id: serial('id'),
+  order_date: timestamp('order_date').defaultNow(),
+  shipping_address: varchar('shipping_address', { length: 255 }).notNull(),
+  billing_address: varchar('billing_address', { length: 255 }).notNull(),
+  order_status: orderStatusEnum('order_status').notNull(),
+  payment_method: varchar('payment_method', { length: 255 }).notNull(),
+  total_amount: integer('total_amount').notNull(),
+  shipping_cost: integer('shipping_cost'),
+  discounts: integer('discounts'),
+  tax: integer('tax'),
+  order_notes: text('order_notes')
+})
+
+export type OrderType = typeof order.$inferSelect

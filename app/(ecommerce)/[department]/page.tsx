@@ -1,4 +1,5 @@
 import ProductComponent from '@/components/ecommerce/product'
+import ProductsWrapper from '@/components/ecommerce/products-wrapper'
 import FilterProducts from '@/components/filter/filter-products'
 import { getFilters, getProducts } from '@/server/actions'
 
@@ -25,11 +26,11 @@ export default async function Page({
         {params.department}
       </h2>
       <FilterProducts filters={filters} />
-      <div className="flex flex-wrap gap-4 border-t py-4 border-zinc-200">
+      <ProductsWrapper>
         {data.map(item => (
-          <ProductComponent product={item.product} />
+          <ProductComponent key={item.product.id} product={item.product} />
         ))}
-      </div>
+      </ProductsWrapper>
     </main>
   )
 }

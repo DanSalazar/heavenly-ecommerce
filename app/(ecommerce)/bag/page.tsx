@@ -51,8 +51,8 @@ export default async function Page() {
       <div className="flex flex-col gap-4">
         <h2 className="text-4xl font-semibold break-words">Summary</h2>
         <div className="border-b border-zinc-200 pb-4">
-          <OrderSummary description="Articles" price={total} />
-          <OrderSummary description="Shipping" price={SHIPPING_PRICE} />
+          <OrderSummary title="Articles" price={total} />
+          <OrderSummary title="Shipping" price={SHIPPING_PRICE} />
         </div>
         <div className="flex py-2 justify-between">
           <p className="font-medium capitalize text-xl">Total</p>

@@ -8,7 +8,13 @@ import {
   SelectValue
 } from '../ui/select'
 
-export function QuantitySelector({ quantity, handleChange }: { quantity: number, handleChange: (value: number) => void }) {
+export function QuantitySelector({
+  quantity,
+  handleChange
+}: {
+  quantity: number
+  handleChange: (value: number) => void
+}) {
   return (
     <div className="flex gap-2 items-center">
       <p className="font-medium">Qty:</p>

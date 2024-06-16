@@ -14,7 +14,7 @@ export default function PickColor({
 }) {
   const { getState, push } = useUrlState()
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       <p className={cn('font-medium', { 'text-red-500': error })}>Color:</p>
       {[...new Set(data.map(({ color }) => color?.name || ''))].map(
         (color, i) => {
@@ -27,7 +27,9 @@ export default function PickColor({
                 cleanErrors('color')
                 push('color', color)
               }}
-              variant={getState('color') === color ? 'default' : 'outline'}>
+              variant={
+                getState('color')?.includes(color) ? 'default' : 'outline'
+              }>
               {color}
             </Button>
           )

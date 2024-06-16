@@ -15,7 +15,7 @@ export default function PickSize({
   const { getState, push } = useUrlState()
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       <p className={cn('font-medium', { 'text-red-500': error })}>Size:</p>
       {[...new Set(data.map(({ size }) => size?.name || ''))].map((size, i) => {
         if (!size.length) return <></>
@@ -27,7 +27,7 @@ export default function PickSize({
               cleanErrors('size')
               push('size', size)
             }}
-            variant={getState('size') === size ? 'default' : 'outline'}>
+            variant={getState('size')?.includes(size) ? 'default' : 'outline'}>
             {size}
           </Button>
         )

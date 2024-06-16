@@ -11,7 +11,7 @@ export default function Step({
   return (
     <div className="relative flex flex-wrap justify-between">
       {steps.map((stepName, i) => (
-        <div className="z-10 flex flex-col gap-2">
+        <div key={stepName + i} className="z-10 flex flex-col gap-2">
           <div
             className={cn(
               'w-5 h-5 flex self-center items-center justify-center bg-zinc-50 border border-zinc-400 rounded-full',

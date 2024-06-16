@@ -3,7 +3,7 @@
 import { createContext, useContext, useState } from 'react'
 
 const ThemeContext = createContext<{
-  isDarkTheme: boolean,
+  isDarkTheme: boolean
   toggleTheme: () => void
 } | null>(null)
 

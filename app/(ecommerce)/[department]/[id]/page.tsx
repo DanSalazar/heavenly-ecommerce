@@ -1,6 +1,5 @@
 import Price from '@/components/ecommerce/price'
 import ProductImagesContainer from '@/components/ecommerce/product-images-container'
-import { marcellus } from '@/components/heavenly-icon'
 import { PackageIcon, TruckIcon } from '@/components/icons'
 import {
   Accordion,
@@ -10,6 +9,7 @@ import {
 } from '@/components/ui/accordion'
 import { getProductById } from '@/server/actions'
 import AddProductInBag from './_components/add-product-bag'
+import { marcellus } from '@/components/fonts'
 
 export default async function Page({ params }: { params: { id: string } }) {
   const data = await getProductById(params.id)
@@ -35,7 +35,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           adidas performance needs no introduction. The brand’s famous 3-Stripes
           can be seen on the track, field and in the latest streetwear trends.
         </p>
-        <AddProductInBag data={data} />
+        <AddProductInBag data={data} productId={product.id} />
         <div className="p-4 border border-zinc-200 rounded-md font-medium">
           <p className="flex gap-2 mb-4">
             <TruckIcon />

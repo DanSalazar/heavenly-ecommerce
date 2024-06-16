@@ -19,7 +19,7 @@ export default async function Summary() {
                 const { product } = product_variant
 
                 return (
-                  <div className="flex flex-col md:flex-row gap-4">
+                  <div key={bagItem.id} className="flex flex-col md:flex-row gap-4">
                     <Image
                       src={product.image!}
                       width={96}

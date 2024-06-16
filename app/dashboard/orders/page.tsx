@@ -3,7 +3,6 @@ import { Input } from '@/components/ui/input'
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow
@@ -30,7 +29,7 @@ export default function Page() {
         <TableHeader>
           <TableRow className="border-t">
             {TableHeaderData.map(h => (
-              <TableHead>{h}</TableHead>
+              <TableHead key={h}>{h}</TableHead>
             ))}
           </TableRow>
         </TableHeader>

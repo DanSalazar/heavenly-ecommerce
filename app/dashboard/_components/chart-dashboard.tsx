@@ -8,9 +8,7 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import dynamic from 'next/dynamic'
-import {
-  useThemeContext
-} from '@/components/providers/theme-provider'
+import { useThemeContext } from '@/components/providers/theme-provider'
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 

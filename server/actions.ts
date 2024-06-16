@@ -18,10 +18,10 @@ const paramsResolver = z.enum(['men', 'women'])
 const searchParamsSchema = z.record(z.string(), z.string())
 
 const addMultipleConditions = (column: PgColumn, string: string) => {
-  const sqlConditions: SQL[] = [];
+  const sqlConditions: SQL[] = []
 
   for (const condition of string.split(',')) {
-    sqlConditions.push(eq(column, condition));
+    sqlConditions.push(eq(column, condition))
   }
 
   const sqlQuery = or(...sqlConditions)
@@ -36,22 +36,28 @@ const makeFiltersBySearchParams = (
 
   if (filters.category) {
     if (filters.category.includes(',')) {
-      const multipleConditions = addMultipleConditions(category.name, filters.category)
+      const multipleConditions = addMultipleConditions(
+        category.name,
+        filters.category
+      )
       conditions.push(multipleConditions)
     } else {
       conditions.push(eq(category.name, filters.category))
     }
   }
-  
+
   if (filters.color) {
     if (filters.color.includes(',')) {
-      const multipleConditions = addMultipleConditions(color.name, filters.color)
+      const multipleConditions = addMultipleConditions(
+        color.name,
+        filters.color
+      )
       conditions.push(multipleConditions)
     } else {
       conditions.push(eq(color.name, filters.color))
     }
   }
-  
+
   if (filters.size) {
     if (filters.size.includes(',')) {
       const multipleConditions = addMultipleConditions(size.name, filters.size)
@@ -60,7 +66,7 @@ const makeFiltersBySearchParams = (
       conditions.push(eq(size.name, filters.size))
     }
   }
-  
+
   if (filters.department) {
     const parsedDepartment = paramsResolver.parse(filters.department)
     conditions.push(eq(product.department, parsedDepartment))
@@ -69,11 +75,16 @@ const makeFiltersBySearchParams = (
   return conditions
 }
 
-export const getProducts = async (department: string, searchParams: unknown) => {
+export const getProducts = async (
+  department: string,
+  searchParams: unknown
+) => {
   try {
     const parsedSearchParams = searchParamsSchema.parse(searchParams)
     const filtersByParams = makeFiltersBySearchParams(parsedSearchParams)
-    const parsedDepartment = department.length ? paramsResolver.parse(department) : ''
+    const parsedDepartment = department.length
+      ? paramsResolver.parse(department)
+      : ''
 
     if (filtersByParams.length) {
       const data = await db
@@ -90,8 +101,8 @@ export const getProducts = async (department: string, searchParams: unknown) => 
         .innerJoin(size, eq(productVariations.size_id, size.id))
         .where(
           parsedDepartment
-          ? and(eq(product.department, parsedDepartment), ...filtersByParams)
-          : and(...filtersByParams)
+            ? and(eq(product.department, parsedDepartment), ...filtersByParams)
+            : and(...filtersByParams)
         )
 
       return data
@@ -99,12 +110,12 @@ export const getProducts = async (department: string, searchParams: unknown) => 
 
     if (parsedDepartment) {
       const data = await db
-      .selectDistinct({
-        product
-      })
-      .from(productVariations)
-      .innerJoin(product, eq(productVariations.product_id, product.id))
-      .where(eq(product.department, parsedDepartment))
+        .selectDistinct({
+          product
+        })
+        .from(productVariations)
+        .innerJoin(product, eq(productVariations.product_id, product.id))
+        .where(eq(product.department, parsedDepartment))
 
       return data
     }
@@ -197,14 +208,13 @@ export const getFilters = async () => {
 }
 
 export const updateQuantityInBag = async (id: number, value: number) => {
-  await 
-    db.update(bagItem).set({ quantity: value }).where(eq(bagItem.id, id))
+  await db.update(bagItem).set({ quantity: value }).where(eq(bagItem.id, id))
 
   revalidatePath('/bag')
 }
 
 export const deleteFromBag = async (id: number) => {
-  await db.delete(bagItem).where(eq(bagItem.id,  id))
+  await db.delete(bagItem).where(eq(bagItem.id, id))
   revalidatePath('/bag')
 }
 

@@ -1,5 +1,3 @@
-'use client'
-
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 export default function useUrlState() {
@@ -18,11 +16,11 @@ export default function useUrlState() {
 
     if (value && valueInParams) {
       const stringWithouthValue =
-          valueInParams
+        valueInParams
           .split(',')
           .filter(val => val !== value)
           .join(',') || ''
-          
+
       if (stringWithouthValue === '') newParams.delete(key)
       else newParams.set(key, stringWithouthValue)
     }
@@ -45,7 +43,6 @@ export default function useUrlState() {
         newParams.set(keyLower, valueInParams + ',' + valueLower)
       }
     } else newParams.set(keyLower, valueLower)
-  
 
     replace(pathname + '?' + newParams.toString())
   }

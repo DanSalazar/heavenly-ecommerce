@@ -10,7 +10,15 @@ import { ChangeEvent, useState } from 'react'
 import { Button } from '../ui/button'
 import { deleteFromBag, updateQuantityInBag } from '@/server/actions'
 
-export default function ProductRow({ id, product, quantity }: { id: number, product: Product, quantity: number }) {
+export default function ProductRow({
+  id,
+  product,
+  quantity
+}: {
+  id: number
+  product: Product
+  quantity: number
+}) {
   const [quantityState, setQuantityState] = useState(quantity)
   const isUpdated = quantityState !== quantity
 
@@ -36,10 +44,15 @@ export default function ProductRow({ id, product, quantity }: { id: number, prod
         </Link>
         <span className="text-sm">Size: M</span>
         <Price className="mb-4" price={product.price} />
-        <QuantitySelector quantity={quantity} handleChange={handleQuantityChange}/>
+        <QuantitySelector
+          quantity={quantity}
+          handleChange={handleQuantityChange}
+        />
         {isUpdated && (
           <div className="z-50 fixed top-0 right-0 left-0 bottom-0 flex items-center justify-center">
-            <div role="status" className="opacity-90 p-4 rounded-md bg-zinc-600">
+            <div
+              role="status"
+              className="opacity-90 p-4 rounded-md bg-zinc-600">
               <svg
                 aria-hidden="true"
                 className="w-7 h-7 text-zinc-500 animate-spin fill-zinc-100"
@@ -60,9 +73,11 @@ export default function ProductRow({ id, product, quantity }: { id: number, prod
           </div>
         )}
       </div>
-      <button className="absolute right-2 bottom-2" onClick={async () => {
-        await deleteFromBag(id)
-      }}>
+      <button
+        className="absolute right-2 bottom-2"
+        onClick={async () => {
+          await deleteFromBag(id)
+        }}>
         <TrashIcon />
       </button>
     </div>

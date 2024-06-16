@@ -31,17 +31,22 @@ export default function NextJsImage({
   const cover = isImageSlide(slide) && isImageFitCover(slide, imageFit)
 
   if (!isNextJsImage(slide)) return undefined
+
   const width = !cover
     ? Math.round(
-        //@ts-ignore
-        Math.min(rect.width, (rect.height / slide.height || 0) * slide.width)
+        Math.min(
+          rect.width,
+          (rect.height / (slide.height ?? 1)) * (slide.width ?? 1)
+        )
       )
     : rect.width
 
   const height = !cover
     ? Math.round(
-        //@ts-ignore
-        Math.min(rect.height, (rect.width / slide.width) * slide.height)
+        Math.min(
+          rect.height,
+          (rect.width / (slide.width ?? 1)) * (slide.height ?? 1)
+        )
       )
     : rect.height
 

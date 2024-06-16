@@ -5,19 +5,17 @@ import { buttonVariants } from '@/components/ui/button'
 import { getFavorites } from '@/server/actions'
 import { getItemsFromLocal } from '@/utils'
 import Link from 'next/link'
+import ProductsWrapper from '@/components/ecommerce/products-wrapper'
 
 export default function Favorites() {
+  const ids = getItemsFromLocal()
   const {
     isPending,
     error,
     data: favProducts
   } = useQuery({
-    queryKey: ['favProducts'],
-    queryFn: async () => {
-      const ids = getItemsFromLocal()
-      const data = await getFavorites(ids)
-      return data
-    }
+    queryKey: ['favProducts', ids],
+    queryFn: async () => getFavorites(ids)
   })
 
   if (isPending) return <div>Loading...</div>
@@ -43,11 +41,11 @@ export default function Favorites() {
       <h2 className="text-7xl md:text-8xl font-medium uppercase break-words">
         Favorites
       </h2>
-      <div className="flex flex-wrap gap-4 border-t py-4 border-zinc-200">
+      <ProductsWrapper>
         {favProducts.map(product => (
           <ProductComponent key={product.id} product={product} />
         ))}
-      </div>
+      </ProductsWrapper>
     </main>
   )
 }

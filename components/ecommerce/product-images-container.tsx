@@ -1,7 +1,7 @@
 'use client'
+
 import useLightbox from '@/hooks/useLightbox'
 import Image from 'next/image'
-import { useState } from 'react'
 import NextJsImage from '../gallery/next-js-image'
 
 export default function ProductImagesContainer({
@@ -9,9 +9,8 @@ export default function ProductImagesContainer({
   alt
 }: {
   image: string
-  alt
+  alt: string
 }) {
-  const [open, setOpen] = useState(false)
   const { openLightbox, renderLightbox } = useLightbox()
 
   const slides = [{ src: image }, { src: image }, { src: image }]

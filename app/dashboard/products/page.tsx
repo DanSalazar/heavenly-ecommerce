@@ -33,14 +33,14 @@ export default async function Page({
         <TableHeader>
           <TableRow className="border-t">
             {TableHeaderData.map(h => (
-              <TableHead>{h}</TableHead>
+              <TableHead key={h}>{h}</TableHead>
             ))}
           </TableRow>
         </TableHeader>
         <TableBody>
           {!!products.length &&
             products.map(({ product }, i) => (
-              <TableRow className="h-[60px]">
+              <TableRow key={product.id} className="h-[60px]">
                 <TableCell className="">
                   <div className="font-medium truncate">{product.name}</div>
                 </TableCell>

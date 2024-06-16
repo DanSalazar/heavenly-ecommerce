@@ -1,7 +1,5 @@
-import { Marcellus } from 'next/font/google'
 import Link from 'next/link'
-
-export const marcellus = Marcellus({ subsets: ['latin'], weight: '400' })
+import { marcellus } from './fonts'
 
 export default function HeavenlyIcon() {
   return (

@@ -1,11 +1,9 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import '../globals.css'
 import Navbar from './_components/navbar'
 import Title from './_components/title'
 import Providers from '@/components/providers'
-
-const inter = Inter({ subsets: ['latin'] })
+import { mainFont } from '@/components/fonts'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -20,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body className={inter.className + ' flex flex-col lg:flex-row'}>
+        <body className={mainFont.className + ' flex flex-col lg:flex-row'}>
           <Navbar />
           <main className="background flex-1 flex flex-col gap-4 p-6">
             <Title />

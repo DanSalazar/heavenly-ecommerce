@@ -1,4 +1,3 @@
-import HeavenlyIcon from '@/components/heavenly-icon'
 import {
   HomeIcon,
   MarkIcon,

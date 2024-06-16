@@ -60,7 +60,9 @@ export default function ShoppingBag({ bag }: { bag: BagWithProduct[] }) {
       <footer className="flex px-4 pb-4">
         <Link
           href={'/bag'}
-          className={buttonVariants({ variant: 'outline' }) + ' border-primary flex-1'}>
+          className={
+            buttonVariants({ variant: 'outline' }) + ' border-primary flex-1'
+          }>
           View your bag
         </Link>
       </footer>

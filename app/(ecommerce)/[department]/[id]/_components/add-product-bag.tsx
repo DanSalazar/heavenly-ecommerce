@@ -10,9 +10,11 @@ import { ProductVariantWithJoins } from '@/db/schema'
 import LikeButton from './like-button'
 
 export default function AddProductInBag({
-  data
+  data,
+  productId
 }: {
   data: ProductVariantWithJoins[]
+  productId: string
 }) {
   const [errors, setErrors] = useState<{ color: boolean; size: boolean }>({
     color: false,
@@ -23,43 +25,36 @@ export default function AddProductInBag({
   const cleanErrors = (key: 'color' | 'size') =>
     setErrors({ ...errors, [key]: false })
 
+  const addProduct = async () => {
+    const url = new URLSearchParams(searchParams)
+    const color = url.get('color')
+    const size = url.get('size')
+
+    if (!color || !size) {
+      setErrors({
+        color: !color,
+        size: !size
+      })
+
+      return
+    }
+
+    const productVariant = data.find(
+      product => product.color?.name === color && product.size?.name === size
+    )
+
+    if (productVariant) {
+      await addProductInBag(productVariant.id)
+    }
+  }
+
   return (
-    <form
-      action={async () => {
-        const url = new URLSearchParams(searchParams)
-        const color = url.get('color')
-        const size = url.get('size')
-
-        if (!color && !size) {
-          setErrors({
-            color: true,
-            size: true
-          })
-          return
-        } else if (!color) {
-          setErrors({ ...errors, color: true })
-          return
-        } else if (!size) {
-          setErrors({ ...errors, size: true })
-          return
-        }
-
-        const productVariant = data.find(
-          product => product.color.name === color && product.size.name === size
-        )
-
-        if (productVariant) {
-          await addProductInBag(productVariant.id)
-        }
-      }}
-      className="flex flex-col gap-4">
+    <form action={addProduct} className="flex flex-col gap-4">
       <PickColor data={data} error={errors.color} cleanErrors={cleanErrors} />
       <PickSize data={data} error={errors.size} cleanErrors={cleanErrors} />
       <div className="flex h-10 flex-wrap gap-2">
         <ButtonAddBag />
-        {data[0].product && (
-          <LikeButton id={data[0].product.id /* ! */} />
-        )}
+        <LikeButton productId={productId} />
       </div>
       {(errors.size || errors.color) && (
         <div className="bg-red-50 p-4 rounded-md text-red-600 font-medium">
