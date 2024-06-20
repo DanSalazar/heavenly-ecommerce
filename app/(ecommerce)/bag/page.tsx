@@ -6,13 +6,13 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion'
-import { Button } from '@/components/ui/button'
 import { getBag } from '@/server/actions'
 import BagEmpty from '../_components/bag-empty'
 import ProductRow from '@/components/shopping-bag/product-row'
 import { reduceBagPrice } from '@/utils'
 import { OrderSummary } from '@/components/shopping-bag/order-summary'
 import { createSession } from '@/server/stripe'
+import { CheckoutButton } from './_components/checkout-button'
 
 export default async function Page() {
   const bag = await getBag()
@@ -60,9 +60,7 @@ export default async function Page() {
           <Price size={'lg'} variant={'black'} price={SHIPPING_PRICE + total} />
         </div>
         <form action={createSession}>
-          <Button type="submit" className="h-10">
-            Checkout
-          </Button>
+          <CheckoutButton />
         </form>
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
