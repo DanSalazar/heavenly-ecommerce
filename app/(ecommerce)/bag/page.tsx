@@ -12,6 +12,7 @@ import BagEmpty from '../_components/bag-empty'
 import ProductRow from '@/components/shopping-bag/product-row'
 import { reduceBagPrice } from '@/utils'
 import { OrderSummary } from '@/components/shopping-bag/order-summary'
+import { createSession } from '@/server/stripe'
 
 export default async function Page() {
   const bag = await getBag()
@@ -58,7 +59,11 @@ export default async function Page() {
           <p className="font-medium capitalize text-xl">Total</p>
           <Price size={'lg'} variant={'black'} price={SHIPPING_PRICE + total} />
         </div>
-        <Button className="h-10">Checkout</Button>
+        <form action={createSession}>
+          <Button type="submit" className="h-10">
+            Checkout
+          </Button>
+        </form>
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger>
