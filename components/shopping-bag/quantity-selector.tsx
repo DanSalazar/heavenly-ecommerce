@@ -28,7 +28,9 @@ export function QuantitySelector({
             {Array(10)
               .fill(null)
               .map((_, i) => (
-                <SelectItem value={`${i + 1}`}>{i + 1}</SelectItem>
+                <SelectItem key={i} value={`${i + 1}`}>
+                  {i + 1}
+                </SelectItem>
               ))}
           </SelectGroup>
         </SelectContent>

@@ -84,10 +84,10 @@ export const producty_type_relations = relations(product_type, ({ many }) => ({
 export const productVariations = createTable('product_variations', {
   id: serial('id').primaryKey(),
   product_id: varchar('product_id'),
-  color_id: integer('color_id'),
-  size_id: integer('size_id'),
-  product_type_Id: integer('product_type_id'),
-  category_id: integer('category_id'),
+  color_id: serial('color_id'),
+  size_id: serial('size_id'),
+  product_type_Id: serial('product_type_id'),
+  category_id: serial('category_id'),
   stock: integer('stock')
 })
 
@@ -128,7 +128,7 @@ export type ProductVariantWithJoins = {
 
 export const bagItem = createTable('bag_item', {
   id: serial('id').primaryKey(),
-  item_id: integer('item_id').unique(),
+  item_id: serial('item_id').unique(),
   quantity: integer('quantity'),
   created_at: timestamp('created_at').defaultNow(),
   expires_at: timestamp('expires_at').default(
@@ -151,25 +151,14 @@ export type BagWithProduct = Bag & {
   } | null
 }
 
-const orderStatusEnum = pgEnum('order_status', [
-  'pending',
-  'shipped',
-  'delivered',
-  'canceled'
-])
-
 export const order = createTable('order', {
   id: serial('id'),
-  order_date: timestamp('order_date').defaultNow(),
-  shipping_address: varchar('shipping_address', { length: 255 }).notNull(),
-  billing_address: varchar('billing_address', { length: 255 }).notNull(),
-  order_status: orderStatusEnum('order_status').notNull(),
+  order_created_at: varchar('order_created_at', { length: 27 }).notNull(),
+  customer_name: varchar('customer_name', { length: 255 }).notNull(),
+  customer_email: varchar('customer_email', { length: 255 }).notNull(),
+  order_status: varchar('order_status', { length: 50 }).notNull(),
   payment_method: varchar('payment_method', { length: 255 }).notNull(),
-  total_amount: integer('total_amount').notNull(),
-  shipping_cost: integer('shipping_cost'),
-  discounts: integer('discounts'),
-  tax: integer('tax'),
-  order_notes: text('order_notes')
+  total_amount: integer('total_amount').notNull()
 })
 
 export type OrderType = typeof order.$inferSelect

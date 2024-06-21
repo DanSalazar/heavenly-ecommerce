@@ -6,8 +6,7 @@ import { QuantitySelector } from './quantity-selector'
 import Image from 'next/image'
 import { TrashIcon } from '../icons'
 import { Product } from '@/db/schema'
-import { ChangeEvent, useState } from 'react'
-import { Button } from '../ui/button'
+import { useState } from 'react'
 import { deleteFromBag, updateQuantityInBag } from '@/server/actions'
 
 export default function ProductRow({

@@ -60,11 +60,10 @@ export const createSession = async () => {
     session = await stripe.checkout.sessions.create({
       success_url: 'http://localhost:3000/success',
       line_items: productsMap,
-      mode: 'payment',
-      billing_address_collection: 'required'
+      mode: 'payment'
     })
   } catch (error) {
-    return
+    return {}
   }
 
   if (session.url) redirect(session.url)

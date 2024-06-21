@@ -7,7 +7,7 @@ import { useFormStatus } from 'react-dom'
 export const CheckoutButton = () => {
   const { pending } = useFormStatus()
   return (
-    <Button type="submit" className="h-10 w-full">
+    <Button disabled={pending} type="submit" className="h-10 w-full">
       {pending ? (
         <SpinnerStatus srOnly="Processing checkout...">
           Processing...
