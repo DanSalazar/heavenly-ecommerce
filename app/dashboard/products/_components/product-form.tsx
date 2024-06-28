@@ -1,164 +1,227 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
+import { Form } from '@/components/ui/form'
+import { Button, buttonVariants } from '@/components/ui/button'
+import Link from 'next/link'
+import { ArrowLeftIcon } from '@radix-ui/react-icons'
+import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import z from 'zod'
-import { Checkbox } from '@/components/ui/checkbox'
+import {
+  ProductArchive,
+  ProductCategory,
+  ProductDepartment,
+  ProductDetailsForm,
+  ProductImage,
+  ProductVariantsForm
+} from './product-form-components'
 
-const formProductSchema = z.object({
-  name: z.string().min(5),
-  brand: z.string().optional(),
-  description: z.string().min(10).optional(),
-  price: z.coerce.number().min(1),
-  discount: z.boolean().optional(),
-  percentage_off: z.coerce.number().optional(),
-  image: z.string(),
-  color: z.string(),
-  sizes: z.string(),
-  department: z.enum(['Men', 'Women']),
-  category: z.string()
+import { MultiUploader } from './multi-uploader'
+import { useRef, useState } from 'react'
+import { useUploadThing } from '@/lib/uploadthing'
+import { Product, ProductVariants } from '@/db/schema'
+import { createProduct } from '@/server/actions'
+import { VariantFields } from '../new/page'
+
+export const formSchema = z.object({
+  name: z
+    .string({
+      required_error: 'Name is required'
+    })
+    .min(1),
+  brand: z
+    .string({
+      required_error: 'Brand is required'
+    })
+    .min(1),
+  description: z.string().optional(),
+  price: z.coerce
+    .number({
+      required_error: 'Price is required'
+    })
+    .min(1, {
+      message: 'Price must be greater than or equal to 1'
+    }),
+  variants: z
+    .array(
+      z.object({
+        stock: z.coerce.number().max(99),
+        color: z.string({ required_error: 'Color is required' }),
+        size: z.string({ required_error: 'Size is required' })
+      })
+    )
+    .min(1, {
+      message: 'You must add at least one variant'
+    }),
+  category: z.string({ required_error: 'Category is required' }),
+  department: z.enum(['men', 'women'], {
+    required_error: 'Department is required'
+  })
 })
 
-const stringKeys = [
-  'name',
-  'brand',
-  'description',
-  'image',
-  'color',
-  'sizes',
-  'category'
-] as const
-const numberKeys = ['price'] as const
+export type FormSchema = z.infer<typeof formSchema>
 
-const placeholders = {
-  name: 'Product name',
-  brand: 'Brand name',
-  description: 'Insert description here',
-  price: '0$',
-  discount: '',
-  percentage_off: '0%',
-  image: 'Add product image url',
-  color: 'Navy Blue',
-  sizes: 'S',
-  department: 'Men',
-  category: 'Shirt'
-}
-
-export default function ProductForm() {
-  const form = useForm<z.infer<typeof formProductSchema>>({
-    resolver: zodResolver(formProductSchema),
+export function ProductForm({
+  variantFields
+}: {
+  variantFields: VariantFields
+}) {
+  const form = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
       brand: '',
       description: '',
-      price: 0,
-      discount: false,
-      percentage_off: 0,
-      image: '',
-      color: '',
-      sizes: '',
-      department: 'Men',
-      category: ''
+      price: 0
     }
   })
+  const [progress, setProgress] = useState('')
+  const [generalError, setGeneralError] = useState('')
 
-  function onSubmit(values: z.infer<typeof formProductSchema>) {}
+  const [files, setFiles] = useState<File[]>([])
+  const [filesError, setFilesError] = useState('')
+  const uploadInputRef = useRef<HTMLButtonElement | null>(null)
+
+  const { startUpload, permittedFileInfo } = useUploadThing('imageUploader', {
+    onUploadError: e => {
+      setFilesError(e.message)
+      uploadInputRef.current?.focus()
+    },
+    onUploadProgress: p => setProgress(`Uploading images ${p}%`)
+  })
+
+  const addFiles = (files: File[]) => {
+    setFiles(prevFiles => [...prevFiles, ...files])
+  }
+
+  const handleSubmit = async (values: FormSchema) => {
+    setGeneralError('')
+    let urls: string[] | undefined
+
+    if (files.length) {
+      const data = await startUpload(files)
+      urls = data?.map(f => f.url)
+    } else {
+      setFilesError('You need to upload at least 1 image')
+      uploadInputRef.current?.focus()
+      return
+    }
+
+    setProgress('Saving product...')
+
+    const product_id = crypto.randomUUID()
+
+    const product: Product = {
+      id: product_id,
+      name: values.name,
+      brand: values.brand,
+      description: values.description as string,
+      price: values.price,
+      image: urls?.length ? urls[0] : '',
+      department: values.department,
+      discount: false,
+      percentage_off: 0
+    }
+
+    const variants: ProductVariants[] = values.variants.map(variant => ({
+      color_id: Number(variant.color),
+      size_id: Number(variant.size),
+      category_id: Number(values.category),
+      stock: variant.stock,
+      product_type_Id: 1,
+      product_id: product_id
+    }))
+
+    const err = await createProduct(product, variants)
+
+    if (err) {
+      setProgress('')
+      setGeneralError(err)
+    }
+  }
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="grid md:grid-cols-2 gap-2">
-        {stringKeys.map((item, i) => (
-          <FormField
-            control={form.control}
-            name={item}
-            key={item + i}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="capitalize">{field.name}</FormLabel>
-                <FormControl>
-                  <Input placeholder={placeholders[field.name]} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        ))}
-        {numberKeys.map((item, i) => (
-          <FormField
-            control={form.control}
-            name={item}
-            key={item + i}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="capitalize">{field.name}</FormLabel>
-                <FormControl>
-                  <Input placeholder={placeholders[field.name]} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        ))}
-        <FormField
-          control={form.control}
-          name="discount"
-          render={({ field }) => (
-            <FormItem className="flex items-center gap-2">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel>Set discount</FormLabel>
-                <FormDescription>
-                  This product are going to be in discount
-                </FormDescription>
+    <div className="flex min-h-screen flex-col">
+      <div className="flex flex-col sm:gap-4">
+        <main className="grid flex-1 items-start gap-4">
+          <Form {...form}>
+            <form
+              className="mx-auto grid flex-1 auto-rows-max gap-4"
+              onSubmit={form.handleSubmit(handleSubmit)}>
+              <div className="flex flex-wrap items-center gap-4">
+                <Link
+                  href={'/dashboard/products'}
+                  className={buttonVariants({
+                    variant: 'outline',
+                    size: 'icon'
+                  })}>
+                  <ArrowLeftIcon />
+                  <span className="sr-only">Back</span>
+                </Link>
+                <h1 className="flex-1 text-xl font-semibold tracking-tight">
+                  Create a new product
+                </h1>
+                <div className="hidden items-center gap-2 md:ml-auto md:flex">
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    disabled={!!progress}>
+                    Discard
+                  </Button>
+                  <Button type="submit" size="sm" disabled={!!progress}>
+                    {progress ? progress : 'Create Product'}
+                  </Button>
+                  {generalError && (
+                    <p className="text-red-500 text-sm font-medium">
+                      {generalError}
+                    </p>
+                  )}
+                </div>
               </div>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="percentage_off"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="capitalize">Discount Percentage</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  min={1}
-                  max={100}
-                  placeholder={placeholders[field.name]}
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                Discount percentage for this product
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="md:col-span-2 flex flex-wrap gap-2 mt-4">
-          <Button variant={'outline'}>Cancel</Button>
-          <Button type="submit">Submit</Button>
-        </div>
-      </form>
-    </Form>
+              <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
+                <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
+                  <ProductDetailsForm control={form.control} />
+                  <ProductVariantsForm
+                    error={form.formState.errors.variants?.message || ''}
+                    control={form.control}
+                    variantFields={variantFields}
+                  />
+                </div>
+                <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
+                  <ProductCategory
+                    categories={variantFields.categories}
+                    control={form.control}
+                  />
+                  <ProductDepartment control={form.control} />
+                  <ProductImage>
+                    <MultiUploader
+                      ref={uploadInputRef}
+                      files={files}
+                      addFiles={addFiles}
+                      permittedFileInfo={permittedFileInfo}
+                      error={filesError}
+                    />
+                  </ProductImage>
+                  <ProductArchive />
+                </div>
+              </div>
+              <div className="flex items-center justify-center flex-wrap gap-2 md:hidden">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={!!progress}>
+                  Discard
+                </Button>
+                <Button type="submit" size="sm" disabled={!!progress}>
+                  {progress ? progress : 'Create Product'}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </main>
+      </div>
+    </div>
   )
 }

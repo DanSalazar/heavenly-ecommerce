@@ -2,6 +2,8 @@
 
 import { db } from '@/db'
 import {
+  Product,
+  ProductVariants,
   bagItem,
   category,
   color,
@@ -12,6 +14,7 @@ import {
 import { SQL, and, eq, inArray, or, sql } from 'drizzle-orm'
 import { PgColumn } from 'drizzle-orm/pg-core'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
 const paramsResolver = z.enum(['men', 'women'])
@@ -223,4 +226,27 @@ export const getFavorites = async (ids: string[]): Promise<Product[] | []> => {
 
   const data = await db.select().from(product).where(inArray(product.id, ids))
   return data
+}
+
+export const getNewProductFields = async () => {
+  const categories = await db.query.category.findMany({})
+  const colors = await db.query.color.findMany({})
+  const size = await db.query.size.findMany({})
+
+  return { categories, colors, size }
+}
+
+export const createProduct = async (
+  p: Product,
+  variants: ProductVariants[]
+) => {
+  try {
+    await db.insert(product).values(p)
+    await db.insert(productVariations).values(variants)
+  } catch (error) {
+    return 'Error while creating product'
+  }
+
+  revalidatePath('/dashboard/products')
+  redirect('/dashboard/products')
 }

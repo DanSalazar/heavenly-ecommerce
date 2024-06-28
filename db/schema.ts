@@ -65,10 +65,10 @@ export const product_type = createTable('product_type', {
   name: varchar('name', { length: 20 })
 })
 
-type Color = typeof color.$inferSelect
-type Size = typeof size.$inferInsert
-type Category = typeof category.$inferInsert
-type ProductType = typeof product_type.$inferInsert
+export type Color = typeof color.$inferSelect
+export type Size = typeof size.$inferInsert
+export type Category = typeof category.$inferInsert
+export type ProductType = typeof product_type.$inferInsert
 
 export type AllFiltersType = {
   categories: Category[]
@@ -125,6 +125,8 @@ export type ProductVariantWithJoins = {
   size?: Size | null
   product_type?: ProductType | null
 }
+
+export type ProductVariants = typeof productVariations.$inferInsert
 
 export const bagItem = createTable('bag_item', {
   id: serial('id').primaryKey(),
