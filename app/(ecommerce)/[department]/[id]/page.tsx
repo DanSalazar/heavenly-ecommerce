@@ -31,10 +31,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           discount={product.discount}
           discount_percentage={product.percentage_off}
         />
-        <p>
-          adidas performance needs no introduction. The brand’s famous 3-Stripes
-          can be seen on the track, field and in the latest streetwear trends.
-        </p>
+        <p>{product.description}</p>
         <AddProductInBag data={data} productId={product.id} />
         <div className="p-4 border border-zinc-200 rounded-md font-medium">
           <p className="flex gap-2 mb-4">

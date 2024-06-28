@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
+import '@uploadthing/react/styles.css'
 import '../globals.css'
+
 import Navbar from './_components/navbar'
 import Title from './_components/title'
 import Providers from '@/components/providers'
@@ -20,7 +22,7 @@ export default function RootLayout({
       <Providers>
         <body className={mainFont.className + ' flex flex-col lg:flex-row'}>
           <Navbar />
-          <main className="background flex-1 flex flex-col gap-4 p-6">
+          <main className="bg-zinc-50 flex-1 flex flex-col gap-4 p-6">
             <Title />
             {children}
           </main>

@@ -21,6 +21,7 @@ export default function PickColor({
           if (!color.length) return <></>
           return (
             <Button
+              className="rounded-full"
               key={color + i}
               type="button"
               onClick={() => {

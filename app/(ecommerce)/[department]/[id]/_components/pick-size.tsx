@@ -21,6 +21,7 @@ export default function PickSize({
         if (!size.length) return <></>
         return (
           <Button
+            className="rounded-full"
             key={size + i}
             type="button"
             onClick={() => {
