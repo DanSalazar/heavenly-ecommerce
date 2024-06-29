@@ -12,7 +12,9 @@ export default async function Navbar() {
     <header className="relative z-10 h-16 border-b border-zinc-200 grid grid-cols-2 md:grid-cols-3">
       <Navigation />
       <div className="bg-white flex items-center md:justify-center">
-        <HeavenlyIcon />
+        <Link href={'/'}>
+          <HeavenlyIcon />
+        </Link>
       </div>
       <div className="self-stretch flex gap-4 justify-end items-center bg-white">
         <Link href={'/favorites'}>

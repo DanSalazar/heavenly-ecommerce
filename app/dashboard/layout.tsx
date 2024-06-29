@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body className={mainFont.className + ' flex flex-col lg:flex-row'}>
+        <body className={mainFont.className + ' flex flex-col'}>
           <Navbar />
           <main className="bg-zinc-50 flex-1 flex flex-col gap-4 p-6">
             <Title />

@@ -455,3 +455,90 @@ export const CheckIcon = (props: IconComponent) => (
       strokeLinejoin="round"></path>
   </svg>
 )
+
+export const CircleUserIcon = (props: IconComponent) => (
+  <svg
+    width="20px"
+    height="20px"
+    strokeWidth="2"
+    {...props}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    color="currentColor">
+    <path
+      d="M7 18V17C7 14.2386 9.23858 12 12 12V12C14.7614 12 17 14.2386 17 17V18"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"></path>
+    <path
+      d="M12 12C13.6569 12 15 10.6569 15 9C15 7.34315 13.6569 6 12 6C10.3431 6 9 7.34315 9 9C9 10.6569 10.3431 12 12 12Z"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"></path>
+    <circle
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeWidth="1.5"></circle>
+  </svg>
+)
+
+export const MenuIcon = (props: IconComponent) => (
+  <svg
+    width="20px"
+    height="20px"
+    strokeWidth="2"
+    {...props}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    color="currentColor">
+    <path
+      d="M3 5H21"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"></path>
+    <path
+      d="M3 12H21"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"></path>
+    <path
+      d="M3 19H21"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"></path>
+  </svg>
+)
+
+export const SearchIcon = (props: IconComponent) => (
+  <svg
+    width="20px"
+    height="20px"
+    viewBox="0 0 24 24"
+    strokeWidth="2"
+    {...props}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    color="currentColor">
+    <path
+      d="M17 17L21 21"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"></path>
+    <path
+      d="M3 11C3 15.4183 6.58172 19 11 19C13.213 19 15.2161 18.1015 16.6644 16.6493C18.1077 15.2022 19 13.2053 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11Z"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"></path>
+  </svg>
+)
