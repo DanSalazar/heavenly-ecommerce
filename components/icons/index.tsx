@@ -2,7 +2,7 @@ import { SVGProps } from 'react'
 
 type IconComponent = SVGProps<SVGSVGElement>
 
-export const HeartIcon = ({ ...props }: IconComponent) => (
+export const HeartIcon = (props: IconComponent) => (
   <svg
     width="24px"
     height="24px"
@@ -20,7 +20,7 @@ export const HeartIcon = ({ ...props }: IconComponent) => (
   </svg>
 )
 
-export const HeartIconSolid = ({ ...props }: IconComponent) => (
+export const HeartIconSolid = (props: IconComponent) => (
   <svg
     width="18px"
     height="18px"
@@ -38,7 +38,7 @@ export const HeartIconSolid = ({ ...props }: IconComponent) => (
   </svg>
 )
 
-export const ShoppingBagIcon = ({ ...props }: IconComponent) => (
+export const ShoppingBagIcon = (props: IconComponent) => (
   <svg
     width="24px"
     height="24px"
@@ -75,7 +75,7 @@ export const ShoppingBagIcon = ({ ...props }: IconComponent) => (
   </svg>
 )
 
-export const TrashIcon = ({ ...props }: IconComponent) => (
+export const TrashIcon = (props: IconComponent) => (
   <svg
     width="20px"
     height="20px"
@@ -100,7 +100,7 @@ export const TrashIcon = ({ ...props }: IconComponent) => (
   </svg>
 )
 
-export const MinusIcon = ({ ...props }: IconComponent) => (
+export const MinusIcon = (props: IconComponent) => (
   <svg
     width="20px"
     height="20px"
@@ -119,7 +119,7 @@ export const MinusIcon = ({ ...props }: IconComponent) => (
   </svg>
 )
 
-export const PlusIcon = ({ ...props }: IconComponent) => (
+export const PlusIcon = (props: IconComponent) => (
   <svg
     width="16px"
     height="16px"
@@ -138,7 +138,7 @@ export const PlusIcon = ({ ...props }: IconComponent) => (
   </svg>
 )
 
-export const TruckIcon = ({ ...props }: IconComponent) => (
+export const TruckIcon = (props: IconComponent) => (
   <svg
     width="20px"
     height="20px"
@@ -191,7 +191,7 @@ export const TruckIcon = ({ ...props }: IconComponent) => (
   </svg>
 )
 
-export const MarkIcon = ({ ...props }: IconComponent) => (
+export const MarkIcon = (props: IconComponent) => (
   <svg
     width="16px"
     height="16px"
@@ -209,7 +209,7 @@ export const MarkIcon = ({ ...props }: IconComponent) => (
   </svg>
 )
 
-export const ArrowRight = ({ ...props }: IconComponent) => (
+export const ArrowRight = (props: IconComponent) => (
   <svg
     width="20px"
     height="20px"
@@ -228,7 +228,7 @@ export const ArrowRight = ({ ...props }: IconComponent) => (
   </svg>
 )
 
-export const PackageIcon = ({ ...props }: IconComponent) => (
+export const PackageIcon = (props: IconComponent) => (
   <svg
     width="20px"
     height="20px"
@@ -253,7 +253,7 @@ export const PackageIcon = ({ ...props }: IconComponent) => (
   </svg>
 )
 
-export const HomeIcon = ({ ...props }: IconComponent) => (
+export const HomeIcon = (props: IconComponent) => (
   <svg
     width="20px"
     height="20px"
@@ -277,7 +277,7 @@ export const HomeIcon = ({ ...props }: IconComponent) => (
   </svg>
 )
 
-export const SettingsIcon = ({ ...props }: IconComponent) => (
+export const SettingsIcon = (props: IconComponent) => (
   <svg
     width="20px"
     height="20px"
@@ -540,5 +540,86 @@ export const SearchIcon = (props: IconComponent) => (
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"></path>
+  </svg>
+)
+
+export const MoreHorizontalIcon = (props: IconComponent) => (
+  <svg
+    width="18px"
+    height="18px"
+    viewBox="0 0 24 24"
+    strokeWidth="2"
+    {...props}
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    color="currentColor">
+    <path
+      d="M20 12.5C20.2761 12.5 20.5 12.2761 20.5 12C20.5 11.7239 20.2761 11.5 20 11.5C19.7239 11.5 19.5 11.7239 19.5 12C19.5 12.2761 19.7239 12.5 20 12.5Z"
+      fill="currentColor"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"></path>
+    <path
+      d="M12 12.5C12.2761 12.5 12.5 12.2761 12.5 12C12.5 11.7239 12.2761 11.5 12 11.5C11.7239 11.5 11.5 11.7239 11.5 12C11.5 12.2761 11.7239 12.5 12 12.5Z"
+      fill="currentColor"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"></path>
+    <path
+      d="M4 12.5C4.27614 12.5 4.5 12.2761 4.5 12C4.5 11.7239 4.27614 11.5 4 11.5C3.72386 11.5 3.5 11.7239 3.5 12C3.5 12.2761 3.72386 12.5 4 12.5Z"
+      fill="currentColor"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"></path>
+  </svg>
+)
+
+export const ListFilterIcon = (props: IconComponent) => (
+  <svg
+    width="16px"
+    height="16px"
+    viewBox="0 0 24 24"
+    fill="none"
+    {...props}
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round">
+    <line x1="4" y1="21" x2="4" y2="14"></line>
+    <line x1="4" y1="10" x2="4" y2="3"></line>
+    <line x1="12" y1="21" x2="12" y2="12"></line>
+    <line x1="12" y1="8" x2="12" y2="3"></line>
+    <line x1="20" y1="21" x2="20" y2="16"></line>
+    <line x1="20" y1="12" x2="20" y2="3"></line>
+    <line x1="1" y1="14" x2="7" y2="14"></line>
+    <line x1="9" y1="8" x2="15" y2="8"></line>
+    <line x1="17" y1="16" x2="23" y2="16"></line>
+  </svg>
+)
+
+export const PlusCircleIcon = (props: IconComponent) => (
+  <svg
+    width="18px"
+    height="18px"
+    stroke-width="1.5"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    color="currentColor">
+    <path
+      d="M8 12H12M16 12H12M12 12V8M12 12V16"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
+    <path
+      d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
   </svg>
 )
