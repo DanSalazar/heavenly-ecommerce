@@ -13,6 +13,7 @@ import { reduceBagPrice } from '@/utils'
 import { OrderSummary } from '@/components/shopping-bag/order-summary'
 import { createSession } from '@/server/stripe'
 import { CheckoutButton } from './_components/checkout-button'
+import Paypal from './_components/paypal'
 
 export default async function Page() {
   const bag = await getBag()
@@ -62,6 +63,7 @@ export default async function Page() {
         <form action={createSession}>
           <CheckoutButton />
         </form>
+        <Paypal />
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger>
