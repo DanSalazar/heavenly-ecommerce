@@ -31,39 +31,34 @@ export default function ShoppingBag({ bag }: { bag: BagWithProduct[] }) {
   return (
     <div
       className={cn(
-        '-z-10 bg-white w-[300px] md:w-[350px] flex flex-col absolute right-0 top-0 -translate-y-[400px] group-hover:translate-y-16 transition-transform ease-in-out duration-700 border-b border-r border-l border-zinc-200',
+        'p-4 -z-10 bg-white w-[300px] md:w-[350px] flex flex-col gap-4 absolute right-0 top-0 -translate-y-[400px] group-hover:translate-y-[52px] transition-transform ease-in-out duration-700 border-b border-r border-l border-zinc-200',
         {
-          'translate-y-16': open
+          'translate-y-[52px]': open
         }
       )}>
-      <header className="p-4 flex justify-between">
-        <p className="font-semibold uppercase">Your Bag</p>
-        <span className="py-1 px-2.5 bg-black font-semibold text-white text-sm rounded-md">
-          {bag.length}
-        </span>
+      <header>
+        <p className="font-semibold uppercase text-center">
+          Your Bag, {bag.length}
+        </p>
       </header>
-      <div className="flex max-h-[220px] scrollbar scrollbar-rounded scrollbar-thin scrollbar-thumb-zinc-300 scrollbar-track-zinc-50 overflow-y-auto flex-col gap-4 px-4">
+      <div className="flex max-h-[240px] scrollbar scrollbar-rounded scrollbar-thin scrollbar-thumb-zinc-300 scrollbar-track-zinc-50 overflow-y-auto flex-col gap-4 pr-2">
         {bag.map(bag_item => {
           return <ProductBag key={bag_item.id} bagItem={bag_item} />
         })}
       </div>
-      <div className="flex flex-col gap-1 p-4">
+      <div className="flex flex-col gap-1">
         <div className="flex justify-between">
-          <p className="font-medium text-sm">Shipping:</p>
+          <p className="font-medium">Shipping</p>
           <Price price={0.0} />
         </div>
         <div className="flex justify-between">
-          <p className="font-medium text-sm">Total:</p>
-          <Price price={total} size={'lg'} variant={'black'} />
+          <p className="font-semibold">Total</p>
+          <Price price={total} variant={'black'} />
         </div>
       </div>
-      <footer className="flex px-4 pb-4">
-        <Link
-          href={'/bag'}
-          className={
-            buttonVariants({ variant: 'outline' }) + ' border-primary flex-1'
-          }>
-          View your bag
+      <footer>
+        <Link href={'/bag'} className={buttonVariants() + ' h-[42px] w-full '}>
+          View bag
         </Link>
       </footer>
     </div>

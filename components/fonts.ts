@@ -1,7 +1,7 @@
-import { Marcellus, Poppins } from 'next/font/google'
+import { Marcellus, Roboto } from 'next/font/google'
 
-export const mainFont = Poppins({
+export const mainFont = Roboto({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700']
+  weight: ['400', '500', '700']
 })
 export const marcellus = Marcellus({ subsets: ['latin'], weight: '400' })

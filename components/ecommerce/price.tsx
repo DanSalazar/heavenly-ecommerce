@@ -5,8 +5,8 @@ import { formattedPrice, getDiscountPrice } from '@/utils'
 const priceStyles = cva('font-medium', {
   variants: {
     variant: {
-      default: 'text-zinc-600 dark:text-zinc-100',
-      black: 'text-primary'
+      default: 'text-zinc-700 dark:text-zinc-100',
+      black: 'text-primary font-semibold'
     },
     size: {
       default: 'text-base',
