@@ -1,6 +1,7 @@
 import ProductComponent from '@/components/ecommerce/product'
 import ProductsWrapper from '@/components/ecommerce/products-wrapper'
 import FilterProducts from '@/components/filter/filter-products'
+import BreadcrumbWrapper from '@/components/ui/breadcrumb-wrapper'
 import { getFilters, getProducts } from '@/server/actions'
 
 export default async function Page({
@@ -21,16 +22,19 @@ export default async function Page({
     )
 
   return (
-    <main className="flex flex-col gap-4 mt-12">
-      <h2 className="text-7xl md:text-8xl font-medium uppercase break-words">
-        {params.department}
-      </h2>
-      <FilterProducts filters={filters} />
-      <ProductsWrapper>
-        {data.map(item => (
-          <ProductComponent key={item.product.id} product={item.product} />
-        ))}
-      </ProductsWrapper>
-    </main>
+    <>
+      <BreadcrumbWrapper />
+      <main className="flex flex-col gap-4 mt-12">
+        <h2 className="text-7xl md:text-8xl font-medium uppercase break-words">
+          {params.department}
+        </h2>
+        <FilterProducts filters={filters} />
+        <ProductsWrapper>
+          {data.map(item => (
+            <ProductComponent key={item.product.id} product={item.product} />
+          ))}
+        </ProductsWrapper>
+      </main>
+    </>
   )
 }

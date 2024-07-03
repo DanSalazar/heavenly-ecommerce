@@ -1,22 +1,22 @@
 import { BagWithProduct } from '@/db/schema'
 
-export type BreadcumbPath = {
-  name: string
+type BreadcrumbType = {
   href: string
+  title: string
 }
 
-export const createPathObject = (pathname: string): BreadcumbPath[] => {
+export const createPathObject = (pathname: string): BreadcrumbType[] => {
   const paths = pathname.split('/')
   const result = []
   let href = ''
 
   for (let item of paths) {
     if (item === '') {
-      result.push({ name: 'home', href: '/' })
+      result.push({ title: 'home', href: '/' })
       continue
     }
     href += `/${item}`
-    result.push({ name: item, href })
+    result.push({ title: item, href })
   }
 
   return result
