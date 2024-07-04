@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/card'
 import dynamic from 'next/dynamic'
 import { useThemeContext } from '@/components/providers/theme-provider'
+import { OrderType } from '@/db/schema'
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
@@ -41,6 +42,9 @@ const chartConfig = {
         }
       },
       categories: [
+        'Jan',
+        'Feb',
+        'Mar',
         'Apr',
         'May',
         'Jun',
@@ -82,27 +86,35 @@ const chartConfig = {
     tooltip: {
       theme: 'dark'
     }
-  },
-  series: [
-    {
-      name: 'Sales',
-      data: [50, 40, 300, 320, 500, 350, 200, 230, 500]
-    }
-  ]
+  }
 }
 
-export default function ChartDashboard() {
+function calculateMonthlyRevenue(orders: OrderType[]) {
+  const monthlyRevenue = new Array(12).fill(0)
+
+  for (const order of orders) {
+    const dateParts = order.order_created_at.split('-')
+    const month = parseInt(dateParts[1]) - 1
+
+    monthlyRevenue[month] += order.total_amount / 100
+  }
+
+  return monthlyRevenue
+}
+
+export default function ChartDashboard({ data }: { data: OrderType[] }) {
+  const monthlyRevenue = calculateMonthlyRevenue(data)
   const theme = useThemeContext()
 
   return (
-    <Card className="h-[580px]">
+    <Card className="hidden md:block">
       <CardHeader className="pb-2">
-        <CardTitle className="text-2xl">Sales</CardTitle>
+        <CardTitle className="text-3xl">Sales</CardTitle>
         <CardDescription>Sales by month</CardDescription>
       </CardHeader>
       <CardContent>
         <Chart
-          type="line"
+          type="bar"
           options={{
             ...chartConfig.options,
             colors: [theme?.isDarkTheme ? '#ecf0f1' : '#020617'],
@@ -111,7 +123,12 @@ export default function ChartDashboard() {
               curve: 'smooth'
             }
           }}
-          series={[...chartConfig.series]}
+          series={[
+            {
+              name: 'Sales',
+              data: monthlyRevenue
+            }
+          ]}
           height={450}
           width={'100%'}
         />
