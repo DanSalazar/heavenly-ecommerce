@@ -10,6 +10,7 @@ export default function Paypal() {
         clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!
       }}>
       <PayPalButtons
+        className="z-0"
         style={{
           layout: 'horizontal',
           label: 'pay'

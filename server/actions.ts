@@ -216,9 +216,10 @@ export const updateQuantityInBag = async (id: number, value: number) => {
   revalidatePath('/bag')
 }
 
-export const deleteFromBag = async (id: number) => {
+export const deleteItemFromBag = async (id: number) => {
   await db.delete(bagItem).where(eq(bagItem.id, id))
-  revalidatePath('/bag')
+  revalidatePath('/')
+  return true
 }
 
 export const getFavorites = async (ids: string[]): Promise<Product[] | []> => {

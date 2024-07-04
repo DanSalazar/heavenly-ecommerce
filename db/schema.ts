@@ -2,7 +2,6 @@ import { relations, sql } from 'drizzle-orm'
 import {
   boolean,
   integer,
-  pgEnum,
   pgTableCreator,
   serial,
   text,
@@ -146,11 +145,8 @@ export const bagItemRelations = relations(bagItem, ({ one }) => ({
 }))
 
 export type Bag = typeof bagItem.$inferSelect
-export type BagWithProduct = Bag & {
-  product_variant: {
-    id: number
-    product: Product | null
-  } | null
+export type BagItem = Bag & {
+  product_variant: ProductVariantWithJoins
 }
 
 export const order = createTable('order', {

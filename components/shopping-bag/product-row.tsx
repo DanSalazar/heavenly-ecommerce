@@ -4,21 +4,28 @@ import Link from 'next/link'
 import Price from '../ecommerce/price'
 import { QuantitySelector } from './quantity-selector'
 import Image from 'next/image'
-import { TrashIcon } from '../icons'
 import { Product } from '@/db/schema'
 import { useState } from 'react'
-import { deleteFromBag, updateQuantityInBag } from '@/server/actions'
+import { updateQuantityInBag } from '@/server/actions'
+import { cn } from '@/lib/utils'
+import { marcellus } from '../fonts'
+import DeleteItem from './delete-item'
 
 export default function ProductRow({
   id,
   product,
-  quantity
+  quantity,
+  color,
+  size
 }: {
   id: number
   product: Product
   quantity: number
+  color: string
+  size: string
 }) {
   const [quantityState, setQuantityState] = useState(quantity)
+  const [isDeletingPending, setDeletePending] = useState(false)
   const isUpdated = quantityState !== quantity
 
   const handleQuantityChange = async (value: number) => {
@@ -27,7 +34,13 @@ export default function ProductRow({
   }
 
   return (
-    <div className="relative border-b border-t border-zinc-200 py-4 flex flex-col md:flex-row gap-4">
+    <div
+      className={cn(
+        'relative border-b border-t border-zinc-200 py-4 flex flex-col md:flex-row gap-4',
+        {
+          'pointer-events-none opacity-40': isDeletingPending
+        }
+      )}>
       <Image
         className="self-center"
         src={product.image!}
@@ -35,13 +48,17 @@ export default function ProductRow({
         height={200}
         alt={product.name}
       />
-      <div className="col-span-2 flex flex-col gap-2">
+      <div className="overflow-hidden col-span-2 flex flex-col gap-2">
         <Link
           href={'/'}
-          className="font-medium text-zinc-700 hover:text-black truncate">
+          className={cn(
+            'font-semibold truncate uppercase',
+            marcellus.className
+          )}>
           {product.name}
         </Link>
-        <span className="text-sm">Size: M</span>
+        <span className="text-sm">Color {color}</span>
+        <span className="text-sm">Size {size.toUpperCase()}</span>
         <Price className="mb-4" price={product.price} />
         <QuantitySelector
           quantity={quantity}
@@ -72,13 +89,11 @@ export default function ProductRow({
           </div>
         )}
       </div>
-      <button
+      <DeleteItem
         className="absolute right-2 bottom-2"
-        onClick={async () => {
-          await deleteFromBag(id)
-        }}>
-        <TrashIcon />
-      </button>
+        id={id}
+        setPending={(bool: boolean) => setDeletePending(bool)}
+      />
     </div>
   )
 }

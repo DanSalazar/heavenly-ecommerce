@@ -7,10 +7,10 @@ import Price from '../ecommerce/price'
 import Link from 'next/link'
 import ProductBag from './product-bag'
 import useMounted from '@/hooks/useMounted'
-import { BagWithProduct } from '@/db/schema'
+import { BagItem } from '@/db/schema'
 import { reduceBagPrice } from '@/utils'
 
-export default function ShoppingBag({ bag }: { bag: BagWithProduct[] }) {
+export default function ShoppingBag({ bag }: { bag: BagItem[] }) {
   const [open, setOpen] = useState(false)
   const isMounted = useMounted()
   const total = reduceBagPrice(bag)

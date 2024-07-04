@@ -48,6 +48,8 @@ export default async function Page() {
                   id={bag_item.id}
                   quantity={bag_item.quantity!}
                   product={product_variant.product}
+                  color={product_variant.color?.name!}
+                  size={product_variant.size?.name!}
                 />
               )
             })}
