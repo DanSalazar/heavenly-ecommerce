@@ -47,7 +47,17 @@ export default function useUrlState() {
     replace(pathname + '?' + newParams.toString())
   }
 
+  const add = (key: string, value: string) => {
+    const newParams = new URLSearchParams(params)
+    const keyLower = key.toLowerCase()
+    const valueLower = value.toLowerCase()
+
+    newParams.set(keyLower, valueLower)
+
+    replace(pathname + '?' + newParams.toString())
+  }
+
   const getState = (key: string) => params.get(key)
 
-  return { params, getState, push, remove }
+  return { params, getState, push, remove, add }
 }

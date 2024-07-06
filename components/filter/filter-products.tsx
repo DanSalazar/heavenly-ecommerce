@@ -50,10 +50,9 @@ export default function FilterProducts({
               key={value + j}
               data-key={key}
               data-value={value}
-              className="capitalize"
-              variant={'custom'}
-              size={'sm'}>
-              {key} {value} <MarkIcon className="ml-1 pointer-events-none" />
+              className="uppercase"
+              variant={'custom'}>
+              {value} <MarkIcon className="ml-1 pointer-events-none" />
             </Button>
           ))
         })}

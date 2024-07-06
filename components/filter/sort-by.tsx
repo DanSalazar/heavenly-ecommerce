@@ -1,24 +1,31 @@
-import { useState } from 'react'
-import { Filter, FilterChildren } from '.'
-import { PlusIcon } from '../icons'
-import { Button } from '../ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '../ui/select'
+import useUrlState from '@/hooks/useUrlState'
 
 export default function SortBy() {
-  const [open, setOpen] = useState(false)
-
-  const handleOpen = () => setOpen(!open)
+  const { add, remove } = useUrlState()
 
   return (
-    <div className="absolute right-0">
-      <Button onClick={handleOpen} variant={'custom'}>
-        Sort By <PlusIcon className="ml-1" />
-      </Button>
-      <Filter
-        onClose={handleOpen}
-        className="w-[250px] absolute top-12 right-0"
-        open={open}>
-        <FilterChildren title="Price">Low to High</FilterChildren>
-      </Filter>
+    <div className="absolute right-0 w-[150px]">
+      <Select
+        onValueChange={value => {
+          if (value === 'none') remove('order')
+          else add('order', value)
+        }}>
+        <SelectTrigger className="border-black font-medium">
+          <SelectValue placeholder="Sort by"></SelectValue>
+        </SelectTrigger>
+        <SelectContent className="border-black">
+          <SelectItem value="none">None</SelectItem>
+          <SelectItem value="low to high">Price low to high</SelectItem>
+          <SelectItem value="high to low">Price low to high</SelectItem>
+        </SelectContent>
+      </Select>
     </div>
   )
 }

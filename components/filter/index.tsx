@@ -1,4 +1,4 @@
-import { ReactNode, ComponentPropsWithoutRef } from 'react'
+import { ComponentPropsWithoutRef } from 'react'
 import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
 import { MarkIcon } from '../icons'
@@ -6,28 +6,35 @@ import { Select, SelectContent, SelectTrigger, SelectValue } from '../ui/select'
 import { usePathname, useRouter } from 'next/navigation'
 
 type FilterProps = ComponentPropsWithoutRef<'div'> & {
-  children: ReactNode
+  children: React.ReactNode
   open: boolean
   onClose: () => void
 }
 
-const FilterTitle = ({ title }: { title: string }) => (
+type FilterChildrenProps = {
+  title: string
+  children: React.ReactNode
+  handleChange: (title: string, value: string) => void
+  onClear?: () => void
+}
+
+const FilterTitle = ({ title }: Pick<FilterChildrenProps, 'title'>) => (
   <p className="font-medium text-sm truncate capitalize">{title}</p>
 )
 
 const FilterChildren = ({
   title,
-  children
-}: {
-  title: string
-  children: ReactNode
-}) => (
+  children,
+  onClear
+}: Omit<FilterChildrenProps, 'handleChange'>) => (
   <div className="flex flex-col gap-2">
     <header className="flex justify-between items-center">
       <FilterTitle title={title} />
-      <span className="text-black cursor-pointer text-sm hover:underline">
+      <button
+        onClick={onClear}
+        className="text-black cursor-pointer text-sm hover:underline">
         Clear
-      </span>
+      </button>
     </header>
     {children}
   </div>
@@ -36,13 +43,10 @@ const FilterChildren = ({
 export const SelectFilter = ({
   title,
   children,
-  handleChange
-}: {
-  title: string
-  children: React.ReactNode
-  handleChange: (title: string, value: string) => void
-}) => (
-  <FilterChildren title={title}>
+  handleChange,
+  onClear
+}: FilterChildrenProps) => (
+  <FilterChildren title={title} onClear={onClear}>
     <Select onValueChange={value => handleChange(title, value)}>
       <SelectTrigger>
         <SelectValue placeholder={title} />

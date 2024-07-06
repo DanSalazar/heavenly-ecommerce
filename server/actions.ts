@@ -11,7 +11,7 @@ import {
   productVariations,
   size
 } from '@/db/schema'
-import { SQL, and, eq, inArray, or, sql } from 'drizzle-orm'
+import { SQL, and, asc, desc, eq, inArray, or, sql } from 'drizzle-orm'
 import { PgColumn } from 'drizzle-orm/pg-core'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
@@ -30,6 +30,11 @@ const addMultipleConditions = (column: PgColumn, string: string) => {
   const sqlQuery = or(...sqlConditions)
 
   return sqlQuery || sql.empty()
+}
+
+const orders: { [k: string]: SQL<unknown> } = {
+  'low to high': asc(product.price),
+  'high to low': desc(product.price)
 }
 
 const makeFiltersBySearchParams = (
@@ -91,7 +96,7 @@ export const getProducts = async (
 
     if (filtersByParams.length) {
       const data = await db
-        .selectDistinctOn([product.id], {
+        .selectDistinctOn([product.id, product.name, product.price], {
           product: product,
           category: category.name,
           color: color.name,
@@ -107,6 +112,7 @@ export const getProducts = async (
             ? and(eq(product.department, parsedDepartment), ...filtersByParams)
             : and(...filtersByParams)
         )
+        .orderBy(orders[parsedSearchParams.order] || asc(product.name))
 
       return data
     }
@@ -119,6 +125,7 @@ export const getProducts = async (
         .from(productVariations)
         .innerJoin(product, eq(productVariations.product_id, product.id))
         .where(eq(product.department, parsedDepartment))
+        .orderBy(orders[parsedSearchParams.order] || asc(product.name))
 
       return data
     }
