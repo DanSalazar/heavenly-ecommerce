@@ -19,7 +19,7 @@ export default function DeleteItem({
       }}
       className={className}>
       <MarkIcon width={22} height={22} />
-      <span className="sr-only">Remove item form bag</span>
+      <span className="sr-only">Remove item from bag</span>
     </button>
   )
 }

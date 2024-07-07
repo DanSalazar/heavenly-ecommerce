@@ -23,7 +23,7 @@ export default function SortBy() {
         <SelectContent className="border-black">
           <SelectItem value="none">None</SelectItem>
           <SelectItem value="low to high">Price low to high</SelectItem>
-          <SelectItem value="high to low">Price low to high</SelectItem>
+          <SelectItem value="high to low">Price high to low</SelectItem>
         </SelectContent>
       </Select>
     </div>
