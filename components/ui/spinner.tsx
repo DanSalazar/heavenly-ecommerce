@@ -2,7 +2,7 @@ export const SpinnerStatus = ({
   srOnly = 'Loading...',
   children
 }: {
-  srOnly: string
+  srOnly?: string
   children?: React.ReactNode
 }) => (
   <div className="flex gap-2 items-center" role="status">

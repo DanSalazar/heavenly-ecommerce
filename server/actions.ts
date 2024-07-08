@@ -15,6 +15,7 @@ import { SQL, and, asc, desc, eq, inArray, or, sql } from 'drizzle-orm'
 import { PgColumn } from 'drizzle-orm/pg-core'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { cache } from 'react'
 import { z } from 'zod'
 
 const paramsResolver = z.enum(['men', 'women'])
@@ -276,4 +277,31 @@ export const getDashboardStats = async () => {
     totalRevenue,
     orders
   }
+}
+
+export const getColors = cache(async () => {
+  return await db.query.color.findMany({})
+})
+
+const newColorSchema = z
+  .string({
+    required_error: 'Color name is required'
+  })
+  .min(2)
+
+export const addNewColor = async (formData: FormData) => {
+  const colorName = newColorSchema.safeParse(formData.get('name'))
+
+  if (!colorName.success) {
+    return colorName.error.issues[0].message
+  }
+
+  const s = await db
+    .insert(color)
+    .values({
+      name: colorName.data
+    })
+    .onConflictDoNothing()
+
+  revalidatePath('/dashboard/products/new')
 }

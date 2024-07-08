@@ -57,6 +57,14 @@ export default async function Page({ searchParams }: { searchParams: any }) {
             </DropdownMenuContent>
           </DropdownMenu>
           <Link
+            href={'/dashboard/products/new-properties'}
+            className={cn(buttonVariants({ size: 'sm' }), 'gap-1')}>
+            <PlusCircleIcon />
+            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+              Add New Properties
+            </span>
+          </Link>
+          <Link
             href={'/dashboard/products/new'}
             className={cn(buttonVariants({ size: 'sm' }), 'gap-1')}>
             <PlusCircleIcon />

@@ -34,7 +34,7 @@ export const productRelations = relations(product, ({ many }) => ({
 
 export const color = createTable('color', {
   id: serial('id').primaryKey(),
-  name: varchar('name', { length: 30 })
+  name: varchar('name', { length: 30 }).unique()
 })
 
 export const colorRelations = relations(color, ({ many }) => ({
@@ -43,7 +43,7 @@ export const colorRelations = relations(color, ({ many }) => ({
 
 export const size = createTable('size', {
   id: serial('id').primaryKey(),
-  name: varchar('name', { length: 15 })
+  name: varchar('name', { length: 15 }).unique()
 })
 
 export const sizeRelations = relations(size, ({ many }) => ({
@@ -52,7 +52,7 @@ export const sizeRelations = relations(size, ({ many }) => ({
 
 export const category = createTable('category', {
   id: serial('id').primaryKey(),
-  name: varchar('name', { length: 20 })
+  name: varchar('name', { length: 40 }).unique()
 })
 
 export const categoryRelations = relations(category, ({ many }) => ({
@@ -61,7 +61,7 @@ export const categoryRelations = relations(category, ({ many }) => ({
 
 export const product_type = createTable('product_type', {
   id: serial('id').primaryKey(),
-  name: varchar('name', { length: 20 })
+  name: varchar('name', { length: 40 }).unique()
 })
 
 export type Color = typeof color.$inferSelect
