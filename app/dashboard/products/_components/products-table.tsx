@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Table,
   TableBody,
@@ -17,6 +19,7 @@ import { Product } from '@/db/schema'
 import Image from 'next/image'
 import { MoreHorizontalIcon } from '@/components/icons'
 import { Button } from '@/components/ui/button'
+import { deleteProduct } from '@/server/actions'
 
 export default function ProductsTable({
   products
@@ -70,7 +73,12 @@ export default function ProductsTable({
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
                   <DropdownMenuItem>Edit</DropdownMenuItem>
-                  <DropdownMenuItem>Delete</DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={async () => {
+                      await deleteProduct(product.id)
+                    }}>
+                    Delete
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </TableCell>

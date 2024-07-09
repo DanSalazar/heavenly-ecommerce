@@ -161,6 +161,13 @@ export const getProductById = async (id: string) => {
   return data
 }
 
+export const deleteProduct = async (id: string) => {
+  await db.delete(product).where(eq(product.id, id))
+  await db.delete(productVariations).where(eq(productVariations.product_id, id))
+
+  revalidatePath('/dashboard/products')
+}
+
 const productInBagSchema = z.object({
   productVariationId: z.number()
 })
