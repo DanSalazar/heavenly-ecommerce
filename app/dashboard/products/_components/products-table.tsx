@@ -41,7 +41,7 @@ export default function ProductsTable({
       </TableHeader>
       <TableBody>
         {products.map(({ product }) => (
-          <TableRow>
+          <TableRow key={product.id}>
             <TableCell className="hidden sm:table-cell">
               <Image
                 alt="Product image"

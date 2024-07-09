@@ -285,9 +285,10 @@ export const getColors = cache(async () => {
 
 const newColorSchema = z
   .string({
-    required_error: 'Color name is required'
+    required_error: 'Color is required'
   })
-  .min(2)
+  .min(1)
+  .toLowerCase()
 
 export const addNewColor = async (formData: FormData) => {
   const colorName = newColorSchema.safeParse(formData.get('name'))
@@ -296,7 +297,7 @@ export const addNewColor = async (formData: FormData) => {
     return colorName.error.issues[0].message
   }
 
-  const s = await db
+  await db
     .insert(color)
     .values({
       name: colorName.data
@@ -305,3 +306,88 @@ export const addNewColor = async (formData: FormData) => {
 
   revalidatePath('/dashboard/products/new')
 }
+
+export const getSizes = cache(async () => {
+  return await db.query.size.findMany({})
+})
+
+const newSizeSchema = z
+  .string({
+    required_error: 'Size is required'
+  })
+  .min(1)
+  .toLowerCase()
+
+export const addNewSize = async (formData: FormData) => {
+  const sizeName = newSizeSchema.safeParse(formData.get('name'))
+
+  if (!sizeName.success) {
+    return sizeName.error.issues[0].message
+  }
+
+  await db
+    .insert(size)
+    .values({
+      name: sizeName.data
+    })
+    .onConflictDoNothing()
+
+  revalidatePath('/dashboard/products/new')
+}
+
+export const getCategories = cache(async () => {
+  return await db.query.category.findMany({})
+})
+
+const newCategorySchema = z
+  .string({
+    required_error: 'Category is required'
+  })
+  .min(1)
+  .toLowerCase()
+
+export const addNewCategory = async (formData: FormData) => {
+  const categoryName = newCategorySchema.safeParse(formData.get('name'))
+
+  if (!categoryName.success) {
+    return categoryName.error.issues[0].message
+  }
+
+  await db
+    .insert(category)
+    .values({
+      name: categoryName.data
+    })
+    .onConflictDoNothing()
+
+  revalidatePath('/dashboard/products/new')
+}
+
+const idSchema = z.coerce.number()
+
+export const deleteCategory = cache(async (formData: FormData) => {
+  const id = idSchema.safeParse(formData.get('id'))
+
+  if (!id.success) return
+
+  await db.delete(category).where(eq(category.id, id.data))
+  revalidatePath('/dashboard/products/new-properties')
+})
+
+export const deleteColor = cache(async (formData: FormData) => {
+  const id = idSchema.safeParse(formData.get('id'))
+
+  if (!id.success) return
+
+  await db.delete(color).where(eq(color.id, id.data))
+  revalidatePath('/dashboard/products/new-properties')
+})
+
+export const deleteSize = cache(async (formData: FormData) => {
+  const id = idSchema.safeParse(formData.get('id'))
+
+  if (!id.success) return
+
+  await db.delete(size).where(eq(size.id, id.data))
+  revalidatePath('/dashboard/products/new-properties')
+})
