@@ -1,6 +1,7 @@
 import { relations, sql } from 'drizzle-orm'
 import {
   boolean,
+  index,
   integer,
   pgTableCreator,
   serial,
@@ -149,14 +150,21 @@ export type BagItem = Bag & {
   product_variant: ProductVariantWithJoins
 }
 
-export const order = createTable('order', {
-  id: serial('id'),
-  order_created_at: varchar('order_created_at', { length: 27 }).notNull(),
-  customer_name: varchar('customer_name', { length: 255 }).notNull(),
-  customer_email: varchar('customer_email', { length: 255 }).notNull(),
-  order_status: varchar('order_status', { length: 50 }).notNull(),
-  payment_method: varchar('payment_method', { length: 255 }).notNull(),
-  total_amount: integer('total_amount').notNull()
-})
+export const order = createTable(
+  'order',
+  {
+    id: serial('id'),
+    order_created_at: varchar('order_created_at', { length: 27 }).notNull(),
+    customer_name: varchar('customer_name', { length: 255 }).notNull(),
+    customer_email: varchar('customer_email', { length: 255 }).notNull(),
+    order_status: varchar('order_status', { length: 50 }).notNull(),
+    payment_method: varchar('payment_method', { length: 255 }).notNull(),
+    total_amount: integer('total_amount').notNull()
+  },
+  table => ({
+    userIdx: index('userIdx').on(table.customer_name),
+    emailIdx: index('emailIdx').on(table.customer_email)
+  })
+)
 
 export type OrderType = typeof order.$inferSelect

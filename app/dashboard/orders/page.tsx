@@ -13,32 +13,34 @@ import {
   DropdownMenuSeparator
 } from '@/components/ui/dropdown-menu'
 import { ListFilterIcon } from '@/components/icons'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { db } from '@/db'
 import { Button } from '@/components/ui/button'
 import OrdersTable from './_components/orders-table'
+import SearchCustomer from './_components/search-customer'
 
-export default async function Page() {
-  const orders = await db.query.order.findMany({})
+export default async function Page({
+  searchParams
+}: {
+  searchParams: { search: string }
+}) {
+  const orders = searchParams.search
+    ? await db.query.order.findMany({
+        where: ({ customer_name, customer_email }, { or, ilike }) => {
+          return or(
+            ilike(customer_name, searchParams.search + '%'),
+            ilike(customer_email, searchParams.search + '%')
+          )
+        }
+      })
+    : await db.query.order.findMany({})
 
   return (
     <>
       <div className="flex justify-between">
-        <Tabs defaultValue="week">
-          <TabsList>
-            <TabsTrigger value="week">Week</TabsTrigger>
-            <TabsTrigger value="month" className="hidden sm:flex">
-              Month
-            </TabsTrigger>
-            <TabsTrigger value="year" className="hidden sm:flex">
-              Year
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-8 gap-1">
+              <Button variant="outline" className="h-8 gap-1">
                 <ListFilterIcon />
                 <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                   Filter
@@ -50,6 +52,7 @@ export default async function Page() {
               <DropdownMenuSeparator />
             </DropdownMenuContent>
           </DropdownMenu>
+          <SearchCustomer />
         </div>
       </div>
       <Card>
