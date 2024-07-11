@@ -12,15 +12,23 @@ import {
 } from './breadcrumb'
 import { Fragment } from 'react'
 
-export default function BreadcrumbWrapper({ pathname }: { pathname?: string }) {
+export default function BreadcrumbWrapper({
+  pathname,
+  isDashboard = false
+}: {
+  pathname?: string
+  isDashboard?: boolean
+}) {
   const currentPathname = usePathname()
-  const pathObject = createPathObject(pathname || currentPathname)
+  const pathObject = createPathObject(pathname || currentPathname, isDashboard)
+
+  if (pathObject.length === 1 && isDashboard) return null
 
   return (
     <Breadcrumb>
       <BreadcrumbList>
         {pathObject.map((item, i) => (
-          <Fragment key={item.href}>
+          <Fragment key={item.id}>
             <BreadcrumbItem>
               {i < pathObject.length - 1 ? (
                 <BreadcrumbLink

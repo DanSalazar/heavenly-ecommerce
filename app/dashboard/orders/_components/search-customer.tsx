@@ -12,7 +12,7 @@ export default function SearchCustomer() {
   }, 300)
 
   return (
-    <div className="relative ml-auto flex-1 md:grow-0">
+    <div className="relative flex-1">
       <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
       <Input
         onChange={val => handleChange(val.target.value)}

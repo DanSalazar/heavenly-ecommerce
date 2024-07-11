@@ -3,20 +3,36 @@ import { BagItem } from '@/db/schema'
 type BreadcrumbType = {
   href: string
   title: string
+  id: string
 }
 
-export const createPathObject = (pathname: string): BreadcrumbType[] => {
+export const createPathObject = (
+  pathname: string,
+  isDashboard: boolean
+): BreadcrumbType[] => {
   const paths = pathname.split('/')
-  const result = []
+  const result: BreadcrumbType[] = []
   let href = ''
 
-  for (let item of paths) {
+  for (let i = 0; i < paths.length; i++) {
+    const item = paths[i]
+
+    if (item === '' && isDashboard) continue
+
+    const id = `item-${i}`
+
     if (item === '') {
-      result.push({ title: 'home', href: '/' })
+      result.push({ title: 'home', href: '/', id })
       continue
     }
+
     href += `/${item}`
-    result.push({ title: item, href })
+
+    result.push({
+      title: item,
+      href,
+      id
+    })
   }
 
   return result

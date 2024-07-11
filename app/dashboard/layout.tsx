@@ -4,6 +4,7 @@ import '../globals.css'
 import Navbar from './_components/navbar'
 import Providers from '@/components/providers'
 import { mainFont } from '@/components/fonts'
+import BreadcrumbWrapper from '@/components/ui/breadcrumb-wrapper'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -21,6 +22,7 @@ export default function RootLayout({
         <body className={mainFont.className + ' flex flex-col'}>
           <Navbar />
           <main className="bg-zinc-50 flex-1 flex flex-col gap-4 p-6">
+            <BreadcrumbWrapper isDashboard />
             {children}
           </main>
         </body>
