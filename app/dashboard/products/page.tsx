@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -7,66 +7,34 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator
-} from '@/components/ui/dropdown-menu'
 import { getProducts } from '@/server/actions'
-import { ListFilterIcon, PlusCircleIcon } from '@/components/icons'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { PlusCircleIcon, PlusIcon } from '@/components/icons'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import ProductsTable from './_components/products-table'
+import SearchInput from '../_components/search-input'
+import FilterByProducts from './_components/filter-by-products'
 
 export default async function Page({ searchParams }: { searchParams: any }) {
   const products = await getProducts('', searchParams)
 
   return (
     <>
-      <div className="flex justify-between">
-        <Tabs defaultValue="all">
-          <TabsList>
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="archived" className="hidden sm:flex">
-              Archived
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
+      <div className="flex justify-between gap-2 flex-wrap">
+        <SearchInput placeholder="Search product name..." />
         <div className="flex items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-8 gap-1">
-                <ListFilterIcon />
-                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                  Filter
-                </span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuCheckboxItem checked>
-                Active
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem>Archived</DropdownMenuCheckboxItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <FilterByProducts />
           <Link
             href={'/dashboard/products/new-properties'}
-            className={cn(buttonVariants({ size: 'sm' }), 'gap-1')}>
-            <PlusCircleIcon />
+            className={cn(buttonVariants(), 'gap-1')}>
+            <PlusIcon />
             <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
               Add New Properties
             </span>
           </Link>
           <Link
             href={'/dashboard/products/new'}
-            className={cn(buttonVariants({ size: 'sm' }), 'gap-1')}>
+            className={cn(buttonVariants(), 'gap-1')}>
             <PlusCircleIcon />
             <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
               Add Product

@@ -5,10 +5,16 @@ import { Input } from '@/components/ui/input'
 import useUrlState from '@/hooks/useUrlState'
 import { useDebouncedCallback } from 'use-debounce'
 
-export default function SearchCustomer() {
+export default function SearchInput({
+  placeholder = 'Search...',
+  searchKey = 'search'
+}: {
+  placeholder?: string
+  searchKey?: string
+}) {
   const { add } = useUrlState()
   const handleChange = useDebouncedCallback((val: string) => {
-    add('search', val)
+    add(searchKey, val)
   }, 300)
 
   return (
@@ -17,7 +23,7 @@ export default function SearchCustomer() {
       <Input
         onChange={val => handleChange(val.target.value)}
         type="search"
-        placeholder="Search customer name..."
+        placeholder={placeholder}
         className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
       />
     </div>

@@ -120,7 +120,9 @@ export function ProductForm({
       image: urls?.length ? urls[0] : '',
       department: values.department,
       discount: false,
-      percentage_off: 0
+      percentage_off: 0,
+      status: 'active',
+      created_at: new Date().toISOString()
     }
 
     const variants: ProductVariants[] = values.variants.map(variant => ({
@@ -162,14 +164,10 @@ export function ProductForm({
                   Create a new product
                 </h1>
                 <div className="hidden items-center gap-2 md:ml-auto md:flex">
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    disabled={!!progress}>
+                  <Button type="button" variant="outline" disabled={!!progress}>
                     Discard
                   </Button>
-                  <Button type="submit" size="sm" disabled={!!progress}>
+                  <Button type="submit" disabled={!!progress}>
                     {progress ? progress : 'Create Product'}
                   </Button>
                   {generalError && (

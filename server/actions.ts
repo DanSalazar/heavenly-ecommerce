@@ -11,7 +11,7 @@ import {
   productVariations,
   size
 } from '@/db/schema'
-import { SQL, and, asc, desc, eq, inArray, or, sql } from 'drizzle-orm'
+import { SQL, and, asc, desc, eq, ilike, inArray, or, sql } from 'drizzle-orm'
 import { PgColumn } from 'drizzle-orm/pg-core'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
@@ -79,6 +79,20 @@ const makeFiltersBySearchParams = (
   if (filters.department) {
     const parsedDepartment = paramsResolver.parse(filters.department)
     conditions.push(eq(product.department, parsedDepartment))
+  }
+
+  if (filters.search) {
+    const sql = ilike(product.name, filters.search + '%')
+    conditions.push(sql)
+  }
+
+  if (filters.status) {
+    const enumSchema = z.enum(['active', 'archived'])
+    const status = enumSchema.safeParse(filters.status)
+
+    if (status.success) {
+      conditions.push(eq(product.status, status.data))
+    }
   }
 
   return conditions

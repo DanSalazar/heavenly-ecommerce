@@ -6,9 +6,9 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import OrdersTable from './_components/orders-table'
-import SearchCustomer from './_components/search-customer'
-import OrderFilterBy from './_components/order-filter-by'
 import { getOrders } from '@/server/actions'
+import SearchInput from '../_components/search-input'
+import FilterByOrders from './_components/filter-by-orders'
 
 export default async function Page({
   searchParams
@@ -20,8 +20,8 @@ export default async function Page({
   return (
     <>
       <div className="flex gap-2 justify-between">
-        <SearchCustomer />
-        <OrderFilterBy />
+        <SearchInput placeholder="Search customer name..." />
+        <FilterByOrders />
       </div>
       <Card>
         <CardHeader className="px-7">

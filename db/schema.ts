@@ -3,6 +3,7 @@ import {
   boolean,
   index,
   integer,
+  pgEnum,
   pgTableCreator,
   serial,
   text,
@@ -12,6 +13,9 @@ import {
 
 const createTable = pgTableCreator(name => 'heavenly_' + name)
 
+export const departmentEnum = pgEnum('department', ['men', 'women'])
+export const statusEnum = pgEnum('status', ['active', 'archived'])
+
 export const product = createTable('product', {
   id: varchar('id', { length: 255 }).primaryKey().notNull(),
   name: varchar('name', { length: 255 }).notNull(),
@@ -19,12 +23,11 @@ export const product = createTable('product', {
   description: text('description'),
   price: integer('price').notNull(),
   discount: boolean('discount').default(false),
-  image: text('image'),
   percentage_off: integer('percentage_off'),
-  department: varchar('department', {
-    length: 20,
-    enum: ['men', 'women']
-  }).notNull()
+  image: text('image'),
+  department: departmentEnum('department').notNull(),
+  status: statusEnum('status').notNull(),
+  created_at: varchar('created_at', { length: 27 }).notNull()
 })
 
 export type Product = typeof product.$inferSelect
