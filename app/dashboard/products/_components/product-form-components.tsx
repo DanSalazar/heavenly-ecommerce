@@ -38,6 +38,7 @@ import {
 
 import { Category } from '@/db/schema'
 import { VariantFields } from '../new/page'
+import { Checkbox } from '@/components/ui/checkbox'
 
 type FormControl = Control<FormSchema>
 
@@ -310,18 +311,35 @@ export const ProductImage = ({ children }: { children: React.ReactNode }) => (
   </Card>
 )
 
-export const ProductArchive = () => (
-  <Card>
-    <CardHeader>
-      <CardTitle>Archive Product</CardTitle>
-      <CardDescription>
-        Lipsum dolor sit amet, consectetur adipiscing elit.
-      </CardDescription>
-    </CardHeader>
-    <CardContent>
-      <Button type="button" size="sm" variant="secondary">
-        Archive Product
-      </Button>
-    </CardContent>
-  </Card>
+export const ProductArchive = ({ control }: { control: FormControl }) => (
+  <div className="grid grid-cols-2 gap-4">
+    <FormField
+      control={control}
+      name="archived"
+      render={({ field }) => (
+        <FormItem className="bg-white flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+          <FormControl>
+            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+          </FormControl>
+          <div className="space-y-1 leading-none">
+            <FormLabel>Archived Product</FormLabel>
+          </div>
+        </FormItem>
+      )}
+    />
+    <FormField
+      control={control}
+      name="featured"
+      render={({ field }) => (
+        <FormItem className="bg-white flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+          <FormControl>
+            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+          </FormControl>
+          <div className="space-y-1 leading-none">
+            <FormLabel>Featured Product</FormLabel>
+          </div>
+        </FormItem>
+      )}
+    />
+  </div>
 )

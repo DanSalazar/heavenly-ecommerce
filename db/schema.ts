@@ -27,7 +27,8 @@ export const product = createTable('product', {
   image: text('image'),
   department: departmentEnum('department').notNull(),
   status: statusEnum('status').notNull(),
-  created_at: varchar('created_at', { length: 27 }).notNull()
+  created_at: varchar('created_at', { length: 27 }).notNull(),
+  featured: boolean('featured').default(false)
 })
 
 export type Product = typeof product.$inferSelect

@@ -95,6 +95,11 @@ const makeFiltersBySearchParams = (
     }
   }
 
+  if (filters.featured) {
+    if (filters.featured === 'featured')
+      conditions.push(eq(product.featured, true))
+  }
+
   return conditions
 }
 

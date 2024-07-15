@@ -7,7 +7,7 @@ export default function ProductsWrapper({
   return (
     <div
       className={cn(
-        'flex flex-wrap gap-4 border-t py-4 border-zinc-200',
+        'grid lg:grid-cols-products gap-4 border-t py-4 border-zinc-200',
         props.className
       )}
       {...props}>

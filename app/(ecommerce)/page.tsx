@@ -2,8 +2,15 @@ import Image from 'next/image'
 import Hero from '@/public/billboard.jpg'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import ProductsWrapper from '@/components/ecommerce/products-wrapper'
+import { db } from '@/db'
+import ProductComponent from '@/components/ecommerce/product'
 
-export default function Page() {
+export default async function Page() {
+  const featuredProducts = await db.query.product.findMany({
+    where: ({ featured }, { eq }) => eq(featured, true)
+  })
+
   return (
     <main className="flex flex-col gap-8">
       <div className="-z-10 relative flex md:items-center md:justify-center overflow-hidden h-[520px]">
@@ -19,6 +26,11 @@ export default function Page() {
       </div>
       <section>
         <h2 className="font-semibold text-xl">Featured Products</h2>
+        <ProductsWrapper>
+          {featuredProducts.map(product => (
+            <ProductComponent key={product.id} product={product} />
+          ))}
+        </ProductsWrapper>
       </section>
       <div className="h-[300px] flex flex-col gap-2 items-center justify-center border-t border-zinc-200">
         <p className="text-xl xl:px-48 xl:text-4xl font-bold text-center">

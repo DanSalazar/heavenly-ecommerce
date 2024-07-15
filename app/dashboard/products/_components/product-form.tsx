@@ -56,7 +56,9 @@ export const formSchema = z.object({
   category: z.string({ required_error: 'Category is required' }),
   department: z.enum(['men', 'women'], {
     required_error: 'Department is required'
-  })
+  }),
+  archived: z.boolean(),
+  featured: z.boolean()
 })
 
 export type FormSchema = z.infer<typeof formSchema>
@@ -72,7 +74,9 @@ export function ProductForm({
       name: '',
       brand: '',
       description: '',
-      price: 0
+      price: 0,
+      featured: false,
+      archived: false
     }
   })
   const [progress, setProgress] = useState('')
@@ -121,8 +125,9 @@ export function ProductForm({
       department: values.department,
       discount: false,
       percentage_off: 0,
-      status: 'active',
-      created_at: new Date().toISOString()
+      status: values.archived ? 'archived' : 'active',
+      created_at: new Date().toISOString(),
+      featured: values.featured
     }
 
     const variants: ProductVariants[] = values.variants.map(variant => ({
@@ -185,6 +190,7 @@ export function ProductForm({
                     control={form.control}
                     variantFields={variantFields}
                   />
+                  <ProductArchive control={form.control} />
                 </div>
                 <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
                   <ProductCategory
@@ -201,7 +207,6 @@ export function ProductForm({
                       error={filesError}
                     />
                   </ProductImage>
-                  <ProductArchive />
                 </div>
               </div>
               <div className="flex items-center justify-center flex-wrap gap-2 md:hidden">

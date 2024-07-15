@@ -19,7 +19,7 @@ export default function ProductComponent({
   return (
     <Link
       href={pathname + '/' + product.id}
-      className="md:w-[320px] flex flex-col gap-2 cursor-pointer hover:opacity-80 transition-opacity group">
+      className="flex flex-col gap-2 cursor-pointer hover:opacity-80 transition-opacity group">
       <div className="relative h-[400px] flex overflow-hidden">
         <Image
           fill

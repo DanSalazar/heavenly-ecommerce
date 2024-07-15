@@ -44,6 +44,15 @@ export default function FilterByProducts() {
           }}>
           Archived
         </DropdownMenuCheckboxItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuCheckboxItem
+          checked={getState('featured') === 'featured'}
+          onCheckedChange={val => {
+            if (val) add('featured', 'featured')
+            else add('featured', '')
+          }}>
+          Featured
+        </DropdownMenuCheckboxItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
