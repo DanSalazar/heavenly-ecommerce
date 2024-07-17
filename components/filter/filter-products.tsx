@@ -40,7 +40,7 @@ export default function FilterProducts({
       <Button className="uppercase" onClick={handleOpen}>
         Filters
       </Button>
-      <div className="my-1 border-r border-zinc-300" />
+      <div className="my-1 border-r border-zinc-400" />
       <div
         onClick={handleRemoveFilter}
         className="hidden md:flex flex-wrap gap-2">

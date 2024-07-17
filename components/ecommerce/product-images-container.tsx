@@ -18,7 +18,7 @@ export default function ProductImagesContainer({
   return (
     <div className="grid grid-cols-2 gap-4">
       <button className="col-span-2" onClick={openLightbox}>
-        <Image width={800} height={1020} src={image} alt={alt} />
+        <Image width={800} height={800} src={image} alt={alt} />
       </button>
       <Image
         className="hidden md:block"

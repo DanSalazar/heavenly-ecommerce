@@ -25,7 +25,7 @@ export default async function Page({
   return (
     <>
       <BreadcrumbWrapper pathname={`/${params.department}/${product.name}`} />
-      <main className="flex flex-col md:grid grid-cols-2 md:px-24 gap-8">
+      <main className="flex flex-col md:grid grid-cols-2 gap-12">
         <ProductImagesContainer image={product.image!} alt={product.name} />
         <div className="flex flex-col gap-2">
           <p className={marcellus.className + ' text-3xl uppercase'}>
@@ -37,8 +37,14 @@ export default async function Page({
             discount={product.discount}
             discount_percentage={product.percentage_off}
           />
-          <p>{product.description}</p>
+          <p className="text-zinc-700">
+            {product.description ||
+              `Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+          Similique cum facere quibusdam, iste enim repellat fugiat deleniti voluptatem`}
+          </p>
+
           <AddProductInBag data={data} productId={product.id} />
+
           <div className="p-4 border border-zinc-200 rounded-md font-medium">
             <p className="flex gap-2 mb-4">
               <TruckIcon />

@@ -49,10 +49,10 @@ export default function AddProductInBag({
   }
 
   return (
-    <form action={addProduct} className="flex flex-col gap-4">
+    <form action={addProduct} className="flex flex-col gap-4 mt-4">
       <PickColor data={data} error={errors.color} cleanErrors={cleanErrors} />
       <PickSize data={data} error={errors.size} cleanErrors={cleanErrors} />
-      <div className="flex h-10 flex-wrap gap-2">
+      <div className="flex h-12 flex-wrap gap-2">
         <ButtonAddBag />
         <LikeButton productId={productId} />
       </div>

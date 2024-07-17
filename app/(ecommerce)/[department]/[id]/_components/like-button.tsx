@@ -18,7 +18,7 @@ export default function LikeButton({ productId }: { productId: string }) {
   return (
     <Button
       onClick={handleLike}
-      className={cn('h-full', {
+      className={cn('h-full border-primary w-16', {
         'text-rose-500 hover:text-rose-600': isLiked || like
       })}
       type="button"
