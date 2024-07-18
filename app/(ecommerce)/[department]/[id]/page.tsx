@@ -8,8 +8,8 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 import { getProductById } from '@/server/actions'
-import AddProductInBag from './_components/add-product-bag'
 import { marcellus } from '@/components/fonts'
+import AddToBag from './_components/add-to-bag'
 import BreadcrumbWrapper from '@/components/ui/breadcrumb-wrapper'
 
 export default async function Page({
@@ -17,8 +17,8 @@ export default async function Page({
 }: {
   params: { department: string; id: string }
 }) {
-  const data = await getProductById(params.id)
-  const product = data[0]?.product
+  const productWithVariants = await getProductById(params.id)
+  const product = productWithVariants[0]?.product
 
   if (!product) return <div>No product</div>
 
@@ -43,7 +43,7 @@ export default async function Page({
           Similique cum facere quibusdam, iste enim repellat fugiat deleniti voluptatem`}
           </p>
 
-          <AddProductInBag data={data} productId={product.id} />
+          <AddToBag variants={productWithVariants} productId={product.id} />
 
           <div className="p-4 border border-zinc-200 rounded-md font-medium">
             <p className="flex gap-2 mb-4">

@@ -121,16 +121,14 @@ export const productVariationsRelations = relations(
   })
 )
 
-export type ProductVariantWithJoins = {
-  id: number
+export type ProductVariants = typeof productVariations.$inferInsert
+export type ProductVariantWithJoins = Pick<ProductVariants, 'id' | 'stock'> & {
   product?: Product | null
   color?: Color | null
   category?: Category | null
   size?: Size | null
   product_type?: ProductType | null
 }
-
-export type ProductVariants = typeof productVariations.$inferInsert
 
 export const bagItem = createTable('bag_item', {
   id: serial('id').primaryKey(),

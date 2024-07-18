@@ -166,14 +166,14 @@ export const getProducts = async (
 export const getProductById = async (id: string) => {
   const data = await db.query.productVariations.findMany({
     columns: {
-      id: true
+      id: true,
+      stock: true
     },
     where: eq(productVariations.product_id, id),
     with: {
       product: true,
       size: true,
-      color: true,
-      category: true
+      color: true
     }
   })
 
@@ -187,18 +187,16 @@ export const deleteProduct = async (id: string) => {
   revalidatePath('/dashboard/products')
 }
 
-const productInBagSchema = z.object({
-  productVariationId: z.number()
-})
+const productInBagSchema = z.number()
 
-export const addProductInBag = async (productVariationId: number) => {
+export const addProductInBag = async (variantId: number | undefined) => {
   try {
-    const parse = productInBagSchema.parse({ productVariationId })
+    const id = productInBagSchema.parse(variantId)
 
     await db
       .insert(bagItem)
       .values({
-        item_id: parse.productVariationId,
+        item_id: id,
         quantity: 1
       })
       .onConflictDoUpdate({

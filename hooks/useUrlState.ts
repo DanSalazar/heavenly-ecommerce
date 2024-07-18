@@ -25,7 +25,7 @@ export default function useUrlState() {
       else newParams.set(key, stringWithouthValue)
     }
 
-    replace(pathname + '?' + newParams.toString())
+    replace(pathname + '?' + newParams.toString(), { scroll: false })
   }
 
   const push = (key: string, value: string) => {
@@ -44,7 +44,7 @@ export default function useUrlState() {
       }
     } else newParams.set(keyLower, valueLower)
 
-    replace(pathname + '?' + newParams.toString())
+    replace(pathname + '?' + newParams.toString(), { scroll: false })
   }
 
   const add = (key: string, value: string) => {
@@ -54,7 +54,7 @@ export default function useUrlState() {
 
     newParams.set(keyLower, valueLower)
 
-    replace(pathname + '?' + newParams.toString())
+    replace(pathname + '?' + newParams.toString(), { scroll: false })
   }
 
   const getState = (key: string) => params.get(key)
