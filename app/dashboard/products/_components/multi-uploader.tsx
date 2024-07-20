@@ -11,7 +11,7 @@ import usePreviewImages from '@/hooks/usePreviewImages'
 interface MultiUploaderProps {
   permittedFileInfo: any
   error: string
-  files: File[]
+  files: (File | string)[]
   addFiles: (files: File[]) => void
 }
 
@@ -37,7 +37,7 @@ export const MultiUploader = forwardRef<HTMLButtonElement, MultiUploaderProps>(
           alt="Product image"
           className="aspect-square w-full rounded-md object-cover"
           height="300"
-          src={(previewFiles[0] as string) || '/placeholder.svg'}
+          src={previewFiles[0] || '/placeholder.svg'}
           width="300"
         />
         <div className="grid grid-cols-3 gap-2">
@@ -46,7 +46,7 @@ export const MultiUploader = forwardRef<HTMLButtonElement, MultiUploaderProps>(
               alt="Product image"
               className="aspect-square w-full rounded-md object-cover"
               height="84"
-              src={(previewFiles[1] as string) || '/placeholder.svg'}
+              src={previewFiles[1] || '/placeholder.svg'}
               width="84"
             />
           </button>
@@ -55,7 +55,7 @@ export const MultiUploader = forwardRef<HTMLButtonElement, MultiUploaderProps>(
               alt="Product image"
               className="aspect-square w-full rounded-md object-cover"
               height="84"
-              src={(previewFiles[2] as string) || '/placeholder.svg'}
+              src={previewFiles[2] || '/placeholder.svg'}
               width="84"
             />
           </button>

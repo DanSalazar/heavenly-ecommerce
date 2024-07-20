@@ -173,7 +173,8 @@ export const getProductById = async (id: string) => {
     with: {
       product: true,
       size: true,
-      color: true
+      color: true,
+      category: true
     }
   })
 
@@ -185,6 +186,63 @@ export const deleteProduct = async (id: string) => {
   await db.delete(productVariations).where(eq(productVariations.product_id, id))
 
   revalidatePath('/dashboard/products')
+}
+
+const variantsFields = z.object({
+  stock: z.number(),
+  color_id: z.number(),
+  size_id: z.number(),
+  category_id: z.number(),
+  product_id: z.string(),
+  product_type_Id: z.number(),
+  id: z.number().optional()
+})
+const updateProductVariantSchema = z.array(variantsFields)
+
+export const updateProduct = async (
+  id: string,
+  product_values: Partial<Product> | null,
+  variants_values: Partial<ProductVariants>[] | null
+) => {
+  if (product_values)
+    await db.update(product).set(product_values).where(eq(product.id, id))
+
+  const variantsParsed = updateProductVariantSchema.safeParse(variants_values)
+
+  if (variantsParsed.success) {
+    const fields = variantsFields
+      .omit({ id: true, product_id: true })
+      .keyof().options
+    const updateSets: Record<string, SQL> = {}
+
+    fields.forEach(field => {
+      const sqlChunks: SQL[] = []
+      sqlChunks.push(sql`(case`)
+
+      for (const variant of variantsParsed.data) {
+        // New product variant
+        if (typeof variant.id !== 'undefined') {
+          sqlChunks.push(
+            sql`when ${productVariations.id} = ${variant.id} then ${variant[field]}::integer`
+          )
+        }
+      }
+
+      sqlChunks.push(sql`end)`)
+      updateSets[field] = sql.join(sqlChunks, sql.raw(' '))
+    })
+
+    await db
+      .insert(productVariations)
+      .values(variantsParsed.data)
+      .onConflictDoUpdate({
+        target: productVariations.id,
+        set: updateSets
+      })
+  }
+
+  revalidatePath('/dashboard/products')
+  redirect('/dashboard/products')
 }
 
 const productInBagSchema = z.number()

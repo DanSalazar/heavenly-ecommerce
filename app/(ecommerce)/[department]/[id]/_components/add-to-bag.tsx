@@ -22,11 +22,13 @@ export default function AddToBag({
       product.size?.name === searchParams.get('size')
   )
   const formAction = addProductInBag.bind(null, variantSelected?.id)
+  const sizes = [...new Set(variants.map(({ size }) => size?.name || ''))]
+  const colors = [...new Set(variants.map(({ color }) => color?.name || ''))]
 
   return (
     <form action={formAction} className="flex flex-col gap-4 mt-4">
-      <PickColor variants={variants} />
-      <PickSize variants={variants} />
+      <PickColor colors={colors} />
+      <PickSize sizes={sizes} />
       <div className="flex h-12 flex-wrap gap-2">
         <ButtonAddBag
           variantSelected={!!variantSelected}

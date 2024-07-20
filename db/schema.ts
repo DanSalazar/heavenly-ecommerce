@@ -19,16 +19,16 @@ export const statusEnum = pgEnum('status', ['active', 'archived'])
 export const product = createTable('product', {
   id: varchar('id', { length: 255 }).primaryKey().notNull(),
   name: varchar('name', { length: 255 }).notNull(),
-  brand: varchar('brand', { length: 50 }),
+  brand: varchar('brand', { length: 50 }).notNull(),
   description: text('description'),
   price: integer('price').notNull(),
   discount: boolean('discount').default(false),
   percentage_off: integer('percentage_off'),
-  image: text('image'),
+  image: text('image').notNull(),
   department: departmentEnum('department').notNull(),
   status: statusEnum('status').notNull(),
   created_at: varchar('created_at', { length: 27 }).notNull(),
-  featured: boolean('featured').default(false)
+  featured: boolean('featured').notNull().default(false)
 })
 
 export type Product = typeof product.$inferSelect
@@ -39,7 +39,7 @@ export const productRelations = relations(product, ({ many }) => ({
 
 export const color = createTable('color', {
   id: serial('id').primaryKey(),
-  name: varchar('name', { length: 30 }).unique()
+  name: varchar('name', { length: 30 }).unique().notNull()
 })
 
 export const colorRelations = relations(color, ({ many }) => ({
@@ -48,7 +48,7 @@ export const colorRelations = relations(color, ({ many }) => ({
 
 export const size = createTable('size', {
   id: serial('id').primaryKey(),
-  name: varchar('name', { length: 15 }).unique()
+  name: varchar('name', { length: 15 }).unique().notNull()
 })
 
 export const sizeRelations = relations(size, ({ many }) => ({
@@ -57,7 +57,7 @@ export const sizeRelations = relations(size, ({ many }) => ({
 
 export const category = createTable('category', {
   id: serial('id').primaryKey(),
-  name: varchar('name', { length: 40 }).unique()
+  name: varchar('name', { length: 40 }).unique().notNull()
 })
 
 export const categoryRelations = relations(category, ({ many }) => ({
@@ -66,13 +66,13 @@ export const categoryRelations = relations(category, ({ many }) => ({
 
 export const product_type = createTable('product_type', {
   id: serial('id').primaryKey(),
-  name: varchar('name', { length: 40 }).unique()
+  name: varchar('name', { length: 40 }).unique().notNull()
 })
 
 export type Color = typeof color.$inferSelect
-export type Size = typeof size.$inferInsert
-export type Category = typeof category.$inferInsert
-export type ProductType = typeof product_type.$inferInsert
+export type Size = typeof size.$inferSelect
+export type Category = typeof category.$inferSelect
+export type ProductType = typeof product_type.$inferSelect
 
 export type AllFiltersType = {
   categories: Category[]
@@ -87,12 +87,12 @@ export const producty_type_relations = relations(product_type, ({ many }) => ({
 
 export const productVariations = createTable('product_variations', {
   id: serial('id').primaryKey(),
-  product_id: varchar('product_id'),
-  color_id: serial('color_id'),
-  size_id: serial('size_id'),
+  product_id: varchar('product_id').notNull(),
+  color_id: serial('color_id').notNull(),
+  size_id: serial('size_id').notNull(),
   product_type_Id: serial('product_type_id'),
-  category_id: serial('category_id'),
-  stock: integer('stock')
+  category_id: serial('category_id').notNull(),
+  stock: integer('stock').notNull()
 })
 
 export const productVariationsRelations = relations(
@@ -121,7 +121,7 @@ export const productVariationsRelations = relations(
   })
 )
 
-export type ProductVariants = typeof productVariations.$inferInsert
+export type ProductVariants = typeof productVariations.$inferSelect
 export type ProductVariantWithJoins = Pick<ProductVariants, 'id' | 'stock'> & {
   product?: Product | null
   color?: Color | null

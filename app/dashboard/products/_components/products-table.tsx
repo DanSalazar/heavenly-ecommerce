@@ -20,6 +20,7 @@ import Image from 'next/image'
 import { MoreHorizontalIcon } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { deleteProduct } from '@/server/actions'
+import Link from 'next/link'
 
 export default function ProductsTable({
   products
@@ -72,7 +73,13 @@ export default function ProductsTable({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                  <DropdownMenuItem>Edit</DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link
+                      className="flex-1"
+                      href={`products/edit/${product.id}`}>
+                      Edit
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={async () => {
                       await deleteProduct(product.id)
