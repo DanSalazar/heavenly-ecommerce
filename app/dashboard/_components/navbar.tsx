@@ -13,33 +13,30 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import ToggleTheme from './toggle-theme'
 
 const Links = [
   {
     href: '/dashboard',
     title: 'Dashboard'
-    // icon: <HomeIcon />
   },
   {
     href: '/dashboard/products',
     title: 'Products'
-    // icon: <ShoppingBagIcon />
   },
   {
     href: '/dashboard/orders',
     title: 'Orders'
-    // icon: <PackageIcon />
   },
   {
     href: '/dashboard/settings',
     title: 'Settings'
-    // icon: <SettingsIcon />
   }
 ]
 
 export default function Navbar() {
   return (
-    <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background z-10 px-4 md:px-6">
+    <header className="sticky top-0 flex items-center gap-4 border-b bg-background z-10 px-4 md:px-6">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
           href="#"
@@ -83,6 +80,7 @@ export default function Navbar() {
         </SheetContent>
       </Sheet>
       <div className="flex w-full items-center justify-end gap-4 md:ml-auto">
+        <ToggleTheme />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="secondary" size="icon" className="rounded-full">

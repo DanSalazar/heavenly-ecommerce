@@ -19,9 +19,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body className={mainFont.className + ' flex flex-col'}>
+        <body
+          className={
+            mainFont.className + ' grid grid-rows-[80px_1fr] h-screen'
+          }>
           <Navbar />
-          <main className="bg-zinc-50 flex-1 flex flex-col gap-4 p-6">
+          <main className="bg-zinc-50 dark:bg-background h-full flex flex-col gap-4 p-6">
             <BreadcrumbWrapper isDashboard />
             {children}
           </main>
