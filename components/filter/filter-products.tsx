@@ -45,6 +45,8 @@ export default function FilterProducts({
         onClick={handleRemoveFilter}
         className="hidden md:flex flex-wrap gap-2">
         {[...params.entries()].map(([key, filter]) => {
+          if (key === 'search') return null
+
           return filter.split(',').map((value, j) => (
             <Button
               key={value + j}

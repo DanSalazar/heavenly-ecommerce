@@ -4,6 +4,7 @@ import HeavenlyIcon from './heavenly-icon'
 import ShoppingBag from './shopping-bag'
 import Navigation from './navigation'
 import { getBag } from '@/server/actions'
+import SearchProduct from './search-product'
 
 export default async function Navbar() {
   const bag = await getBag()
@@ -16,7 +17,8 @@ export default async function Navbar() {
           <HeavenlyIcon />
         </Link>
       </div>
-      <div className="self-stretch flex gap-4 justify-end items-center bg-white">
+      <div className="self-stretch flex gap-3 justify-end items-center bg-white">
+        <SearchProduct />
         <Link href={'/favorites'}>
           <HeartIcon />
         </Link>

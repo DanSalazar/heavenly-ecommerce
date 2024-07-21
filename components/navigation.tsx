@@ -1,8 +1,6 @@
 'use client'
 
-import { cn } from '@/lib/utils'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 
 type NavLinks = {
   id: string
@@ -24,17 +22,14 @@ const links: NavLinks[] = [
 ]
 
 export default function Navigation() {
-  const pathname = usePathname()
-  const department = pathname.split('/')[1]
-
   return (
-    <nav className="hidden bg-white md:flex  items-center gap-4">
+    <nav className="hidden bg-white md:flex items-center gap-4">
       {links.map(link => (
         <Link
           key={link.id}
-          className={cn('uppercase font-medium', {
-            underline: department === link.title.toLowerCase()
-          })}
+          className={
+            'uppercase underline-offset-4 text-zinc-500 hover:text-black transition-colors hover:underline'
+          }
           href={link.path}>
           {link.title}
         </Link>

@@ -1,8 +1,7 @@
 import ProductComponent from '@/components/ecommerce/product'
 import ProductsWrapper from '@/components/ecommerce/products-wrapper'
-import FilterProducts from '@/components/filter/filter-products'
 import BreadcrumbWrapper from '@/components/ui/breadcrumb-wrapper'
-import { getFilters, getProducts } from '@/server/actions'
+import { getProducts } from '@/server/actions'
 
 export default async function Page({
   params,
@@ -12,7 +11,6 @@ export default async function Page({
   searchParams: unknown
 }) {
   const data = await getProducts(params.department, searchParams)
-  const filters = await getFilters()
 
   if (!data)
     return (
@@ -28,7 +26,6 @@ export default async function Page({
         <h2 className="text-7xl md:text-8xl font-medium uppercase break-words">
           {params.department}
         </h2>
-        <FilterProducts filters={filters} />
         <ProductsWrapper>
           {data.map(item => (
             <ProductComponent key={item.product.id} product={item.product} />

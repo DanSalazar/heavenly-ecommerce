@@ -104,13 +104,13 @@ const makeFiltersBySearchParams = (
 }
 
 export const getProducts = async (
-  department: string,
+  department: string | null,
   searchParams: unknown
 ) => {
   try {
     const parsedSearchParams = searchParamsSchema.parse(searchParams)
     const filtersByParams = makeFiltersBySearchParams(parsedSearchParams)
-    const parsedDepartment = department.length
+    const parsedDepartment = department?.length
       ? paramsResolver.parse(department)
       : ''
 
@@ -273,7 +273,8 @@ export const getBag = async () => {
     with: {
       product_variant: {
         columns: {
-          id: true
+          id: true,
+          stock: true
         },
         with: {
           product: true,
