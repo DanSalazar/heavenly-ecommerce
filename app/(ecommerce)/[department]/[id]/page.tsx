@@ -1,6 +1,5 @@
 import Price from '@/components/ecommerce/price'
 import ProductImagesContainer from '@/components/ecommerce/product-images-container'
-import { PackageIcon, TruckIcon } from '@/components/icons'
 import {
   Accordion,
   AccordionContent,
@@ -11,6 +10,9 @@ import { getProductById } from '@/server/actions'
 import { marcellus } from '@/components/fonts'
 import AddToBag from './_components/add-to-bag'
 import BreadcrumbWrapper from '@/components/ui/breadcrumb-wrapper'
+import { db } from '@/db'
+import { product } from '@/db/schema'
+import ProductComponent from '@/components/ecommerce/product'
 
 export default async function Page({
   params
@@ -45,16 +47,6 @@ export default async function Page({
 
           <AddToBag variants={productWithVariants} productId={product.id} />
 
-          <div className="p-4 border border-zinc-200 rounded-md font-medium">
-            <p className="flex gap-2 mb-4">
-              <TruckIcon />
-              Free delivery on qualifying orders.
-            </p>
-            <p className="flex gap-2">
-              <PackageIcon />
-              Free returns.
-            </p>
-          </div>
           <Accordion type="single" collapsible>
             <AccordionItem value="item-1">
               <AccordionTrigger className="uppercase">
@@ -78,6 +70,22 @@ export default async function Page({
           </Accordion>
         </div>
       </main>
+      <RelatedProducts />
     </>
+  )
+}
+
+async function RelatedProducts() {
+  const products = await db.select().from(product).limit(6)
+
+  return (
+    <div className="mt-16">
+      <h2 className="font-medium text-xl mb-4">Related Products</h2>
+      <div className="flex overflow-y-auto border-t gap-8 pt-4 pb-8 border-zinc-200">
+        {products.map(product => (
+          <ProductComponent product={product} key={product.id} />
+        ))}
+      </div>
+    </div>
   )
 }
