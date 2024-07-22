@@ -1,7 +1,12 @@
 import { Button } from '@/components/ui/button'
 import useUrlState from '@/hooks/useUrlState'
+import { cn } from '@/lib/utils'
 
-export default function PickSize({ sizes }: { sizes: string[] }) {
+export default function PickSize({
+  sizes
+}: {
+  sizes: { name: string; isAvailable: boolean }[]
+}) {
   const { getState, add } = useUrlState()
 
   return (
@@ -12,10 +17,11 @@ export default function PickSize({ sizes }: { sizes: string[] }) {
           if (!size) return null
           return (
             <SizeButton
-              key={size}
+              key={size.name}
+              name={size.name}
+              isAvailable={size.isAvailable}
               add={add}
-              name={size}
-              isSelected={getState('size') === size}
+              isSelected={getState('size') === size.name}
             />
           )
         })}
@@ -27,22 +33,31 @@ export default function PickSize({ sizes }: { sizes: string[] }) {
 const SizeButton = ({
   name,
   add,
-  isSelected
+  isSelected,
+  isAvailable
 }: {
   name: string
   add: (key: string, value: string) => void
   isSelected: boolean
+  isAvailable: boolean
 }) => {
+  const notAvailableClass =
+    'relative disabled:pointer-events-auto disabled:opacity-100 z-10 overflow-hidden cursor-not-allowed bg-zinc-100 hover:bg-zinc-100 text-zinc-500 ring-1 ring-zinc-300 before:absolute before:inset-x-0 before:-z-10 before:h-px before:-rotate-45 before:bg-zinc-300 before:transition'
+
   return (
     <Button
-      className="uppercase rounded-full"
+      className={cn('uppercase rounded-full', {
+        [notAvailableClass]: !isAvailable
+      })}
       size={'sm'}
+      aria-disabled={!isAvailable}
+      disabled={!isAvailable}
       type="button"
       onClick={() => {
         add('size', name)
       }}
       variant={isSelected ? 'default' : 'outline'}
-      title={name.toUpperCase() + ' size'}>
+      title={`Size ${name.toUpperCase()} ${!isAvailable ? '(Out of Stock)' : ''}`}>
       {name}
     </Button>
   )

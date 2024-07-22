@@ -7,6 +7,7 @@ import PickColor from './pick-color'
 import PickSize from './pick-size'
 import { ProductVariantWithJoins } from '@/db/schema'
 import LikeButton from './like-button'
+import useUrlState from '@/hooks/useUrlState'
 
 export default function AddToBag({
   variants,
@@ -22,8 +23,46 @@ export default function AddToBag({
       product.size?.name === searchParams.get('size')
   )
   const formAction = addProductInBag.bind(null, variantSelected?.id)
-  const sizes = [...new Set(variants.map(({ size }) => size?.name || ''))]
-  const colors = [...new Set(variants.map(({ color }) => color?.name || ''))]
+  const { getState } = useUrlState()
+
+  const sizes = [...new Set(variants.map(({ size }) => size?.name || ''))].map(
+    size => {
+      let isAvailable = true
+
+      if (getState('color')) {
+        isAvailable = !!variants.find(
+          variant =>
+            variant.color?.name === getState('color') &&
+            variant.size?.name === size &&
+            variant.stock > 0
+        )
+      }
+
+      return {
+        name: size,
+        isAvailable
+      }
+    }
+  )
+  const colors = [
+    ...new Set(variants.map(({ color }) => color?.name || ''))
+  ].map(color => {
+    let isAvailable = true
+
+    if (getState('size')) {
+      isAvailable = !!variants.find(
+        variant =>
+          variant.size?.name === getState('size') &&
+          variant.color?.name === color &&
+          variant.stock > 0
+      )
+    }
+
+    return {
+      name: color,
+      isAvailable
+    }
+  })
 
   return (
     <form action={formAction} className="flex flex-col gap-4 mt-4">

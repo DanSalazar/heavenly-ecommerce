@@ -52,7 +52,9 @@ export default function useUrlState() {
     const keyLower = key.toLowerCase()
     const valueLower = value.toLowerCase()
 
-    newParams.set(keyLower, valueLower)
+    if (newParams.get(keyLower) === valueLower) {
+      newParams.delete(keyLower)
+    } else newParams.set(keyLower, valueLower)
 
     replace(pathname + '?' + newParams.toString(), { scroll: false })
   }
