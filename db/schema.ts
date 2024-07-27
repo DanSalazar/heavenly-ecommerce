@@ -155,7 +155,7 @@ export type BagItem = Bag & {
 export const order = createTable(
   'order',
   {
-    id: serial('id'),
+    id: serial('id').primaryKey(),
     order_created_at: varchar('order_created_at', { length: 27 }).notNull(),
     customer_name: varchar('customer_name', { length: 255 }).notNull(),
     customer_email: varchar('customer_email', { length: 255 }).notNull(),
