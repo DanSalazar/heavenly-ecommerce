@@ -17,14 +17,14 @@ export const departmentEnum = pgEnum('department', ['men', 'women'])
 export const statusEnum = pgEnum('status', ['active', 'archived'])
 
 export const product = createTable('product', {
-  id: varchar('id', { length: 255 }).primaryKey().notNull(),
+  id: varchar('id', { length: 36 }).primaryKey().notNull(),
   name: varchar('name', { length: 255 }).notNull(),
   brand: varchar('brand', { length: 50 }).notNull(),
   description: text('description'),
   price: integer('price').notNull(),
   discount: boolean('discount').default(false),
   percentage_off: integer('percentage_off'),
-  image: text('image').notNull(),
+  thumbnail: text('image').notNull(),
   department: departmentEnum('department').notNull(),
   status: statusEnum('status').notNull(),
   created_at: varchar('created_at', { length: 27 }).notNull(),
@@ -32,9 +32,11 @@ export const product = createTable('product', {
 })
 
 export type Product = typeof product.$inferSelect
+export type ProductInsert = typeof product.$inferInsert
 
 export const productRelations = relations(product, ({ many }) => ({
-  productVariations: many(productVariations)
+  productVariations: many(productVariations),
+  images: many(imagesTable)
 }))
 
 export const color = createTable('color', {
@@ -122,6 +124,7 @@ export const productVariationsRelations = relations(
 )
 
 export type ProductVariants = typeof productVariations.$inferSelect
+export type ProductVariantsInsert = typeof productVariations.$inferInsert
 export type ProductVariantWithJoins = Pick<ProductVariants, 'id' | 'stock'> & {
   product?: Product | null
   color?: Color | null
@@ -170,3 +173,22 @@ export const order = createTable(
 )
 
 export type OrderType = typeof order.$inferSelect
+
+export const imagesTable = createTable('images', {
+  id: serial('id').primaryKey(),
+  key: varchar('key', { length: 255 }).notNull(),
+  url: varchar('image_url', { length: 255 }).notNull(),
+  product_id: varchar('product_id', { length: 36 })
+    .notNull()
+    .references(() => product.id)
+})
+
+export const imagesRelations = relations(imagesTable, ({ one }) => ({
+  product: one(product, {
+    fields: [imagesTable.product_id],
+    references: [product.id]
+  })
+}))
+
+export type ImageSelect = typeof imagesTable.$inferSelect
+export type ImageInsert = typeof imagesTable.$inferInsert
