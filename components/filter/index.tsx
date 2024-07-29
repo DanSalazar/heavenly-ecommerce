@@ -63,7 +63,7 @@ function Filter({ className, children, onClose, open, ...props }: FilterProps) {
   return (
     <div
       className={cn(
-        'z-10 transition-opacity pointer-events-none opacity-0 user-points shadow-md bg-background rounded-md border border-zinc-200 dark:border-zinc-800 flex flex-col',
+        'z-10 transition-opacity pointer-events-none opacity-0 shadow-md bg-background rounded-md border border-zinc-200 dark:border-zinc-800 flex flex-col',
         className,
         {
           'opacity-100 pointer-events-auto': open

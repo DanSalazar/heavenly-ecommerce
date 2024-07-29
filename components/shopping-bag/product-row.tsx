@@ -43,7 +43,7 @@ export default function ProductRow({
       )}>
       <Image
         className="self-center"
-        src={product.image!}
+        src={product.thumbnail}
         width={200}
         height={200}
         alt={product.name}

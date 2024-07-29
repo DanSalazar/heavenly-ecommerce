@@ -53,7 +53,7 @@ export default function FilterProducts({
               data-key={key}
               data-value={value}
               className="uppercase"
-              variant={'custom'}>
+              variant={'outline'}>
               {value} <MarkIcon className="ml-1 pointer-events-none" />
             </Button>
           ))

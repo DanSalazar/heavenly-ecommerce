@@ -6,13 +6,14 @@ export default async function Page({ params }: { params: { id: string } }) {
   const variantFields: VariantFields = await getNewProductFields()
   const product = await getProductById(params.id)
 
-  if (!product || !product[0]?.product) return 'No product'
+  if (!product) return 'No product'
 
   return (
     <EditProductForm
       variantFields={variantFields}
-      variants={product}
-      product={product[0].product}
+      variants={product.productVariations}
+      product={product}
+      images={product.images}
     />
   )
 }

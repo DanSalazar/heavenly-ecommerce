@@ -73,7 +73,7 @@ export default async function Page() {
             <CheckoutButton />
           </form>
           <Paypal />
-          <Accordion type="single" collapsible>
+          {/* <Accordion type="single" collapsible>
             <AccordionItem value="item-1">
               <AccordionTrigger>
                 <span className="flex gap-2">
@@ -85,7 +85,7 @@ export default async function Page() {
                 shipping on every order, every time
               </AccordionContent>
             </AccordionItem>
-          </Accordion>
+          </Accordion> */}
         </div>
       </div>
     </>

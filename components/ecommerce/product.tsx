@@ -24,7 +24,7 @@ export default function ProductComponent({
         <Image
           fill
           objectFit="contain"
-          src={product.image!}
+          src={product.thumbnail}
           alt={product.name}
         />
       </div>

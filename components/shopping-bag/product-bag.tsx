@@ -17,7 +17,12 @@ export default function ProductBag({ bagItem }: { bagItem: BagItem }) {
       className={cn('relative flex gap-2', {
         'pointer-events-none opacity-40': isDeletePending
       })}>
-      <Image width={92} height={92} src={product.image!} alt={product.name} />
+      <Image
+        width={92}
+        height={92}
+        src={product.thumbnail}
+        alt={product.name}
+      />
       <div className="flex-1 flex flex-col relative gap-1 overflow-hidden">
         <p className="font-semibold text-sm uppercase truncate">
           {product.name}

@@ -5,6 +5,7 @@ import Navbar from './_components/navbar'
 import Providers from '@/components/providers'
 import { mainFont } from '@/components/fonts'
 import BreadcrumbWrapper from '@/components/ui/breadcrumb-wrapper'
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -28,6 +29,7 @@ export default function RootLayout({
             <BreadcrumbWrapper isDashboard />
             {children}
           </main>
+          <Toaster />
         </body>
       </Providers>
     </html>

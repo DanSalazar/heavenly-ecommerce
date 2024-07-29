@@ -19,8 +19,7 @@ export default async function Page({
 }: {
   params: { department: string; id: string }
 }) {
-  const productWithVariants = await getProductById(params.id)
-  const product = productWithVariants[0]?.product
+  const product = await getProductById(params.id)
 
   if (!product) return <div>No product</div>
 
@@ -28,7 +27,10 @@ export default async function Page({
     <>
       <BreadcrumbWrapper pathname={`/${params.department}/${product.name}`} />
       <main className="flex flex-col md:grid grid-cols-2 gap-12">
-        <ProductImagesContainer image={product.image!} alt={product.name} />
+        <ProductImagesContainer
+          thumbnail={product.thumbnail!}
+          images={product.images}
+        />
         <div className="flex flex-col gap-2">
           <p className={marcellus.className + ' text-3xl uppercase'}>
             {product.name}
@@ -45,7 +47,10 @@ export default async function Page({
           Similique cum facere quibusdam, iste enim repellat fugiat deleniti voluptatem`}
           </p>
 
-          <AddToBag variants={productWithVariants} productId={product.id} />
+          <AddToBag
+            variants={product.productVariations}
+            productId={product.id}
+          />
 
           <Accordion type="single" collapsible>
             <AccordionItem value="item-1">

@@ -3,37 +3,46 @@
 import useLightbox from '@/hooks/useLightbox'
 import Image from 'next/image'
 import NextJsImage from '../gallery/next-js-image'
+import { ImageSelect } from '@/db/schema'
 
 export default function ProductImagesContainer({
-  image,
-  alt
+  thumbnail,
+  images
 }: {
-  image: string
-  alt: string
+  thumbnail: string
+  images: ImageSelect[]
 }) {
   const { openLightbox, renderLightbox } = useLightbox()
 
-  const slides = [{ src: image }, { src: image }, { src: image }]
+  const slides = images.map(({ url }) => ({ src: url }))
 
   return (
     <div className="grid grid-cols-2 gap-4">
-      <button className="col-span-2" onClick={openLightbox}>
-        <Image width={800} height={800} src={image} alt={alt} />
+      <button className="col-span-2" onClick={() => openLightbox(0)}>
+        <Image width={800} height={800} src={thumbnail} alt={'Product Image'} />
       </button>
-      <Image
-        className="hidden md:block"
-        width={400}
-        height={500}
-        src={image}
-        alt={alt}
-      />
-      <Image
-        className="hidden md:block"
-        width={400}
-        height={500}
-        src={image}
-        alt={alt}
-      />
+      {images[1] && (
+        <button onClick={() => openLightbox(1)}>
+          <Image
+            className="hidden md:block"
+            width={400}
+            height={500}
+            src={images[1].url}
+            alt={'Product Image'}
+          />
+        </button>
+      )}
+      {images[2] && (
+        <button onClick={() => openLightbox(2)}>
+          <Image
+            className="hidden md:block"
+            width={400}
+            height={500}
+            src={images[2].url}
+            alt={'Product Image'}
+          />
+        </button>
+      )}
       {renderLightbox({ slides, render: { slide: NextJsImage } })}
     </div>
   )

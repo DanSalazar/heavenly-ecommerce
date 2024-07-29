@@ -51,7 +51,7 @@ export default function ProductsTable({
                 alt="Product image"
                 className="aspect-square rounded-md object-cover"
                 height="64"
-                src={product.image!}
+                src={product.thumbnail}
                 width="64"
               />
             </TableCell>

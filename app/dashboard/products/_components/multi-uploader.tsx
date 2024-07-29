@@ -1,87 +1,103 @@
 'use client'
 
-import { forwardRef, useCallback } from 'react'
-import { useDropzone } from '@uploadthing/react'
-import { generateClientDropzoneAccept } from 'uploadthing/client'
 import Image from 'next/image'
-import { UploadIcon } from '@radix-ui/react-icons'
 import { cn } from '@/lib/utils'
-import usePreviewImages from '@/hooks/usePreviewImages'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '@/components/ui/dialog'
+import { UploadDropzone } from '@/lib/uploadthing'
+import { useToast } from '@/components/ui/use-toast'
+import type { ImageSelect } from '@/db/schema'
 
-interface MultiUploaderProps {
-  permittedFileInfo: any
-  error: string
-  files: (File | string)[]
-  addFiles: (files: File[]) => void
+interface UploaderProps {
+  addFiles: (files: { key: string; url: string }[]) => void
+  myFiles: Partial<ImageSelect>[]
+  uploadedFiles?: ImageSelect[]
 }
 
-export const MultiUploader = forwardRef<HTMLButtonElement, MultiUploaderProps>(
-  ({ permittedFileInfo, error, files, addFiles }, ref) => {
-    const onDrop = useCallback((acceptedFiles: File[]) => {
-      addFiles(acceptedFiles)
-    }, [])
-    const { previewFiles } = usePreviewImages({ files })
+export default function Uploader({
+  addFiles,
+  myFiles,
+  uploadedFiles
+}: UploaderProps) {
+  const { toast } = useToast()
 
-    const fileTypes = permittedFileInfo?.config
-      ? Object.keys(permittedFileInfo?.config)
-      : []
-
-    const { getRootProps, getInputProps } = useDropzone({
-      onDrop,
-      accept: fileTypes ? generateClientDropzoneAccept(fileTypes) : undefined
-    })
-
-    return (
-      <div className="grid gap-2">
-        <Image
-          alt="Product image"
-          className="aspect-square w-full rounded-md object-cover"
-          height="300"
-          src={previewFiles[0] || '/placeholder.svg'}
-          width="300"
-        />
-        <div className="grid grid-cols-3 gap-2">
-          <button type="button">
-            <Image
-              alt="Product image"
-              className="aspect-square w-full rounded-md object-cover"
-              height="84"
-              src={previewFiles[1] || '/placeholder.svg'}
-              width="84"
-            />
-          </button>
-          <button type="button">
-            <Image
-              alt="Product image"
-              className="aspect-square w-full rounded-md object-cover"
-              height="84"
-              src={previewFiles[2] || '/placeholder.svg'}
-              width="84"
-            />
-          </button>
-          <button
-            ref={ref}
-            type="button"
-            className={cn(
-              'flex aspect-square w-full rounded-md border border-dashed',
-              {
-                'focus:border-red-500': error.length
-              }
-            )}>
-            <div
-              className="flex items-center justify-center flex-1 self-stretch"
-              {...getRootProps()}>
-              <input
-                {...getInputProps()}
-                className={cn('w-full self-stretch h-full block')}
-              />
-              <UploadIcon className="absolute" />
-              <span className="sr-only">Upload</span>
-            </div>
-          </button>
-        </div>
-        {error && <p className="text-sm text-red-500 font-medium">{error}</p>}
-      </div>
-    )
-  }
-)
+  return (
+    <>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="outline">Manage all images</Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[850px] max-h-[600px]">
+          <DialogHeader>
+            <DialogTitle>Manage product images</DialogTitle>
+            <DialogDescription>
+              Manage product images. The first image you upload will be the one
+              used as the thumbnail.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex max-h-[250px] overflow-y-auto gap-4">
+            {!!uploadedFiles?.length &&
+              uploadedFiles.map(({ key, url }) => (
+                <Image
+                  key={key}
+                  src={url!}
+                  alt="Product Image"
+                  width={180}
+                  height={180}
+                  className="rounded-md object-cover"
+                />
+              ))}
+            {!!myFiles.length &&
+              myFiles.map(({ key, url }) => (
+                <Image
+                  key={key}
+                  src={url!}
+                  alt="Product Image"
+                  width={180}
+                  height={180}
+                  className="rounded-md object-cover"
+                />
+              ))}
+          </div>
+          <UploadDropzone
+            appearance={{
+              button: ({ isUploading }) => {
+                return cn(
+                  'bg-primary text-primary-foreground font-medium focus:ring-primary',
+                  {
+                    'bg-muted-foreground after:bg-primary': isUploading
+                  }
+                )
+              },
+              label: 'text-primary hover:text-muted-foreground',
+              allowedContent: 'text-muted-foreground',
+              container: cn({
+                'opacity-50 pointer-events-none':
+                  myFiles.length + (uploadedFiles?.length || 0) >= 5
+              })
+            }}
+            endpoint="imageUploader"
+            onClientUploadComplete={res => {
+              const myFiles = res.map(({ key, url }) => ({ key, url }))
+              addFiles(myFiles)
+            }}
+            onUploadError={(error: Error) => {
+              toast({
+                title: error.name,
+                description: error.message,
+                variant: 'destructive'
+              })
+            }}
+          />
+        </DialogContent>
+      </Dialog>
+    </>
+  )
+}

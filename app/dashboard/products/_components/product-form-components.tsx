@@ -16,11 +16,11 @@ import {
   TableRow
 } from '@/components/ui/table'
 import { PlusIcon } from '@/components/icons'
-
 import { Control, useFieldArray } from 'react-hook-form'
 import { FormSchema } from './product-form'
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -101,7 +101,6 @@ export const ProductVariantsForm = ({
     control: control,
     name: 'variants'
   })
-
   const addVariant = () => {
     append({
       stock: 0
@@ -111,20 +110,19 @@ export const ProductVariantsForm = ({
       color: string
     })
   }
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Stock</CardTitle>
-        <CardDescription>
-          Lipsum dolor sit amet, consectetur adipiscing elit
-        </CardDescription>
+        <CardDescription>Manage your stock</CardDescription>
         {error && <p className="text-red-500 font-medium text-sm">{error}</p>}
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[200px]">Stock</TableHead>
+              <TableHead className="w-[80px]">Stock</TableHead>
               <TableHead className="w-[200px]">Size</TableHead>
               <TableHead className="w-[200px]">Color</TableHead>
             </TableRow>
@@ -234,9 +232,7 @@ export const ProductCategory = ({
   <Card>
     <CardHeader>
       <CardTitle>Product Category</CardTitle>
-      <CardDescription>
-        Lipsum dolor sit amet, consectetur adipiscing elit
-      </CardDescription>
+      <CardDescription>Select your product category</CardDescription>
     </CardHeader>
     <CardContent>
       <FormField
@@ -270,9 +266,7 @@ export const ProductDepartment = ({ control }: { control: FormControl }) => (
   <Card>
     <CardHeader>
       <CardTitle>Product Department</CardTitle>
-      <CardDescription>
-        Lipsum dolor sit amet, consectetur adipiscing elit
-      </CardDescription>
+      <CardDescription>Select your product department</CardDescription>
     </CardHeader>
     <CardContent>
       <FormField
@@ -303,9 +297,7 @@ export const ProductImage = ({ children }: { children: React.ReactNode }) => (
   <Card className="overflow-hidden">
     <CardHeader>
       <CardTitle>Product Images</CardTitle>
-      <CardDescription>
-        Lipsum dolor sit amet, consectetur adipiscing elit
-      </CardDescription>
+      <CardDescription>Manage your product images</CardDescription>
     </CardHeader>
     <CardContent>{children}</CardContent>
   </Card>
@@ -323,6 +315,7 @@ export const ProductArchive = ({ control }: { control: FormControl }) => (
           </FormControl>
           <div className="space-y-1 leading-none">
             <FormLabel>Archived Product</FormLabel>
+            <FormDescription>This product will not be visible</FormDescription>
           </div>
         </FormItem>
       )}
@@ -337,6 +330,9 @@ export const ProductArchive = ({ control }: { control: FormControl }) => (
           </FormControl>
           <div className="space-y-1 leading-none">
             <FormLabel>Featured Product</FormLabel>
+            <FormDescription>
+              This product will be featured (will be shown on the home page)
+            </FormDescription>
           </div>
         </FormItem>
       )}

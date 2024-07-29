@@ -2,11 +2,15 @@
 
 import { db } from '@/db'
 import {
+  ImageInsert,
   Product,
+  ProductInsert,
   ProductVariants,
+  ProductVariantsInsert,
   bagItem,
   category,
   color,
+  imagesTable,
   product,
   productVariations,
   size
@@ -164,17 +168,21 @@ export const getProducts = async (
 }
 
 export const getProductById = async (id: string) => {
-  const data = await db.query.productVariations.findMany({
-    columns: {
-      id: true,
-      stock: true
-    },
-    where: eq(productVariations.product_id, id),
+  const data = await db.query.product.findFirst({
+    where: eq(product.id, id),
     with: {
-      product: true,
-      size: true,
-      color: true,
-      category: true
+      productVariations: {
+        columns: {
+          id: true,
+          stock: true
+        },
+        with: {
+          color: true,
+          size: true,
+          category: true
+        }
+      },
+      images: true
     }
   })
 
@@ -202,18 +210,16 @@ const updateProductVariantSchema = z.array(variantsFields)
 export const updateProduct = async (
   id: string,
   product_values: Partial<Product> | null,
-  variants_values: Partial<ProductVariants>[] | null
+  variants_values: Partial<ProductVariants>[] | null,
+  images: ImageInsert[]
 ) => {
-  if (product_values)
-    await db.update(product).set(product_values).where(eq(product.id, id))
-
   const variantsParsed = updateProductVariantSchema.safeParse(variants_values)
+  const updateSets: Record<string, SQL> = {}
 
   if (variantsParsed.success) {
     const fields = variantsFields
       .omit({ id: true, product_id: true })
       .keyof().options
-    const updateSets: Record<string, SQL> = {}
 
     fields.forEach(field => {
       const sqlChunks: SQL[] = []
@@ -231,15 +237,23 @@ export const updateProduct = async (
       sqlChunks.push(sql`end)`)
       updateSets[field] = sql.join(sqlChunks, sql.raw(' '))
     })
-
-    await db
-      .insert(productVariations)
-      .values(variantsParsed.data)
-      .onConflictDoUpdate({
-        target: productVariations.id,
-        set: updateSets
-      })
   }
+
+  await db.transaction(async tx => {
+    if (product_values)
+      await db.update(product).set(product_values).where(eq(product.id, id))
+    if (variantsParsed.success)
+      await db
+        .insert(productVariations)
+        .values(variantsParsed.data)
+        .onConflictDoUpdate({
+          target: productVariations.id,
+          set: updateSets
+        })
+    if (images.length) {
+      await db.insert(imagesTable).values(images)
+    }
+  })
 
   revalidatePath('/dashboard/products')
   redirect('/dashboard/products')
@@ -329,14 +343,18 @@ export const getNewProductFields = async () => {
 }
 
 export const createProduct = async (
-  p: Product,
-  variants: ProductVariants[]
+  p: ProductInsert,
+  variants: ProductVariantsInsert[],
+  images: ImageInsert[]
 ) => {
   try {
-    await db.insert(product).values(p)
-    await db.insert(productVariations).values(variants)
+    await db.transaction(async tx => {
+      await tx.insert(product).values(p)
+      await tx.insert(productVariations).values(variants)
+      await tx.insert(imagesTable).values(images)
+    })
   } catch (error) {
-    return 'Error while creating product'
+    return 'Error creating product'
   }
 
   revalidatePath('/dashboard/products')

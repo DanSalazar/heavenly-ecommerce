@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form'
 import { Form } from '@/components/ui/form'
 import { Button, buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
-import { ArrowLeftIcon } from '@radix-ui/react-icons'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -15,13 +14,13 @@ import {
   ProductImage,
   ProductVariantsForm
 } from './product-form-components'
-
-import { MultiUploader } from './multi-uploader'
-import { useRef, useState } from 'react'
-import { useUploadThing } from '@/lib/uploadthing'
-import { Product, ProductVariants } from '@/db/schema'
+import Uploader from './multi-uploader'
+import { useState } from 'react'
+import { ImageInsert, ProductInsert, ProductVariantsInsert } from '@/db/schema'
 import { createProduct } from '@/server/actions'
 import { VariantFields } from '../new/page'
+import { deleteFiles } from '@/server/uploadthing'
+import { PreventNavigation } from './prevent-navigation'
 
 export const formSchema = z.object({
   name: z
@@ -47,7 +46,8 @@ export const formSchema = z.object({
       z.object({
         stock: z.coerce.number().max(99),
         color: z.string({ required_error: 'Color is required' }),
-        size: z.string({ required_error: 'Size is required' })
+        size: z.string({ required_error: 'Size is required' }),
+        id: z.number().optional()
       })
     )
     .min(1, {
@@ -81,47 +81,30 @@ export function ProductForm({
   })
   const [progress, setProgress] = useState('')
   const [generalError, setGeneralError] = useState('')
+  const [myFiles, setFiles] = useState<{ key: string; url: string }[]>([])
 
-  const [files, setFiles] = useState<File[]>([])
-  const [filesError, setFilesError] = useState('')
-  const uploadInputRef = useRef<HTMLButtonElement | null>(null)
-
-  const { startUpload, permittedFileInfo } = useUploadThing('imageUploader', {
-    onUploadError: e => {
-      setFilesError(e.message)
-      uploadInputRef.current?.focus()
-    },
-    onUploadProgress: p => setProgress(`Uploading images ${p}%`)
-  })
-
-  const addFiles = (files: File[]) => {
-    setFiles(prevFiles => [...prevFiles, ...files])
+  const addFiles = (files: { key: string; url: string }[]) => {
+    setFiles(cFiles => [...cFiles, ...files])
   }
 
   const handleSubmit = async (values: FormSchema) => {
     setGeneralError('')
-    let urls: string[] | undefined
 
-    if (files.length) {
-      const data = await startUpload(files)
-      urls = data?.map(f => f.url)
-    } else {
-      setFilesError('You need to upload at least 1 image')
-      uploadInputRef.current?.focus()
+    if (myFiles.length < 1) {
+      setGeneralError('You need at least add one image.')
       return
     }
 
     setProgress('Saving product...')
-
     const product_id = crypto.randomUUID()
 
-    const product: Product = {
+    const product: ProductInsert = {
       id: product_id,
       name: values.name,
       brand: values.brand,
-      description: values.description as string,
+      description: values.description || '',
       price: values.price,
-      image: urls?.length ? urls[0] : '',
+      thumbnail: myFiles?.length ? myFiles[0].url : '',
       department: values.department,
       discount: false,
       percentage_off: 0,
@@ -129,8 +112,7 @@ export function ProductForm({
       created_at: new Date().toISOString(),
       featured: values.featured
     }
-
-    const variants: ProductVariants[] = values.variants.map(variant => ({
+    const variants: ProductVariantsInsert[] = values.variants.map(variant => ({
       color_id: Number(variant.color),
       size_id: Number(variant.size),
       category_id: Number(values.category),
@@ -138,8 +120,12 @@ export function ProductForm({
       product_type_Id: 1,
       product_id: product_id
     }))
+    const images: ImageInsert[] = myFiles.map(file => ({
+      ...file,
+      product_id: product_id
+    }))
 
-    const err = await createProduct(product, variants)
+    const err = await createProduct(product, variants, images)
 
     if (err) {
       setProgress('')
@@ -147,84 +133,81 @@ export function ProductForm({
     }
   }
 
+  const resetData = async () => {
+    if (myFiles.length) {
+      await deleteFiles(myFiles.map(({ key }) => key))
+    }
+  }
+
+  const isDirty = form.formState.isDirty || myFiles.length > 0
+
   return (
-    <div className="flex min-h-screen flex-col">
-      <div className="flex flex-col sm:gap-4">
-        <main className="grid flex-1 items-start gap-4">
-          <Form {...form}>
-            <form
-              className="mx-auto grid flex-1 auto-rows-max gap-4"
-              onSubmit={form.handleSubmit(handleSubmit)}>
-              <div className="flex flex-wrap items-center gap-4">
-                <Link
-                  href={'/dashboard/products'}
-                  className={buttonVariants({
-                    variant: 'outline',
-                    size: 'icon'
-                  })}>
-                  <ArrowLeftIcon />
-                  <span className="sr-only">Back</span>
-                </Link>
-                <h1 className="flex-1 text-xl font-semibold tracking-tight">
-                  Create a new product
-                </h1>
-                <div className="hidden items-center gap-2 md:ml-auto md:flex">
-                  <Button type="button" variant="outline" disabled={!!progress}>
-                    Discard
-                  </Button>
-                  <Button type="submit" disabled={!!progress}>
-                    {progress ? progress : 'Create Product'}
-                  </Button>
-                  {generalError && (
-                    <p className="text-red-500 text-sm font-medium">
-                      {generalError}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
-                <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
-                  <ProductDetailsForm control={form.control} />
-                  <ProductVariantsForm
-                    error={form.formState.errors.variants?.message || ''}
-                    control={form.control}
-                    variantFields={variantFields}
-                  />
-                  <ProductArchive control={form.control} />
-                </div>
-                <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
-                  <ProductCategory
-                    categories={variantFields.categories}
-                    control={form.control}
-                  />
-                  <ProductDepartment control={form.control} />
-                  <ProductImage>
-                    <MultiUploader
-                      ref={uploadInputRef}
-                      files={files}
-                      addFiles={addFiles}
-                      permittedFileInfo={permittedFileInfo}
-                      error={filesError}
-                    />
-                  </ProductImage>
-                </div>
-              </div>
-              <div className="flex items-center justify-center flex-wrap gap-2 md:hidden">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  disabled={!!progress}>
-                  Discard
-                </Button>
-                <Button type="submit" size="sm" disabled={!!progress}>
-                  {progress ? progress : 'Create Product'}
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </main>
-      </div>
-    </div>
+    <>
+      <PreventNavigation
+        isDirty={isDirty}
+        backHref="/dashboard/products"
+        resetData={resetData}
+      />
+      <Form {...form}>
+        <form
+          className="grid flex-1 auto-rows-max gap-4"
+          onSubmit={form.handleSubmit(handleSubmit)}>
+          <div className="flex flex-wrap items-center gap-4">
+            <h1 className="flex-1 text-xl font-semibold tracking-tight">
+              Create a new product
+            </h1>
+            <div className="hidden items-center gap-2 md:ml-auto md:flex">
+              <Link
+                href={'/dashboard/products'}
+                className={buttonVariants({ variant: 'outline' })}>
+                Cancel
+              </Link>
+              <Button type="submit" disabled={!!progress}>
+                {progress ? progress : 'Create Product'}
+              </Button>
+              {generalError && (
+                <p className="text-red-500 text-sm font-medium">
+                  {generalError}
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
+            <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
+              <ProductDetailsForm control={form.control} />
+              <ProductVariantsForm
+                error={form.formState.errors.variants?.message || ''}
+                control={form.control}
+                variantFields={variantFields}
+              />
+              <ProductArchive control={form.control} />
+            </div>
+            <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
+              <ProductCategory
+                categories={variantFields.categories}
+                control={form.control}
+              />
+              <ProductDepartment control={form.control} />
+              <ProductImage>
+                <Uploader myFiles={myFiles} addFiles={addFiles} />
+              </ProductImage>
+            </div>
+          </div>
+          <div className="flex items-center justify-center flex-wrap gap-2 md:hidden">
+            <Link
+              href={'/dashboard/products'}
+              className={buttonVariants({ variant: 'outline' })}>
+              Cancel
+            </Link>
+            <Button type="submit" disabled={!!progress}>
+              {progress ? progress : 'Create Product'}
+            </Button>
+            {generalError && (
+              <p className="text-red-500 text-sm font-medium">{generalError}</p>
+            )}
+          </div>
+        </form>
+      </Form>
+    </>
   )
 }
