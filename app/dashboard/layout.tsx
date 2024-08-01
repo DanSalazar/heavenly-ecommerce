@@ -6,6 +6,7 @@ import Providers from '@/components/providers'
 import { mainFont } from '@/components/fonts'
 import BreadcrumbWrapper from '@/components/ui/breadcrumb-wrapper'
 import { Toaster } from '@/components/ui/toaster'
+import { ClerkProvider, SignedIn } from '@clerk/nextjs'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -18,20 +19,24 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <Providers>
-        <body
-          className={
-            mainFont.className + ' grid grid-rows-[80px_1fr] h-screen'
-          }>
-          <Navbar />
-          <main className="bg-zinc-50 dark:bg-background h-full flex flex-col gap-4 p-6">
-            <BreadcrumbWrapper isDashboard />
-            {children}
-          </main>
-          <Toaster />
-        </body>
-      </Providers>
-    </html>
+    <ClerkProvider afterSignOutUrl={process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL}>
+      <html lang="en">
+        <Providers>
+          <body
+            className={
+              mainFont.className + ' grid grid-rows-[80px_1fr] h-screen'
+            }>
+            <SignedIn>
+              <Navbar />
+              <main className="bg-zinc-50 dark:bg-background h-full flex flex-col gap-4 p-6">
+                <BreadcrumbWrapper isDashboard />
+                {children}
+              </main>
+              <Toaster />
+            </SignedIn>
+          </body>
+        </Providers>
+      </html>
+    </ClerkProvider>
   )
 }

@@ -13,6 +13,8 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@clerk/nextjs": "^5.2.8",
+    "@clerk/themes": "^2.1.14",
     "@hookform/resolvers": "3.3.4",
     "@next/env": "14.2.3",
     "@paypal/checkout-server-sdk": "1.0.3",
