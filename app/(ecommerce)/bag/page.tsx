@@ -1,11 +1,4 @@
 import Price from '@/components/ecommerce/price'
-import { TruckIcon } from '@/components/icons'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from '@/components/ui/accordion'
 import { getBag } from '@/server/actions'
 import BagEmpty from '../_components/bag-empty'
 import ProductRow from '@/components/shopping-bag/product-row'
@@ -73,19 +66,6 @@ export default async function Page() {
             <CheckoutButton />
           </form>
           <Paypal />
-          {/* <Accordion type="single" collapsible>
-            <AccordionItem value="item-1">
-              <AccordionTrigger>
-                <span className="flex gap-2">
-                  <TruckIcon /> Free Shipping
-                </span>
-              </AccordionTrigger>
-              <AccordionContent>
-                Your order qualifies for free shipping. Join US for free
-                shipping on every order, every time
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion> */}
         </div>
       </div>
     </>

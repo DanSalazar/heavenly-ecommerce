@@ -108,8 +108,8 @@ const makeFiltersBySearchParams = (
 }
 
 export const getProducts = async (
-  department: string | null,
-  searchParams: unknown
+  department?: string,
+  searchParams?: unknown
 ) => {
   try {
     const parsedSearchParams = searchParamsSchema.parse(searchParams)
@@ -165,28 +165,6 @@ export const getProducts = async (
   } catch (err) {
     return []
   }
-}
-
-export const getProductById = async (id: string) => {
-  const data = await db.query.product.findFirst({
-    where: eq(product.id, id),
-    with: {
-      productVariations: {
-        columns: {
-          id: true,
-          stock: true
-        },
-        with: {
-          color: true,
-          size: true,
-          category: true
-        }
-      },
-      images: true
-    }
-  })
-
-  return data
 }
 
 export const deleteProduct = async (id: string) => {

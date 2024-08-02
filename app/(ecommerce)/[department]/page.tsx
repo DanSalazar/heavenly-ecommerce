@@ -1,7 +1,11 @@
-import ProductComponent from '@/components/ecommerce/product'
-import ProductsWrapper from '@/components/ecommerce/products-wrapper'
+import Products from '@/components/ecommerce/products'
+import ProductFilters from '@/components/filter/product-filters'
+import {
+  ProductFiltersSkeleton,
+  ProductsWrapperSkeleton
+} from '@/components/skeletons'
 import BreadcrumbWrapper from '@/components/ui/breadcrumb-wrapper'
-import { getProducts } from '@/server/actions'
+import { Suspense } from 'react'
 
 export default async function Page({
   params,
@@ -10,15 +14,6 @@ export default async function Page({
   params: { department: string }
   searchParams: unknown
 }) {
-  const data = await getProducts(params.department, searchParams)
-
-  if (!data)
-    return (
-      <div className="h-[400px] flex items-center justify-center">
-        <h2 className="text-5xl font-semibold">Department not Available</h2>
-      </div>
-    )
-
   return (
     <>
       <BreadcrumbWrapper />
@@ -26,11 +21,12 @@ export default async function Page({
         <h2 className="text-7xl md:text-8xl font-medium uppercase break-words">
           {params.department}
         </h2>
-        <ProductsWrapper>
-          {data.map(item => (
-            <ProductComponent key={item.product.id} product={item.product} />
-          ))}
-        </ProductsWrapper>
+        <Suspense fallback={<ProductFiltersSkeleton />}>
+          <ProductFilters />
+        </Suspense>
+        <Suspense fallback={<ProductsWrapperSkeleton />}>
+          <Products params={params} searchParams={searchParams} />
+        </Suspense>
       </main>
     </>
   )

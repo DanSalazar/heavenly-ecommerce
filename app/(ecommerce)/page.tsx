@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import ProductsWrapper from '@/components/ecommerce/products-wrapper'
 import { db } from '@/db'
-import ProductComponent from '@/components/ecommerce/product'
+import ProductComponent from '@/components/ecommerce/product-component'
 
 export default async function Page() {
   const featuredProducts = await db.query.product.findMany({

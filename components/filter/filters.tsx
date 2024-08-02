@@ -8,11 +8,7 @@ import { Filter, FilterChildren } from '.'
 import { AllFiltersType } from '@/db/schema'
 import useUrlState from '@/hooks/useUrlState'
 
-export default function FilterProducts({
-  filters
-}: {
-  filters: AllFiltersType
-}) {
+export default function Filters({ filters }: { filters: AllFiltersType }) {
   const { categories, colors, sizes } = filters
   const [open, setOpen] = useState(false)
   const { getState, params, push, remove } = useUrlState()

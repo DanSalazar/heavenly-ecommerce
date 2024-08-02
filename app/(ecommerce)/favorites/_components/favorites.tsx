@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
-import ProductComponent from '@/components/ecommerce/product'
 import { HeartIcon } from '@/components/icons'
 import { buttonVariants } from '@/components/ui/button'
 import { getFavorites } from '@/server/actions'
 import { getItemsFromLocal } from '@/utils'
 import Link from 'next/link'
 import ProductsWrapper from '@/components/ecommerce/products-wrapper'
+import ProductComponent from '@/components/ecommerce/product-component'
 
 export default function Favorites() {
   const ids = getItemsFromLocal()
