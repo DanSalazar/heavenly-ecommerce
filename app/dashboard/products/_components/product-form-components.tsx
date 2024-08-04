@@ -309,7 +309,7 @@ export const ProductArchive = ({ control }: { control: FormControl }) => (
       control={control}
       name="archived"
       render={({ field }) => (
-        <FormItem className="bg-white flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+        <FormItem className="bg-background flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
           <FormControl>
             <Checkbox checked={field.value} onCheckedChange={field.onChange} />
           </FormControl>
@@ -324,7 +324,7 @@ export const ProductArchive = ({ control }: { control: FormControl }) => (
       control={control}
       name="featured"
       render={({ field }) => (
-        <FormItem className="bg-white flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+        <FormItem className="bg-background flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
           <FormControl>
             <Checkbox checked={field.value} onCheckedChange={field.onChange} />
           </FormControl>

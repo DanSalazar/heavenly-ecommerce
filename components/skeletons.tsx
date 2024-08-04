@@ -41,8 +41,8 @@ export const ProductPageSkeleton = () => (
   <>
     <div className="grid grid-cols-2 gap-4">
       <Skeleton className="h-[500px] col-span-2" />
-      <Skeleton className="h-[250px]" />
-      <Skeleton className="h-[250px]" />
+      <Skeleton className="hidden md:block h-[250px]" />
+      <Skeleton className="hidden md:block h-[250px]" />
     </div>
     {/* Product Details */}
     <div className="">
@@ -106,11 +106,8 @@ export const BagPageSkeleton = () => {
           <Skeleton className="h-6 w-24" /> {/* Total price */}
         </div>
         <Button disabled>Checkout</Button>
-        <div className="grid grid-cols-2 gap-2">
-          <Skeleton className="h-12" />
-          <Skeleton className="h-12" />
-        </div>{' '}
         {/* PayPal button */}
+        <Skeleton className="h-12" />
       </div>
     </div>
   )

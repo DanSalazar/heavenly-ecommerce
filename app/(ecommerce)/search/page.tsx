@@ -1,25 +1,26 @@
 import Products from '@/components/ecommerce/products'
-import { ProductsWrapperSkeleton } from '@/components/skeletons'
-import BreadcrumbWrapper from '@/components/ui/breadcrumb-wrapper'
+import ProductFilters from '@/components/filter/product-filters'
+import {
+  ProductFiltersSkeleton,
+  ProductsWrapperSkeleton
+} from '@/components/skeletons'
 import { Suspense } from 'react'
 
 export default async function Page({
   searchParams
 }: {
-  searchParams: { search: string }
+  searchParams: { q: string }
 }) {
-  const pathname = searchParams?.search
-    ? `/search/${searchParams?.search}`
-    : `/search`
+  const pathname = searchParams?.q ? `/search/${searchParams?.q}` : `/search`
 
   return (
-    <>
-      <BreadcrumbWrapper pathname={pathname} />
-      <main className="mt-8 flex flex-col gap-4">
-        <Suspense fallback={<ProductsWrapperSkeleton />}>
-          <Products searchParams={searchParams} />
-        </Suspense>
-      </main>
-    </>
+    <main className="flex flex-col gap-4">
+      <Suspense fallback={<ProductFiltersSkeleton />}>
+        <ProductFilters />
+      </Suspense>
+      <Suspense fallback={<ProductsWrapperSkeleton />}>
+        <Products searchParams={searchParams} />
+      </Suspense>
+    </main>
   )
 }

@@ -1,8 +1,8 @@
 'use client'
 
-import { SearchIcon } from '@/components/icons'
 import { Input } from '@/components/ui/input'
 import useUrlState from '@/hooks/useUrlState'
+import { SearchIcon } from 'lucide-react'
 import { useDebouncedCallback } from 'use-debounce'
 
 export default function SearchInput({
@@ -19,7 +19,10 @@ export default function SearchInput({
 
   return (
     <div className="relative flex-1">
-      <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+      <SearchIcon
+        strokeWidth={1.5}
+        className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground"
+      />
       <Input
         onChange={val => handleChange(val.target.value)}
         type="search"

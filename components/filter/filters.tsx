@@ -31,6 +31,8 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
     if (key && value) remove(key, value)
   }
 
+  const paramEntries = [...params.entries()].filter(entry => entry[0] !== 'q')
+
   return (
     <div className="relative flex justify-between">
       <div className="flex gap-2 flex-1">
@@ -38,12 +40,12 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
           Filters
         </Button>
 
-        <div className="border-r border-zinc-400" />
+        {!!paramEntries.length && <div className="border-r border-zinc-200" />}
 
         <div
           onClick={handleRemoveFilter}
           className="hidden md:flex flex-wrap gap-2">
-          {[...params.entries()].map(([key, filter]) => {
+          {paramEntries.map(([key, filter]) => {
             if (key === 'search') return null
 
             return filter.split(',').map((value, j) => (

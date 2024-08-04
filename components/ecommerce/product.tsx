@@ -11,6 +11,8 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion'
+import Link from 'next/link'
+import { buttonVariants } from '../ui/button'
 
 export default async function Product({ id }: { id: string }) {
   const product = await db.query.product.findFirst({
@@ -31,7 +33,17 @@ export default async function Product({ id }: { id: string }) {
     }
   })
 
-  if (!product) return <div>No product</div>
+  if (!product)
+    return (
+      <div className="flex flex-col gap-2 items-center col-span-2 justify-center">
+        <p className="text-2xl font-semibold md:text-4xl">
+          THIS PRODUCT NOT EXIST
+        </p>
+        <Link className={buttonVariants({ variant: 'ghost' })} href={'/'}>
+          Go to shopping
+        </Link>
+      </div>
+    )
 
   return (
     <>

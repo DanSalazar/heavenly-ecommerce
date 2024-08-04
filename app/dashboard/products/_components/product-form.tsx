@@ -156,7 +156,7 @@ export function ProductForm({
             <h1 className="flex-1 text-xl font-semibold tracking-tight">
               Create a new product
             </h1>
-            <div className="hidden items-center gap-2 md:ml-auto md:flex">
+            <div className="hidden md:block md:ml-auto space-x-2">
               <Link
                 href={'/dashboard/products'}
                 className={buttonVariants({ variant: 'outline' })}>
@@ -193,7 +193,7 @@ export function ProductForm({
               </ProductImage>
             </div>
           </div>
-          <div className="flex items-center justify-center flex-wrap gap-2 md:hidden">
+          <div className="space-x-2 mx-auto md:hidden">
             <Link
               href={'/dashboard/products'}
               className={buttonVariants({ variant: 'outline' })}>

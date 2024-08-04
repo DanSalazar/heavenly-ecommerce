@@ -4,15 +4,14 @@ export default async function ProductsWrapper({
   children,
   ...props
 }: { children: React.ReactNode } & React.HTMLAttributes<HTMLDivElement>) {
-  ;+6
   return (
     <>
       <div
+        {...props}
         className={cn(
-          'grid lg:grid-cols-products gap-4 border-t py-4 border-zinc-200',
+          'min-h-[400px] grid lg:grid-cols-products gap-4 border-t py-4 border-zinc-200',
           props.className
-        )}
-        {...props}>
+        )}>
         {children}
       </div>
     </>

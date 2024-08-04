@@ -85,8 +85,8 @@ const makeFiltersBySearchParams = (
     conditions.push(eq(product.department, parsedDepartment))
   }
 
-  if (filters.search) {
-    const sql = ilike(product.name, filters.search + '%')
+  if (filters.q) {
+    const sql = ilike(product.name, filters.q + '%')
     conditions.push(sql)
   }
 
@@ -164,7 +164,8 @@ export const getProducts = cache(
 
       return data
     } catch (err) {
-      return []
+      // Wrong department
+      return typeof department === 'undefined' ? [] : null
     }
   }
 )

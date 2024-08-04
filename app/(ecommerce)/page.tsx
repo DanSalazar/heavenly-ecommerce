@@ -25,7 +25,7 @@ export default async function Page() {
         </p>
       </div>
       <section>
-        <h2 className="font-semibold text-xl">Featured Products</h2>
+        <h2 className="font-semibold text-2xl mb-4">Featured Products</h2>
         <ProductsWrapper>
           {featuredProducts.map(product => (
             <ProductComponent key={product.id} product={product} />
@@ -33,13 +33,13 @@ export default async function Page() {
         </ProductsWrapper>
       </section>
       <div className="h-[300px] flex flex-col gap-2 items-center justify-center border-t border-zinc-200">
-        <p className="text-xl xl:px-48 xl:text-4xl font-bold text-center">
+        <p className="text-xl xl:px-40 xl:text-5xl font-bold text-center">
           Subscribe to our newsletter to get updates to our latest collections
         </p>
         <p className="text-zinc-600 text-sm md:text-base text-center">
           Get 20% off on your first order just by subscribing to our newsletter
         </p>
-        <div className="flex flex-col md:flex-row items-center gap-2 mt-2">
+        <div className="flex flex-col md:flex-row items-center gap-2">
           <Input
             placeholder="Email your email"
             className="shadow xl:w-[250px]"
