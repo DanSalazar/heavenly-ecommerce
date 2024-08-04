@@ -7,17 +7,20 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import { getProducts } from '@/server/actions'
 import { PlusCircleIcon, PlusIcon } from '@/components/icons'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
-import ProductsTable from './_components/products-table'
 import SearchInput from '../_components/search-input'
 import FilterByProducts from './_components/filter-by-products'
+import { Suspense } from 'react'
+import ProductsTableContainer from './_components/products-table-container'
+import { ProductsTableSkeleton } from '@/components/skeletons'
 
-export default async function Page({ searchParams }: { searchParams: any }) {
-  const products = await getProducts('', searchParams)
-
+export default async function Page({
+  searchParams
+}: {
+  searchParams: unknown
+}) {
   return (
     <>
       <div className="flex justify-between gap-2 flex-wrap">
@@ -50,14 +53,11 @@ export default async function Page({ searchParams }: { searchParams: any }) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ProductsTable products={products} />
+          <Suspense fallback={<ProductsTableSkeleton />}>
+            <ProductsTableContainer searchParams={searchParams} />
+          </Suspense>
         </CardContent>
-        <CardFooter>
-          <div className="text-xs text-muted-foreground">
-            Showing <strong>1-10</strong> of <strong>{products.length}</strong>{' '}
-            products
-          </div>
-        </CardFooter>
+        <CardFooter></CardFooter>
       </Card>
     </>
   )

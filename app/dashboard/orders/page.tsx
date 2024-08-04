@@ -6,17 +6,16 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import OrdersTable from './_components/orders-table'
-import { getOrders } from '@/server/actions'
 import SearchInput from '../_components/search-input'
 import FilterByOrders from './_components/filter-by-orders'
+import { Suspense } from 'react'
+import { OrdersTableSkeleton } from '@/components/skeletons'
 
 export default async function Page({
   searchParams
 }: {
   searchParams: unknown
 }) {
-  const orders = await getOrders(searchParams)
-
   return (
     <>
       <div className="flex gap-2 justify-between">
@@ -29,7 +28,9 @@ export default async function Page({
           <CardDescription>Recent orders from your store.</CardDescription>
         </CardHeader>
         <CardContent>
-          <OrdersTable orders={orders} />
+          <Suspense fallback={<OrdersTableSkeleton />}>
+            <OrdersTable searchParams={searchParams} />
+          </Suspense>
         </CardContent>
       </Card>
     </>

@@ -1,4 +1,3 @@
-import { OrderType } from '@/db/schema'
 import {
   Table,
   TableBody,
@@ -8,8 +7,15 @@ import {
   TableRow
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { getOrders } from '@/server/actions'
 
-export default function OrdersTable({ orders }: { orders: OrderType[] }) {
+export default async function OrdersTable({
+  searchParams
+}: {
+  searchParams?: unknown
+}) {
+  const orders = await getOrders(searchParams)
+
   return (
     <Table>
       <TableHeader>

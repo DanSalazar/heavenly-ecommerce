@@ -17,7 +17,7 @@ export default async function Page({
   return (
     <>
       <BreadcrumbWrapper />
-      <main className="flex flex-col gap-4 mt-12">
+      <main className="flex flex-col gap-2 mt-12">
         <h2 className="text-7xl md:text-8xl font-medium uppercase break-words">
           {params.department}
         </h2>
@@ -25,7 +25,10 @@ export default async function Page({
           <ProductFilters />
         </Suspense>
         <Suspense fallback={<ProductsWrapperSkeleton />}>
-          <Products params={params} searchParams={searchParams} />
+          <Products
+            department={params.department}
+            searchParams={searchParams}
+          />
         </Suspense>
       </main>
     </>

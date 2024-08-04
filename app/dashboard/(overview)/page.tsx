@@ -1,5 +1,5 @@
 import { getDashboardStats } from '@/server/actions'
-import ChartDashboard from './_components/chart-dashboard'
+import ChartDashboard from '../_components/chart-dashboard'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formattedPrice } from '@/utils'
 import { CreditCardIcon, DollarSignIcon, PackageIcon } from '@/components/icons'

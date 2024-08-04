@@ -90,7 +90,7 @@ export default function ProductRow({
         )}
       </div>
       <DeleteItem
-        className="absolute right-2 bottom-2"
+        className="absolute right-0 bottom-2"
         id={id}
         setPending={(bool: boolean) => setDeletePending(bool)}
       />

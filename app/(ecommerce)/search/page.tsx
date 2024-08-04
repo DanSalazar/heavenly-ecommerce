@@ -1,8 +1,6 @@
-import ProductComponent from '@/components/ecommerce/product-component'
-import ProductsWrapper from '@/components/ecommerce/products-wrapper'
-import { ProductPageSkeleton } from '@/components/skeletons'
+import Products from '@/components/ecommerce/products'
+import { ProductsWrapperSkeleton } from '@/components/skeletons'
 import BreadcrumbWrapper from '@/components/ui/breadcrumb-wrapper'
-import { getProducts } from '@/server/actions'
 import { Suspense } from 'react'
 
 export default async function Page({
@@ -10,7 +8,6 @@ export default async function Page({
 }: {
   searchParams: { search: string }
 }) {
-  const products = await getProducts(undefined, searchParams)
   const pathname = searchParams?.search
     ? `/search/${searchParams?.search}`
     : `/search`
@@ -19,24 +16,9 @@ export default async function Page({
     <>
       <BreadcrumbWrapper pathname={pathname} />
       <main className="mt-8 flex flex-col gap-4">
-        {products.length ? (
-          <>
-            <Suspense fallback={<ProductPageSkeleton />}>
-              <ProductsWrapper>
-                {products.map(item => (
-                  <ProductComponent
-                    key={item.product.id}
-                    product={item.product}
-                  />
-                ))}
-              </ProductsWrapper>
-            </Suspense>
-          </>
-        ) : (
-          <h2 className="font-medium text-center">
-            There are no products that match "{searchParams?.search}"
-          </h2>
-        )}
+        <Suspense fallback={<ProductsWrapperSkeleton />}>
+          <Products searchParams={searchParams} />
+        </Suspense>
       </main>
     </>
   )

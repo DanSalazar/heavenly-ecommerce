@@ -72,12 +72,17 @@ const config = {
           '0%': { background: 'scale(1)' },
           '50%': { transform: 'scale(1.25)' },
           '100%': { transform: 'scale(1)' }
+        },
+        fade: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' }
         }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        heart: 'heart 0.2s linear'
+        heart: 'heart 0.2s linear',
+        fade: 'fade 0.2s linear'
       },
       gridTemplateColumns: {
         products: 'repeat(auto-fill, minmax(280px, 1fr))'

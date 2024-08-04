@@ -32,30 +32,36 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
   }
 
   return (
-    <div className="relative flex gap-2">
-      <Button className="uppercase" onClick={handleOpen}>
-        Filters
-      </Button>
-      <div className="my-1 border-r border-zinc-400" />
-      <div
-        onClick={handleRemoveFilter}
-        className="hidden md:flex flex-wrap gap-2">
-        {[...params.entries()].map(([key, filter]) => {
-          if (key === 'search') return null
+    <div className="relative flex justify-between">
+      <div className="flex gap-2 flex-1">
+        <Button className="uppercase" onClick={handleOpen}>
+          Filters
+        </Button>
 
-          return filter.split(',').map((value, j) => (
-            <Button
-              key={value + j}
-              data-key={key}
-              data-value={value}
-              className="uppercase"
-              variant={'outline'}>
-              {value} <MarkIcon className="ml-1 pointer-events-none" />
-            </Button>
-          ))
-        })}
+        <div className="border-r border-zinc-400" />
+
+        <div
+          onClick={handleRemoveFilter}
+          className="hidden md:flex flex-wrap gap-2">
+          {[...params.entries()].map(([key, filter]) => {
+            if (key === 'search') return null
+
+            return filter.split(',').map((value, j) => (
+              <Button
+                key={value + j}
+                data-key={key}
+                data-value={value}
+                className="uppercase"
+                variant={'outline'}>
+                {value} <MarkIcon className="ml-1 pointer-events-none" />
+              </Button>
+            ))
+          })}
+        </div>
       </div>
+
       <SortBy />
+
       <Filter
         onClose={handleOpen}
         className="absolute top-12 left-0 w-full md:w-[300px]"

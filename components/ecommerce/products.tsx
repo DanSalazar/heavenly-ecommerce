@@ -3,13 +3,13 @@ import ProductsWrapper from './products-wrapper'
 import ProductComponent from './product-component'
 
 export default async function Products({
-  params,
+  department,
   searchParams
 }: {
-  params?: { department: string }
+  department?: string
   searchParams?: unknown
 }) {
-  const data = await getProducts(params?.department, searchParams)
+  const data = await getProducts(department, searchParams)
 
   if (!data)
     return (

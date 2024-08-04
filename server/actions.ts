@@ -107,65 +107,67 @@ const makeFiltersBySearchParams = (
   return conditions
 }
 
-export const getProducts = async (
-  department?: string,
-  searchParams?: unknown
-) => {
-  try {
-    const parsedSearchParams = searchParamsSchema.parse(searchParams)
-    const filtersByParams = makeFiltersBySearchParams(parsedSearchParams)
-    const parsedDepartment = department?.length
-      ? paramsResolver.parse(department)
-      : ''
+export const getProducts = cache(
+  async (department?: string, searchParams?: unknown) => {
+    try {
+      const parsedSearchParams = searchParamsSchema.parse(searchParams)
+      const filtersByParams = makeFiltersBySearchParams(parsedSearchParams)
+      const parsedDepartment = department?.length
+        ? paramsResolver.parse(department)
+        : ''
 
-    if (filtersByParams.length) {
-      const data = await db
-        .selectDistinctOn([product.id, product.name, product.price], {
-          product: product,
-          category: category.name,
-          color: color.name,
-          size: size.name
-        })
-        .from(productVariations)
-        .innerJoin(product, eq(productVariations.product_id, product.id))
-        .innerJoin(category, eq(productVariations.category_id, category.id))
-        .innerJoin(color, eq(productVariations.color_id, color.id))
-        .innerJoin(size, eq(productVariations.size_id, size.id))
-        .where(
-          parsedDepartment
-            ? and(eq(product.department, parsedDepartment), ...filtersByParams)
-            : and(...filtersByParams)
-        )
-        .orderBy(orders[parsedSearchParams.order] || asc(product.name))
+      if (filtersByParams.length) {
+        const data = await db
+          .selectDistinctOn([product.id, product.name, product.price], {
+            product: product,
+            category: category.name,
+            color: color.name,
+            size: size.name
+          })
+          .from(productVariations)
+          .innerJoin(product, eq(productVariations.product_id, product.id))
+          .innerJoin(category, eq(productVariations.category_id, category.id))
+          .innerJoin(color, eq(productVariations.color_id, color.id))
+          .innerJoin(size, eq(productVariations.size_id, size.id))
+          .where(
+            parsedDepartment
+              ? and(
+                  eq(product.department, parsedDepartment),
+                  ...filtersByParams
+                )
+              : and(...filtersByParams)
+          )
+          .orderBy(orders[parsedSearchParams.order] || asc(product.name))
 
-      return data
-    }
+        return data
+      }
 
-    if (parsedDepartment) {
+      if (parsedDepartment) {
+        const data = await db
+          .selectDistinct({
+            product
+          })
+          .from(productVariations)
+          .innerJoin(product, eq(productVariations.product_id, product.id))
+          .where(eq(product.department, parsedDepartment))
+          .orderBy(orders[parsedSearchParams.order] || asc(product.name))
+
+        return data
+      }
+
       const data = await db
         .selectDistinct({
           product
         })
         .from(productVariations)
         .innerJoin(product, eq(productVariations.product_id, product.id))
-        .where(eq(product.department, parsedDepartment))
-        .orderBy(orders[parsedSearchParams.order] || asc(product.name))
 
       return data
+    } catch (err) {
+      return []
     }
-
-    const data = await db
-      .selectDistinct({
-        product
-      })
-      .from(productVariations)
-      .innerJoin(product, eq(productVariations.product_id, product.id))
-
-    return data
-  } catch (err) {
-    return []
   }
-}
+)
 
 export const deleteProduct = async (id: string) => {
   await db.delete(product).where(eq(product.id, id))
@@ -339,7 +341,7 @@ export const createProduct = async (
   redirect('/dashboard/products')
 }
 
-export const getDashboardStats = async () => {
+export const getDashboardStats = cache(async () => {
   const productsInStock = await db.query.productVariations.findMany({
     where: (field, { gte }) => gte(field.stock, 1)
   })
@@ -356,7 +358,7 @@ export const getDashboardStats = async () => {
     totalRevenue,
     orders
   }
-}
+})
 
 export const getColors = cache(async () => {
   return await db.query.color.findMany({})
