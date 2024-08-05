@@ -21,6 +21,7 @@ import { MoreHorizontalIcon } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { deleteProduct } from '@/server/actions'
 import Link from 'next/link'
+import { formattedPrice } from '@/utils'
 
 export default function ProductsTable({
   products
@@ -57,7 +58,7 @@ export default function ProductsTable({
             </TableCell>
             <TableCell className="font-medium">{product.name}</TableCell>
             <TableCell className="hidden md:table-cell">
-              ${product.price}
+              ${formattedPrice(product.price)}
             </TableCell>
             <TableCell className="hidden md:table-cell">25</TableCell>
             <TableCell className="hidden md:table-cell">

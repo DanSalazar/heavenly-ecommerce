@@ -41,6 +41,7 @@ export const formSchema = z.object({
     .min(1, {
       message: 'Price must be greater than or equal to 1'
     }),
+  discount: z.coerce.number().max(99).optional(),
   variants: z
     .array(
       z.object({
@@ -76,7 +77,8 @@ export function ProductForm({
       description: '',
       price: 0,
       featured: false,
-      archived: false
+      archived: false,
+      discount: 0
     }
   })
   const [progress, setProgress] = useState('')
@@ -106,8 +108,8 @@ export function ProductForm({
       price: values.price,
       thumbnail: myFiles?.length ? myFiles[0].url : '',
       department: values.department,
-      discount: false,
-      percentage_off: 0,
+      discount: Boolean(values.discount),
+      percentage_off: values.discount || 0,
       status: values.archived ? 'archived' : 'active',
       created_at: new Date().toISOString(),
       featured: values.featured

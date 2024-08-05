@@ -42,7 +42,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 
 type FormControl = Control<FormSchema>
 
-const Inputs = ['name', 'brand', 'description', 'price'] as const
+const Inputs = ['name', 'brand', 'description', 'price', 'discount'] as const
 
 export const ProductDetailsForm = ({ control }: { control: FormControl }) => {
   return (
@@ -71,7 +71,11 @@ export const ProductDetailsForm = ({ control }: { control: FormControl }) => {
                     ) : (
                       <Input
                         {...field}
-                        type={field.name === 'price' ? 'number' : 'string'}
+                        type={
+                          field.name === 'price' || field.name === 'discount'
+                            ? 'number'
+                            : 'string'
+                        }
                         placeholder={`Product ${field.name}...`}
                       />
                     )}

@@ -57,9 +57,16 @@ export default function ProductRow({
           )}>
           {product.name}
         </Link>
-        <span className="text-sm">Color {color}</span>
-        <span className="text-sm">Size {size.toUpperCase()}</span>
-        <Price className="mb-4" price={product.price} />
+        <p className="text-sm">
+          Color <span className="capitalize">{color}</span>
+        </p>
+        <p className="text-sm">Size {size.toUpperCase()}</p>
+        <Price
+          price={product.price}
+          variant={'black'}
+          discount={product.discount}
+          discount_percentage={product.percentage_off}
+        />
         <QuantitySelector
           quantity={quantity}
           handleChange={handleQuantityChange}

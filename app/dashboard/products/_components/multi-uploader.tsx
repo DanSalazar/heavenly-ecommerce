@@ -36,8 +36,7 @@ export default function Uploader({
           <DialogHeader>
             <DialogTitle>Manage product images</DialogTitle>
             <DialogDescription>
-              Manage product images. The first image you upload will be the one
-              used as the thumbnail.
+              Manage product images. The first image will used as thumbnail.
             </DialogDescription>
           </DialogHeader>
           <div className="flex max-h-[250px] overflow-y-auto gap-4">

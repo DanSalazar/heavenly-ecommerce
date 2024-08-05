@@ -27,17 +27,27 @@ export default function ProductBag({ bagItem }: { bagItem: BagItem }) {
         <p className="font-semibold text-sm uppercase truncate">
           {product.name}
         </p>
-        <div className="flex justify-between items-center">
-          <div className="flex flex-col gap-1">
-            <p className="text-sm font-semibold">
-              Size: {bagItem.product_variant.size?.name}
+        <div className="flex justify-between">
+          <div className="space-y-1 w-full">
+            <p className="text-sm font-medium">
+              Size{' '}
+              <span>{bagItem.product_variant.size?.name.toUpperCase()}</span>
             </p>
-            <p className="text-sm font-semibold">
-              Color: {bagItem.product_variant.color?.name}
+            <p className="text-sm font-medium">
+              Color{' '}
+              <span className="capitalize">
+                {bagItem.product_variant.color?.name}
+              </span>
             </p>
-            <p className="text-sm font-semibold">Qty: {bagItem.quantity}</p>
+            <p className="text-sm font-medium">Qty: {bagItem.quantity}</p>
           </div>
-          <Price price={product.price} variant={'black'} />
+          <Price
+            className="justify-end"
+            price={product.price}
+            variant={'black'}
+            discount={product.discount}
+            discount_percentage={product.percentage_off}
+          />
         </div>
       </div>
       <DeleteItem

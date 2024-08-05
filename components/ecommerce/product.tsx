@@ -56,7 +56,7 @@ export default async function Product({ id }: { id: string }) {
           {product.name}
         </p>
         <Price
-          className="text-xl"
+          size={'lg'}
           price={product.price}
           discount={product.discount}
           discount_percentage={product.percentage_off}

@@ -6,7 +6,7 @@ const priceStyles = cva('font-medium', {
   variants: {
     variant: {
       default: 'text-zinc-700 dark:text-zinc-100',
-      black: 'text-primary font-semibold'
+      black: 'text-primary'
     },
     size: {
       default: 'text-base',
@@ -36,21 +36,18 @@ export default function Price({
   discount_percentage = 0
 }: PriceProps) {
   return (
-    <div className="flex gap-2 flex-wrap">
+    <div className={cn('flex gap-2 flex-wrap', className)}>
       <p
-        className={cn(priceStyles({ variant, size }), className, {
+        className={cn(priceStyles({ variant, size }), {
           'line-through': discount
         })}>
         ${formattedPrice(price)}
       </p>
       <p
-        className={cn('hidden text-rose-600 font-semibold', {
+        className={cn(priceStyles({ size }), 'hidden text-red-600', {
           block: discount
         })}>
-        {getDiscountPrice(price, discount_percentage!)}$
-        <span className={'text-sm font-normal ml-1'}>
-          ({discount_percentage}%)
-        </span>
+        ${getDiscountPrice(price, discount_percentage!)}
       </p>
     </div>
   )
