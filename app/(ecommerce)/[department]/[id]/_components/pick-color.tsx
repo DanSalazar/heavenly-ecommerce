@@ -41,11 +41,11 @@ const ColorButton = ({
   isAvailable: boolean
 }) => {
   const notAvailableClass =
-    'relative disabled:pointer-events-auto disabled:opacity-100 z-10 overflow-hidden cursor-not-allowed bg-zinc-100 hover:bg-zinc-100 text-zinc-500 hover:text-zinc-500 ring-1 ring-zinc-300 before:absolute before:inset-x-0 before:-z-10 before:h-px before:-rotate-45 before:bg-zinc-300 before:transition'
+    'relative disabled:pointer-events-auto disabled:opacity-100 z-10 overflow-hidden cursor-not-allowed bg-zinc-100 hover:bg-zinc-100 text-zinc-500 hover:text-zinc-500 ring-1 ring-zinc-300 before:absolute before:inset-x-0 before:-z-10 before:h-px before:-rotate-45 before:bg-zinc-600 before:transition'
 
   return (
     <Button
-      className={cn('uppercase capitalize rounded-full', {
+      className={cn('uppercase capitalize rounded-lg border-primary', {
         [notAvailableClass]: !isAvailable
       })}
       size={'sm'}

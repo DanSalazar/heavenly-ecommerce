@@ -6,6 +6,8 @@ import { getItemsFromLocal } from '@/utils'
 import Link from 'next/link'
 import ProductsWrapper from '@/components/ecommerce/products-wrapper'
 import ProductComponent from '@/components/ecommerce/product-component'
+import { ProductsWrapperSkeleton } from '@/components/skeletons'
+import React from 'react'
 
 export default function Favorites() {
   const ids = getItemsFromLocal()
@@ -18,7 +20,12 @@ export default function Favorites() {
     queryFn: async () => getFavorites(ids)
   })
 
-  if (isPending) return <div>Loading...</div>
+  if (isPending)
+    return (
+      <Layout>
+        <ProductsWrapperSkeleton />
+      </Layout>
+    )
 
   if (error) return <div>Error has ocurred</div>
 
@@ -37,15 +44,21 @@ export default function Favorites() {
     )
 
   return (
-    <main className="flex flex-col gap-8 mt-8">
-      <h2 className="text-7xl md:text-8xl font-medium uppercase break-words">
-        Favorites
-      </h2>
+    <Layout>
       <ProductsWrapper>
         {favProducts.map(product => (
           <ProductComponent key={product.id} product={product} />
         ))}
       </ProductsWrapper>
-    </main>
+    </Layout>
   )
 }
+
+const Layout = ({ children }: { children: React.ReactNode }) => (
+  <main className="flex flex-col gap-8 mt-8">
+    <h2 className="text-7xl md:text-8xl font-medium uppercase break-words">
+      Favorites
+    </h2>
+    {children}
+  </main>
+)

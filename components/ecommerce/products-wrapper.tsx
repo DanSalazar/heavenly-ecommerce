@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 
-export default async function ProductsWrapper({
+export default function ProductsWrapper({
   children,
   ...props
 }: { children: React.ReactNode } & React.HTMLAttributes<HTMLDivElement>) {

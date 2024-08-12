@@ -15,7 +15,18 @@ import {
   productVariations,
   size
 } from '@/db/schema'
-import { SQL, and, asc, desc, eq, ilike, inArray, or, sql } from 'drizzle-orm'
+import {
+  SQL,
+  and,
+  asc,
+  between,
+  desc,
+  eq,
+  ilike,
+  inArray,
+  or,
+  sql
+} from 'drizzle-orm'
 import { PgColumn } from 'drizzle-orm/pg-core'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
@@ -37,7 +48,7 @@ const addMultipleConditions = (column: PgColumn, string: string) => {
   return sqlQuery || sql.empty()
 }
 
-const orders: { [k: string]: SQL<unknown> } = {
+const ordersByMap: { [k: string]: SQL<unknown> } = {
   'low to high': asc(product.price),
   'high to low': desc(product.price)
 }
@@ -104,71 +115,79 @@ const makeFiltersBySearchParams = (
       conditions.push(eq(product.featured, true))
   }
 
+  // if (filters.price) {
+  //   // price=1-10
+  //   const [min, max] = filters.price.split('-')
+  //   conditions.push(between(product.price, Number(min), Number(max)))
+  // }
+
   return conditions
 }
 
-export const getProducts = cache(
-  async (department?: string, searchParams?: unknown) => {
-    try {
-      const parsedSearchParams = searchParamsSchema.parse(searchParams)
-      const filtersByParams = makeFiltersBySearchParams(parsedSearchParams)
-      const parsedDepartment = department?.length
-        ? paramsResolver.parse(department)
-        : ''
-
-      if (filtersByParams.length) {
-        const data = await db
-          .selectDistinctOn([product.id, product.name, product.price], {
-            product: product,
-            category: category.name,
-            color: color.name,
-            size: size.name
-          })
-          .from(productVariations)
-          .innerJoin(product, eq(productVariations.product_id, product.id))
-          .innerJoin(category, eq(productVariations.category_id, category.id))
-          .innerJoin(color, eq(productVariations.color_id, color.id))
-          .innerJoin(size, eq(productVariations.size_id, size.id))
-          .where(
-            parsedDepartment
-              ? and(
-                  eq(product.department, parsedDepartment),
-                  ...filtersByParams
-                )
-              : and(...filtersByParams)
-          )
-          .orderBy(orders[parsedSearchParams.order] || asc(product.name))
-
-        return data
+export const getProducts = cache(async () => {
+  return await db.query.product.findMany({
+    with: {
+      productVariations: {
+        columns: {
+          id: true,
+          stock: true
+        },
+        with: {
+          color: true,
+          size: true,
+          category: true
+        }
       }
-
-      if (parsedDepartment) {
-        const data = await db
-          .selectDistinct({
-            product
-          })
-          .from(productVariations)
-          .innerJoin(product, eq(productVariations.product_id, product.id))
-          .where(eq(product.department, parsedDepartment))
-          .orderBy(orders[parsedSearchParams.order] || asc(product.name))
-
-        return data
-      }
-
-      const data = await db
-        .selectDistinct({
-          product
-        })
-        .from(productVariations)
-        .innerJoin(product, eq(productVariations.product_id, product.id))
-
-      return data
-    } catch (err) {
-      // Wrong department
-      return typeof department === 'undefined' ? [] : null
     }
+  })
+})
+
+export const getProductsByDepartment = async (department?: string) => {
+  try {
+    const parsedDepartment = paramsResolver.parse(department)
+
+    const data = await db
+      .selectDistinct({
+        product
+      })
+      .from(productVariations)
+      .innerJoin(product, eq(productVariations.product_id, product.id))
+      .where(eq(product.department, parsedDepartment))
+
+    return data
+  } catch (err) {
+    return []
   }
-)
+}
+
+export const getProductBySearchParams = async (
+  department?: string,
+  searchParams?: unknown
+) => {
+  const parsedSearchParams = searchParamsSchema.parse(searchParams)
+  const filtersByParams = makeFiltersBySearchParams(parsedSearchParams)
+  const parsedDepartment = department?.length
+    ? paramsResolver.parse(department)
+    : ''
+
+  const data = await db
+    .selectDistinctOn([product.id, product.name, product.price], {
+      product
+    })
+    .from(product)
+    .innerJoin(productVariations, eq(product.id, productVariations.product_id))
+    .innerJoin(category, eq(productVariations.category_id, category.id))
+    .innerJoin(color, eq(productVariations.color_id, color.id))
+    .innerJoin(size, eq(productVariations.size_id, size.id))
+    .where(
+      parsedDepartment
+        ? and(eq(product.department, parsedDepartment), ...filtersByParams)
+        : and(...filtersByParams)
+    )
+    .orderBy(ordersByMap[parsedSearchParams.order] || asc(product.name))
+
+  return data
+}
 
 export const deleteProduct = async (id: string) => {
   await db.delete(product).where(eq(product.id, id))
@@ -284,15 +303,52 @@ export const getBag = async () => {
   return data
 }
 
-export const getFilters = async () => {
-  const categories = await db.query.category.findMany({})
-  const colors = await db.query.color.findMany({})
-  const sizes = await db.query.size.findMany({})
+export const getFilters = async (ids: string[]) => {
+  if (!ids.length)
+    return {
+      categories: [],
+      colors: [],
+      sizes: [],
+      minAndMaxPrice: { min: 0, max: 0 }
+    }
+
+  const minAndMaxPrice = await db
+    .select({
+      min: sql`min(${product.price})`,
+      max: sql`max(${product.price})`
+    })
+    .from(product)
+    .where(inArray(product.id, ids))
+
+  const filters = await db.query.productVariations.findMany({
+    columns: {},
+    with: {
+      color: true,
+      size: true,
+      category: true
+    },
+    where: (field, op) => {
+      return op.inArray(field.product_id, ids)
+    }
+  })
+
+  const colors = [...new Set(filters.map(f => f.color.name))]
+  const sizes = [...new Set(filters.map(f => f.size.name))]
+  const categories = [...new Set(filters.map(f => f.category.name))]
 
   return {
     categories,
     colors,
-    sizes
+    sizes,
+    minAndMaxPrice: minAndMaxPrice[0]
+      ? {
+          min: minAndMaxPrice[0].min as number,
+          max: minAndMaxPrice[0].max as number
+        }
+      : {
+          min: 0,
+          max: 0
+        }
   }
 }
 

@@ -1,17 +1,25 @@
 'use client'
 
-import { MouseEvent, useState } from 'react'
+import React, { MouseEvent, useState } from 'react'
 import { Button } from '../ui/button'
-import { MarkIcon } from '../icons'
 import SortBy from './sort-by'
 import { Filter, FilterChildren } from '.'
-import { AllFiltersType } from '@/db/schema'
 import useUrlState from '@/hooks/useUrlState'
+import { PriceRange } from './price-slider'
+import FiltersSelected from './filters-selected'
+
+export type AllFiltersType = {
+  categories: string[]
+  colors: string[]
+  sizes: string[]
+  productTypes?: string[]
+  minAndMaxPrice: { min: number; max: number }
+}
 
 export default function Filters({ filters }: { filters: AllFiltersType }) {
-  const { categories, colors, sizes } = filters
+  const { categories, colors, sizes, minAndMaxPrice } = filters
   const [open, setOpen] = useState(false)
-  const { getState, params, push, remove } = useUrlState()
+  const { getState, push } = useUrlState()
 
   const handleOpen = () => setOpen(!open)
 
@@ -23,43 +31,13 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
     if (key && value) push(key, value)
   }
 
-  const handleRemoveFilter = (event: MouseEvent<HTMLDivElement>) => {
-    const element = event.target as HTMLButtonElement
-
-    if (element.tagName !== 'BUTTON') return
-    const { key, value } = element.dataset
-    if (key && value) remove(key, value)
-  }
-
-  const paramEntries = [...params.entries()].filter(entry => entry[0] !== 'q')
-
   return (
     <div className="relative flex justify-between">
       <div className="flex gap-2 flex-1">
         <Button className="uppercase" onClick={handleOpen}>
           Filters
         </Button>
-
-        {!!paramEntries.length && <div className="border-r border-zinc-200" />}
-
-        <div
-          onClick={handleRemoveFilter}
-          className="hidden md:flex flex-wrap gap-2">
-          {paramEntries.map(([key, filter]) => {
-            if (key === 'search') return null
-
-            return filter.split(',').map((value, j) => (
-              <Button
-                key={value + j}
-                data-key={key}
-                data-value={value}
-                className="uppercase"
-                variant={'outline'}>
-                {value} <MarkIcon className="ml-1 pointer-events-none" />
-              </Button>
-            ))
-          })}
-        </div>
+        <FiltersSelected />
       </div>
 
       <SortBy />
@@ -69,20 +47,24 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
         className="absolute top-12 left-0 w-full md:w-[300px]"
         open={open}
         onClick={handleSelectFilter}>
+        <FilterChildren title="Price Range">
+          <PriceRange min={minAndMaxPrice.min} max={minAndMaxPrice.max} />
+        </FilterChildren>
+
         <FilterChildren title="Category">
           <div className="flex gap-2 flex-wrap">
-            {categories.map(ctg => (
+            {categories.map(category => (
               <Button
-                key={ctg.id}
+                key={crypto.randomUUID()}
                 data-key="category"
-                data-value={ctg.name}
-                className="rounded-full"
+                data-value={category}
+                className="rounded-lg border-primary"
                 variant={
-                  getState('category')?.includes(ctg.name + '')
+                  getState('category')?.includes(category + '')
                     ? 'default'
                     : 'outline'
                 }>
-                {ctg.name}
+                {category}
               </Button>
             ))}
           </div>
@@ -92,16 +74,16 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
           <div className="flex gap-2 flex-wrap">
             {colors.map(color => (
               <Button
-                key={color.id}
+                key={crypto.randomUUID()}
                 data-key="color"
-                data-value={color.name}
-                className="rounded-full"
+                data-value={color}
+                className="rounded-lg border-primary"
                 variant={
-                  getState('color')?.includes(color.name + '')
+                  getState('color')?.includes(color + '')
                     ? 'default'
                     : 'outline'
                 }>
-                {color.name}
+                {color}
               </Button>
             ))}
           </div>
@@ -112,16 +94,14 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
             {sizes.map(size => (
               <Button
                 size={'sm'}
-                key={size.id}
+                key={crypto.randomUUID()}
                 data-key="size"
-                data-value={size.name}
-                className="rounded-full uppercase"
+                data-value={size}
+                className="rounded-lg border-primary uppercase"
                 variant={
-                  getState('size')?.includes(size.name + '')
-                    ? 'default'
-                    : 'outline'
+                  getState('size')?.includes(size + '') ? 'default' : 'outline'
                 }>
-                {size.name}
+                {size}
               </Button>
             ))}
           </div>

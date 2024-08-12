@@ -1,4 +1,4 @@
-import { getProducts } from '@/server/actions'
+import { getProducts, getProductsByDepartment } from '@/server/actions'
 import ProductsWrapper from './products-wrapper'
 import ProductComponent from './product-component'
 
@@ -9,7 +9,7 @@ export default async function Products({
   department?: string
   searchParams?: any
 }) {
-  const products = await getProducts(department, searchParams)
+  const products = await getProductsByDepartment(department)
 
   if (!products)
     return (
@@ -26,11 +26,8 @@ export default async function Products({
           : ''
       }>
       {products.length
-        ? products.map(product => (
-            <ProductComponent
-              key={product.product.id}
-              product={product.product}
-            />
+        ? products.map(({ product }) => (
+            <ProductComponent key={product.id} product={product} />
           ))
         : !searchParams.q && (
             <>

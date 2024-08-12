@@ -13,7 +13,7 @@ export default function ButtonAddBag({
   isOutOfStock: number
 }) {
   const { pending } = useFormStatus()
-  const buttonClasses = 'transition-opacity h-full font-normal flex-1 uppercase'
+  const buttonClasses = 'transition-opacity h-full flex-1 uppercase rounded-lg'
   const disabledClasses = 'cursor-not-allowed opacity-60 hover:opacity-60'
 
   if (!variantSelected)

@@ -1,9 +1,5 @@
-import Products from '@/components/ecommerce/products'
-import ProductFilters from '@/components/filter/product-filters'
-import {
-  ProductFiltersSkeleton,
-  ProductsWrapperSkeleton
-} from '@/components/skeletons'
+import ProductsWithFilters from '@/components/ecommerce/products-with-filters'
+import { ProductsWrapperSkeleton } from '@/components/skeletons'
 import BreadcrumbWrapper from '@/components/ui/breadcrumb-wrapper'
 import { Suspense } from 'react'
 
@@ -21,11 +17,8 @@ export default async function Page({
         <h2 className="text-7xl md:text-8xl font-medium uppercase break-words">
           {params.department}
         </h2>
-        <Suspense fallback={<ProductFiltersSkeleton />}>
-          <ProductFilters />
-        </Suspense>
         <Suspense fallback={<ProductsWrapperSkeleton />}>
-          <Products
+          <ProductsWithFilters
             department={params.department}
             searchParams={searchParams}
           />

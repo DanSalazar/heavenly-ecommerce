@@ -2,18 +2,14 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
 import Price from './price'
-import { usePathname } from 'next/navigation'
 import type { Product } from '@/db/schema'
 
-export default function ProductComponent({
-  product
-}: {
-  product: Product | null
-}) {
-  const pathname = usePathname()
+type ProductComponentProps = {
+  product: Product
+}
 
+export default function ProductComponent({ product }: ProductComponentProps) {
   if (!product) return <></>
 
   return (

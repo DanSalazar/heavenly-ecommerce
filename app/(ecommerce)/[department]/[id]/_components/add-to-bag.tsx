@@ -65,7 +65,7 @@ export default function AddToBag({
   })
 
   return (
-    <form action={formAction} className="flex flex-col gap-4 mt-4">
+    <form action={formAction} className="flex flex-col gap-4">
       <PickColor colors={colors} />
       <PickSize sizes={sizes} />
       <div className="flex h-12 flex-wrap gap-2">

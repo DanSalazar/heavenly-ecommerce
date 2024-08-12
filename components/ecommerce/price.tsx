@@ -2,10 +2,10 @@ import { VariantProps, cva } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
 import { formattedPrice, getDiscountPrice } from '@/utils'
 
-const priceStyles = cva('font-medium', {
+const priceStyles = cva('', {
   variants: {
     variant: {
-      default: 'text-zinc-700 dark:text-zinc-100',
+      default: 'text-zinc-500 dark:text-zinc-100',
       black: 'text-primary'
     },
     size: {
@@ -44,9 +44,13 @@ export default function Price({
         ${formattedPrice(price)}
       </p>
       <p
-        className={cn(priceStyles({ size }), 'hidden text-red-600', {
-          block: discount
-        })}>
+        className={cn(
+          priceStyles({ size }),
+          'hidden text-red-600 font-medium',
+          {
+            block: discount
+          }
+        )}>
         ${getDiscountPrice(price, discount_percentage!)}
       </p>
     </div>

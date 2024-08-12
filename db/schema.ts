@@ -76,26 +76,39 @@ export type Size = typeof size.$inferSelect
 export type Category = typeof category.$inferSelect
 export type ProductType = typeof product_type.$inferSelect
 
-export type AllFiltersType = {
-  categories: Category[]
-  colors: Color[]
-  sizes: Size[]
-  productTypes?: ProductType[]
-}
-
 export const producty_type_relations = relations(product_type, ({ many }) => ({
   productVariations: many(productVariations)
 }))
 
-export const productVariations = createTable('product_variations', {
-  id: serial('id').primaryKey(),
-  product_id: varchar('product_id').notNull(),
-  color_id: serial('color_id').notNull(),
-  size_id: serial('size_id').notNull(),
-  product_type_Id: serial('product_type_id'),
-  category_id: serial('category_id').notNull(),
-  stock: integer('stock').notNull()
-})
+export const productVariations = createTable(
+  'product_variations',
+  {
+    id: serial('id').primaryKey(),
+    product_id: varchar('product_id')
+      .notNull()
+      .references(() => product.id),
+    color_id: serial('color_id')
+      .notNull()
+      .references(() => color.id),
+    size_id: serial('size_id')
+      .notNull()
+      .references(() => size.id),
+    product_type_Id: serial('product_type_id').references(
+      () => product_type.id
+    ),
+    category_id: serial('category_id')
+      .notNull()
+      .references(() => category.id),
+    stock: integer('stock').notNull()
+  },
+  table => {
+    return {
+      productIdIdx: index('product_id_idx').on(table.product_id),
+      colorSizeIdx: index('color_size_idx').on(table.color_id, table.size_id),
+      categoryIdx: index('category_idx').on(table.category_id)
+    }
+  }
+)
 
 export const productVariationsRelations = relations(
   productVariations,
@@ -131,6 +144,10 @@ export type ProductVariantWithJoins = Pick<ProductVariants, 'id' | 'stock'> & {
   category?: Category | null
   size?: Size | null
   product_type?: ProductType | null
+}
+
+export type ProductWithVariants = Product & {
+  productVariations?: ProductVariantWithJoins[]
 }
 
 export const bagItem = createTable('bag_item', {
