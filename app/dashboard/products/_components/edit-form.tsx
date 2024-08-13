@@ -100,8 +100,7 @@ export function EditProductForm({
           size_id: Number(variant.size),
           category_id: Number(values.category),
           stock: variant.stock,
-          product_id: product.id,
-          product_type_Id: 0
+          product_id: product.id
         }
 
         // Product variant edited

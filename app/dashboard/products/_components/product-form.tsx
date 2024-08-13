@@ -119,7 +119,6 @@ export function ProductForm({
       size_id: Number(variant.size),
       category_id: Number(values.category),
       stock: variant.stock,
-      product_type_Id: 1,
       product_id: product_id
     }))
     const images: ImageInsert[] = myFiles.map(file => ({

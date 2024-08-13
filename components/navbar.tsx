@@ -3,8 +3,8 @@ import { HeartIcon, ShoppingBagIcon } from './icons'
 import HeavenlyIcon from './heavenly-icon'
 import ShoppingBag from './shopping-bag'
 import Navigation from './navigation'
-import { getBag } from '@/server/actions'
 import SearchProduct from './search-product'
+import { getBag } from '@/server/actions'
 
 export default async function Navbar() {
   const bag = await getBag()
@@ -23,13 +23,13 @@ export default async function Navbar() {
           <HeartIcon />
         </Link>
         <div className="relative h-full flex items-center group">
-          {!!bag?.length && (
+          {!!bag?.bagItem.length && (
             <div className="absolute top-3 -right-2 bg-red-500 text-white font-semibold text-sm rounded-full h-5 w-5 flex items-center justify-center">
-              {bag.length}
+              {bag.bagItem.length}
             </div>
           )}
           <ShoppingBagIcon />
-          <ShoppingBag bag={bag} />
+          {bag?.bagItem.length && <ShoppingBag bag={bag.bagItem} />}
         </div>
       </div>
     </header>

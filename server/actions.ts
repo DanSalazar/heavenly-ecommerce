@@ -7,6 +7,7 @@ import {
   ProductInsert,
   ProductVariants,
   ProductVariantsInsert,
+  bag,
   bagItem,
   category,
   color,
@@ -29,6 +30,7 @@ import {
 } from 'drizzle-orm'
 import { PgColumn } from 'drizzle-orm/pg-core'
 import { revalidatePath } from 'next/cache'
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { cache } from 'react'
 import { z } from 'zod'
@@ -114,12 +116,6 @@ const makeFiltersBySearchParams = (
     if (filters.featured === 'featured')
       conditions.push(eq(product.featured, true))
   }
-
-  // if (filters.price) {
-  //   // price=1-10
-  //   const [min, max] = filters.price.split('-')
-  //   conditions.push(between(product.price, Number(min), Number(max)))
-  // }
 
   return conditions
 }
@@ -259,48 +255,71 @@ export const updateProduct = async (
   redirect('/dashboard/products')
 }
 
-const productInBagSchema = z.number()
+export const getBag = cache(async () => {
+  const bagId = cookies().get('bag_id')?.value || ''
+  const bag = await db.query.bag.findFirst({
+    where: (field, { eq }) => eq(field.id, bagId),
+    with: {
+      bagItem: {
+        with: {
+          product_variant: {
+            columns: {
+              id: true,
+              stock: true
+            },
+            with: {
+              product: true,
+              size: true,
+              color: true
+            }
+          }
+        },
+        orderBy: (bagItem, { asc }) => [asc(bagItem.created_at)]
+      }
+    }
+  })
+
+  return bag
+})
+
+const productInBagSchema = z.coerce.number()
 
 export const addProductInBag = async (variantId: number | undefined) => {
   try {
-    const id = productInBagSchema.parse(variantId)
+    let bag_id = cookies().get('bag_id')?.value
 
-    await db
+    if (!bag_id) {
+      bag_id = crypto.randomUUID()
+      await db.insert(bag).values({
+        id: bag_id
+      })
+
+      const oneDay = 24 * 60 * 60
+      cookies().set('bag_id', bag_id, {
+        path: '/',
+        expires: Date.now() - oneDay
+      })
+    }
+
+    const item_id = productInBagSchema.parse(variantId)
+
+    const s = await db
       .insert(bagItem)
       .values({
-        item_id: id,
+        bag_id,
+        item_id,
         quantity: 1
       })
       .onConflictDoUpdate({
-        target: bagItem.item_id,
-        set: { quantity: sql`heavenly_bag_item.quantity + 1` }
+        target: [bagItem.bag_id, bagItem.item_id],
+        set: { quantity: sql`${bagItem.quantity} + 1` }
       })
 
     revalidatePath('/[department]/[id]', 'page')
   } catch (err) {
+    console.log(err)
     return null
   }
-}
-
-export const getBag = async () => {
-  const data = await db.query.bagItem.findMany({
-    with: {
-      product_variant: {
-        columns: {
-          id: true,
-          stock: true
-        },
-        with: {
-          product: true,
-          size: true,
-          color: true
-        }
-      }
-    },
-    orderBy: (bag, { asc }) => [asc(bag.created_at)]
-  })
-
-  return data
 }
 
 export const getFilters = async (ids: string[]) => {
@@ -360,6 +379,7 @@ export const updateQuantityInBag = async (id: number, value: number) => {
 
 export const deleteItemFromBag = async (id: number) => {
   await db.delete(bagItem).where(eq(bagItem.id, id))
+
   revalidatePath('/')
   return true
 }

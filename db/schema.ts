@@ -8,6 +8,7 @@ import {
   serial,
   text,
   timestamp,
+  unique,
   varchar
 } from 'drizzle-orm/pg-core'
 
@@ -66,19 +67,9 @@ export const categoryRelations = relations(category, ({ many }) => ({
   productVariations: many(productVariations)
 }))
 
-export const product_type = createTable('product_type', {
-  id: serial('id').primaryKey(),
-  name: varchar('name', { length: 40 }).unique().notNull()
-})
-
 export type Color = typeof color.$inferSelect
 export type Size = typeof size.$inferSelect
 export type Category = typeof category.$inferSelect
-export type ProductType = typeof product_type.$inferSelect
-
-export const producty_type_relations = relations(product_type, ({ many }) => ({
-  productVariations: many(productVariations)
-}))
 
 export const productVariations = createTable(
   'product_variations',
@@ -93,9 +84,6 @@ export const productVariations = createTable(
     size_id: serial('size_id')
       .notNull()
       .references(() => size.id),
-    product_type_Id: serial('product_type_id').references(
-      () => product_type.id
-    ),
     category_id: serial('category_id')
       .notNull()
       .references(() => category.id),
@@ -128,10 +116,6 @@ export const productVariationsRelations = relations(
     size: one(size, {
       fields: [productVariations.size_id],
       references: [size.id]
-    }),
-    product_type: one(product_type, {
-      fields: [productVariations.product_type_Id],
-      references: [product_type.id]
     })
   })
 )
@@ -143,27 +127,49 @@ export type ProductVariantWithJoins = Pick<ProductVariants, 'id' | 'stock'> & {
   color?: Color | null
   category?: Category | null
   size?: Size | null
-  product_type?: ProductType | null
 }
 
 export type ProductWithVariants = Product & {
   productVariations?: ProductVariantWithJoins[]
 }
 
-export const bagItem = createTable('bag_item', {
-  id: serial('id').primaryKey(),
-  item_id: serial('item_id').unique(),
-  quantity: integer('quantity'),
-  created_at: timestamp('created_at').defaultNow(),
+export const bag = createTable('bag', {
+  id: varchar('id', { length: 37 }).primaryKey(),
   expires_at: timestamp('expires_at').default(
     sql`current_timestamp + interval '24 hours'`
   )
 })
 
+export const bagRelations = relations(bag, ({ many }) => ({
+  bagItem: many(bagItem)
+}))
+
+export const bagItem = createTable(
+  'bag_item',
+  {
+    id: serial('id').primaryKey(),
+    bag_id: varchar('bag_id', { length: 37 })
+      .references(() => bag.id)
+      .notNull(),
+    item_id: serial('item_id')
+      .references(() => productVariations.id)
+      .notNull(),
+    created_at: timestamp('created_at').defaultNow().notNull(),
+    quantity: integer('quantity').notNull()
+  },
+  table => ({
+    unq: unique().on(table.bag_id, table.item_id)
+  })
+)
+
 export const bagItemRelations = relations(bagItem, ({ one }) => ({
   product_variant: one(productVariations, {
     fields: [bagItem.item_id],
     references: [productVariations.id]
+  }),
+  bag: one(bag, {
+    fields: [bagItem.bag_id],
+    references: [bag.id]
   })
 }))
 

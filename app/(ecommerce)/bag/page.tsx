@@ -12,10 +12,10 @@ import BreadcrumbWrapper from '@/components/ui/breadcrumb-wrapper'
 export default async function Page() {
   const bag = await getBag()
 
-  if (!bag.length) return <BagEmpty />
+  if (!bag?.bagItem.length) return <BagEmpty />
 
   const SHIPPING_PRICE = 0.0
-  const total = reduceBagPrice(bag)
+  const total = reduceBagPrice(bag.bagItem)
 
   return (
     <>
@@ -25,11 +25,11 @@ export default async function Page() {
           <header className="mb-8 flex justify-between items-center flex-wrap">
             <h2 className="font-semibold uppercase text-6xl">Bag</h2>
             <span className="font-medium bg-primary py-1 px-2 rounded-md text-white">
-              {bag.length}
+              {bag.bagItem.length}
             </span>
           </header>
           <div>
-            {bag.map(bag_item => {
+            {bag.bagItem.map(bag_item => {
               if (!bag_item.product_variant) return <></>
               const { product_variant } = bag_item
 
