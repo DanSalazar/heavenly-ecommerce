@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, memo } from 'react'
 import { buttonVariants } from '../ui/button'
 import { cn } from '../../lib/utils'
 import Price from '../ecommerce/price'
@@ -10,16 +10,17 @@ import useMounted from '@/hooks/useMounted'
 import { BagItem } from '@/db/schema'
 import { reduceBagPrice } from '@/utils'
 
-export default function ShoppingBag({ bag }: { bag: BagItem[] }) {
+function ShoppingBag({ bag }: { bag: BagItem[] }) {
   const [open, setOpen] = useState(false)
-  const isMounted = useMounted()
+  const [bagCount, setBagCount] = useState(bag.length)
   const total = reduceBagPrice(bag)
 
   useEffect(() => {
     let timer: NodeJS.Timeout
 
-    if (isMounted) {
+    if (bag.length > bagCount) {
       setOpen(true)
+      setBagCount(bag.length)
       timer = setTimeout(() => {
         setOpen(false)
       }, 3000)
@@ -64,3 +65,5 @@ export default function ShoppingBag({ bag }: { bag: BagItem[] }) {
     </div>
   )
 }
+
+export default ShoppingBag

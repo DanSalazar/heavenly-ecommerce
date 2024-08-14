@@ -294,16 +294,14 @@ export const addProductInBag = async (variantId: number | undefined) => {
         id: bag_id
       })
 
-      const oneDay = 24 * 60 * 60
       cookies().set('bag_id', bag_id, {
-        path: '/',
-        expires: Date.now() - oneDay
+        path: '/'
       })
     }
 
     const item_id = productInBagSchema.parse(variantId)
 
-    const s = await db
+    await db
       .insert(bagItem)
       .values({
         bag_id,
@@ -317,7 +315,6 @@ export const addProductInBag = async (variantId: number | undefined) => {
 
     revalidatePath('/[department]/[id]', 'page')
   } catch (err) {
-    console.log(err)
     return null
   }
 }

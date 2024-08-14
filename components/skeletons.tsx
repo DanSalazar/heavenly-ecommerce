@@ -26,7 +26,7 @@ export const ProductsWrapperSkeleton = () => (
   </div>
 )
 
-export const ProductFiltersSkeleton = () => (
+export const ProductsFiltersSkeleton = () => (
   <div className="flex justify-between">
     <Button className="uppercase">Filters</Button>
     <Select>
@@ -35,6 +35,13 @@ export const ProductFiltersSkeleton = () => (
       </SelectTrigger>
     </Select>
   </div>
+)
+
+export const ProductsWithFiltersSkeleton = () => (
+  <>
+    <ProductsFiltersSkeleton />
+    <ProductsWrapperSkeleton />
+  </>
 )
 
 export const ProductPageSkeleton = () => (
@@ -105,7 +112,9 @@ export const BagPageSkeleton = () => {
           <p className="font-medium capitalize text-xl">Total</p>
           <Skeleton className="h-6 w-24" /> {/* Total price */}
         </div>
-        <Button disabled>Checkout</Button>
+        <Button className="h-12" disabled>
+          Checkout
+        </Button>
         {/* PayPal button */}
         <Skeleton className="h-12" />
       </div>
