@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         style={{
-          padding: '0 2rem'
+          padding: '0 1.75rem'
         }}
         className={mainFont.className + ' flex flex-col gap-4'}>
         <Navbar />

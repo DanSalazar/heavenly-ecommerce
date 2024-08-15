@@ -10,7 +10,7 @@ export default async function Navbar() {
   const bag = await getBag()
 
   return (
-    <header className="relative z-10 h-16 border-b border-zinc-200 grid grid-cols-2 md:grid-cols-3">
+    <header className="relative z-10 h-16 border-b border-zinc-200 grid items-center grid-cols-3">
       <Navigation />
       <div className="bg-white flex items-center md:justify-center">
         <Link href={'/'}>
@@ -18,7 +18,7 @@ export default async function Navbar() {
         </Link>
       </div>
       <div className="self-stretch flex gap-3 justify-end items-center bg-white">
-        <SearchProduct />
+        <SearchProduct className="hidden md:block" />
         <Link href={'/favorites'}>
           <HeartIcon />
         </Link>

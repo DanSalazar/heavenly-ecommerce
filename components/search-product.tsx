@@ -5,7 +5,13 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { SearchIcon } from 'lucide-react'
 
-export default function SearchProduct() {
+export default function SearchProduct({
+  extendOnSubmit,
+  className
+}: {
+  extendOnSubmit?: () => void
+  className?: string
+}) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -23,10 +29,11 @@ export default function SearchProduct() {
     }
 
     router.push('/search?' + newParams.toString())
+    extendOnSubmit && extendOnSubmit()
   }
 
   return (
-    <form onSubmit={onSubmit} className={cn('relative w-[280px]')}>
+    <form onSubmit={onSubmit} className={cn('relative', className)}>
       <SearchIcon
         strokeWidth={1.5}
         className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground"
