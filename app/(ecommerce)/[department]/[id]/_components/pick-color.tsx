@@ -45,7 +45,7 @@ const ColorButton = ({
 
   return (
     <Button
-      className={cn('uppercase capitalize rounded-lg border-primary', {
+      className={cn('uppercase capitalize rounded-lg', {
         [notAvailableClass]: !isAvailable
       })}
       size={'sm'}

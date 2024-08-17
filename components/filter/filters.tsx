@@ -32,7 +32,7 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
   }
 
   return (
-    <div className="relative flex justify-between">
+    <div className="relative flex justify-between flex-wrap">
       <div className="flex gap-2 flex-1">
         <Button className="uppercase" onClick={handleOpen}>
           Filters
@@ -58,7 +58,7 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
                 key={crypto.randomUUID()}
                 data-key="category"
                 data-value={category}
-                className="rounded-lg border-primary"
+                className="rounded-lg capitalize"
                 variant={
                   getState('category')?.includes(category + '')
                     ? 'default'
@@ -77,7 +77,7 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
                 key={crypto.randomUUID()}
                 data-key="color"
                 data-value={color}
-                className="rounded-lg border-primary"
+                className="rounded-lg capitalize"
                 variant={
                   getState('color')?.includes(color + '')
                     ? 'default'
@@ -97,7 +97,7 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
                 key={crypto.randomUUID()}
                 data-key="size"
                 data-value={size}
-                className="rounded-lg border-primary uppercase"
+                className="rounded-lg capitalize"
                 variant={
                   getState('size')?.includes(size + '') ? 'default' : 'outline'
                 }>

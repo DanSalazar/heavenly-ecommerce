@@ -12,17 +12,18 @@ export default function SortBy() {
 
   return (
     <Select
+      defaultValue="relevance"
       onValueChange={value => {
-        if (value === 'none') remove('order')
+        if (value === 'relevance') remove('order')
         else add('order', value)
       }}>
-      <SelectTrigger className="w-[150px] border-black font-medium">
+      <SelectTrigger className="w-[180px] font-medium">
         <SelectValue placeholder="Sort by"></SelectValue>
       </SelectTrigger>
-      <SelectContent className="border-black">
-        <SelectItem value="none">None</SelectItem>
-        <SelectItem value="low to high">Price low to high</SelectItem>
-        <SelectItem value="high to low">Price high to low</SelectItem>
+      <SelectContent>
+        <SelectItem value="relevance">Relevance</SelectItem>
+        <SelectItem value="low to high">Price: Low to high</SelectItem>
+        <SelectItem value="high to low">Price: High to low</SelectItem>
       </SelectContent>
     </Select>
   )

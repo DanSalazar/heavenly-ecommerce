@@ -1,12 +1,11 @@
 'use client'
 
-import { useEffect, useState, memo } from 'react'
+import { useEffect, useState } from 'react'
 import { buttonVariants } from '../ui/button'
 import { cn } from '../../lib/utils'
 import Price from '../ecommerce/price'
 import Link from 'next/link'
 import ProductBag from './product-bag'
-import useMounted from '@/hooks/useMounted'
 import { BagItem } from '@/db/schema'
 import { reduceBagPrice } from '@/utils'
 
@@ -32,7 +31,7 @@ function ShoppingBag({ bag }: { bag: BagItem[] }) {
   return (
     <div
       className={cn(
-        'p-4 -z-10 bg-white w-[300px] md:w-[350px] flex flex-col gap-4 absolute right-0 top-0 -translate-y-[400px] group-hover:translate-y-[52px] transition-transform ease-in-out duration-700 border-b border-r border-l border-zinc-200',
+        'hidden md:flex flex-col gap-4 p-4 -z-10 bg-white w-[300px] md:w-[350px] absolute right-0 top-0 -translate-y-[400px] group-hover:translate-y-[52px] transition-transform ease-in-out duration-700 border-b border-r border-l border-zinc-200',
         {
           'translate-y-[52px]': open
         }

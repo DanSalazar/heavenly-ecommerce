@@ -85,7 +85,7 @@ const config = {
         fade: 'fade 0.2s linear'
       },
       gridTemplateColumns: {
-        products: 'repeat(auto-fill, minmax(280px, 1fr))'
+        products: 'repeat(auto-fill, minmax(300px, 1fr))'
       }
     }
   },

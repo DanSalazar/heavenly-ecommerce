@@ -46,7 +46,7 @@ const SizeButton = ({
 
   return (
     <Button
-      className={cn('uppercase rounded-lg border-primary', {
+      className={cn('uppercase rounded-lg', {
         [notAvailableClass]: !isAvailable
       })}
       size={'sm'}
