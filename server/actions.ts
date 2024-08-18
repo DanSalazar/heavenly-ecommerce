@@ -156,10 +156,13 @@ export const getProductsByDepartment = async (department?: string) => {
   }
 }
 
-export const getProductBySearchParams = async (
-  department?: string,
-  searchParams?: unknown
-) => {
+export const getProductBySearchParams = async ({
+  department,
+  searchParams
+}: {
+  department?: string
+  searchParams: unknown
+}) => {
   const parsedSearchParams = searchParamsSchema.parse(searchParams)
   const filtersByParams = makeFiltersBySearchParams(parsedSearchParams)
   const parsedDepartment = department?.length

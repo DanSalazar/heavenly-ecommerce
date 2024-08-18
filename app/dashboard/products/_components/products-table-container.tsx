@@ -1,4 +1,4 @@
-import { getProducts } from '@/server/actions'
+import { getProductBySearchParams } from '@/server/actions'
 import ProductsTable from './products-table'
 
 export default async function ProductsTableContainer({
@@ -6,7 +6,7 @@ export default async function ProductsTableContainer({
 }: {
   searchParams?: unknown
 }) {
-  const products = await getProducts('', searchParams)
+  const products = await getProductBySearchParams({ searchParams })
 
   return <ProductsTable products={products} />
 }

@@ -1,34 +1,47 @@
 'use client'
 
 import { Input } from '@/components/ui/input'
-import useUrlState from '@/hooks/useUrlState'
 import { SearchIcon } from 'lucide-react'
-import { useDebouncedCallback } from 'use-debounce'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 export default function SearchInput({
-  placeholder = 'Search...',
-  searchKey = 'search'
+  placeholder = 'Search for products name...'
 }: {
   placeholder?: string
-  searchKey?: string
 }) {
-  const { add } = useUrlState()
-  const handleChange = useDebouncedCallback((val: string) => {
-    add(searchKey, val)
-  }, 300)
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const form = e.target as HTMLFormElement
+    const search = form.search as HTMLInputElement
+    const newParams = new URLSearchParams(searchParams.toString())
+
+    if (search.value) {
+      newParams.set('q', search.value)
+    } else {
+      newParams.delete('q')
+      return
+    }
+
+    router.push(newParams.toString())
+  }
 
   return (
-    <div className="relative flex-1">
+    <form onSubmit={onSubmit} className={'relative flex-1'}>
       <SearchIcon
         strokeWidth={1.5}
         className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground"
       />
       <Input
-        onChange={val => handleChange(val.target.value)}
+        name="search"
+        placeholder={placeholder || 'Search for products...'}
         type="search"
-        placeholder={placeholder}
-        className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+        defaultValue={searchParams?.get('q') || ''}
+        autoComplete="off"
+        className="rounded-lg pl-8"
       />
-    </div>
+    </form>
   )
 }

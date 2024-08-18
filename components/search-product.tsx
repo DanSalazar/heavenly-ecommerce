@@ -7,10 +7,12 @@ import { SearchIcon } from 'lucide-react'
 
 export default function SearchProduct({
   extendOnSubmit,
-  className
+  className,
+  placeholder
 }: {
   extendOnSubmit?: () => void
   className?: string
+  placeholder?: string
 }) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -40,7 +42,7 @@ export default function SearchProduct({
       />
       <Input
         name="search"
-        placeholder="Search for products..."
+        placeholder={placeholder || 'Search for products...'}
         type="search"
         defaultValue={searchParams?.get('q') || ''}
         autoComplete="off"

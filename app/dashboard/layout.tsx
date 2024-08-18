@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import '@uploadthing/react/styles.css'
 import '../globals.css'
 import Navbar from './_components/navbar'
 import Providers from '@/components/providers'
