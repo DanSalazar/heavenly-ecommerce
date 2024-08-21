@@ -2,6 +2,7 @@ import { MouseEvent } from 'react'
 import useUrlState from '@/hooks/useUrlState'
 import { Button } from '../ui/button'
 import { MarkIcon } from '../icons'
+import { NOT_LISTED_FILTERS } from '@/lib/constants'
 
 export default function FiltersSelected() {
   const { params, remove } = useUrlState()
@@ -15,7 +16,7 @@ export default function FiltersSelected() {
   }
 
   const filtersSelected = [...params.entries()].filter(
-    entry => entry[0] !== 'q'
+    entry => !NOT_LISTED_FILTERS.includes(entry[0])
   )
 
   return (

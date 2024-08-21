@@ -1,5 +1,10 @@
 import ProductsWithFilters from '@/components/ecommerce/products-with-filters'
-import { ProductsWithFiltersSkeleton } from '@/components/skeletons'
+import PaginationWrapper from '@/components/pagination-wrapper'
+import {
+  PaginationSkeleton,
+  ProductsWithFiltersSkeleton
+} from '@/components/skeletons'
+import { PRODUCTS_PER_PAGE } from '@/lib/constants'
 import { Suspense } from 'react'
 
 export default async function Page({
@@ -11,6 +16,12 @@ export default async function Page({
     <main className="flex flex-col gap-4">
       <Suspense fallback={<ProductsWithFiltersSkeleton />}>
         <ProductsWithFilters searchParams={searchParams} />
+      </Suspense>
+      <Suspense fallback={<PaginationSkeleton />}>
+        <PaginationWrapper
+          productsPerPage={PRODUCTS_PER_PAGE}
+          searchParams={searchParams}
+        />
       </Suspense>
     </main>
   )

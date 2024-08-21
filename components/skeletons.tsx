@@ -268,3 +268,9 @@ export const OrdersTableSkeleton = () => {
     </Table>
   )
 }
+
+export const PaginationSkeleton = () => (
+  <div className="flex justify-center items-center">
+    <Skeleton className="w-[250px] h-10" />
+  </div>
+)

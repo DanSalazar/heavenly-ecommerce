@@ -6,18 +6,31 @@ import {
 import ProductsWrapper from './products-wrapper'
 import ProductComponent from './product-component'
 import Filters from '../filter/filters'
+import { PRODUCTS_PER_PAGE } from '@/lib/constants'
 
 export default async function ProductsWithFilters({
-  department,
+  department = '',
   searchParams
 }: {
-  department: string
+  department?: string
   searchParams?: any
 }) {
+  const offset = searchParams?.page
+    ? Number(searchParams?.page - 1) * PRODUCTS_PER_PAGE
+    : 0
   const products =
     Object.keys(searchParams).length > 0
-      ? await getProductBySearchParams({ department, searchParams })
-      : await getProductsByDepartment(department)
+      ? await getProductBySearchParams({
+          department,
+          searchParams,
+          offset,
+          limit: PRODUCTS_PER_PAGE
+        })
+      : await getProductsByDepartment({
+          department,
+          offset,
+          limit: PRODUCTS_PER_PAGE
+        })
 
   if (!products)
     return (

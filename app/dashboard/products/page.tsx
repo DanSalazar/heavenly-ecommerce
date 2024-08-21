@@ -14,7 +14,12 @@ import SearchInput from '../_components/search-input'
 import FilterByProducts from './_components/filter-by-products'
 import { Suspense } from 'react'
 import ProductsTableContainer from './_components/products-table-container'
-import { ProductsTableSkeleton } from '@/components/skeletons'
+import {
+  PaginationSkeleton,
+  ProductsTableSkeleton
+} from '@/components/skeletons'
+import PaginationWrapper from '@/components/pagination-wrapper'
+import { PRODUCTS_PER_ROW } from '@/lib/constants'
 
 export default async function Page({
   searchParams
@@ -55,6 +60,12 @@ export default async function Page({
         <CardContent>
           <Suspense fallback={<ProductsTableSkeleton />}>
             <ProductsTableContainer searchParams={searchParams} />
+          </Suspense>
+          <Suspense fallback={<PaginationSkeleton />}>
+            <PaginationWrapper
+              productsPerPage={PRODUCTS_PER_ROW}
+              searchParams={searchParams}
+            />
           </Suspense>
         </CardContent>
         <CardFooter></CardFooter>

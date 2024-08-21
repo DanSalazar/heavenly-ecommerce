@@ -16,18 +16,7 @@ import {
   productVariations,
   size
 } from '@/db/schema'
-import {
-  SQL,
-  and,
-  asc,
-  between,
-  desc,
-  eq,
-  ilike,
-  inArray,
-  or,
-  sql
-} from 'drizzle-orm'
+import { SQL, and, asc, desc, eq, ilike, inArray, or, sql } from 'drizzle-orm'
 import { PgColumn } from 'drizzle-orm/pg-core'
 import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
@@ -138,7 +127,15 @@ export const getProducts = cache(async () => {
   })
 })
 
-export const getProductsByDepartment = async (department?: string) => {
+export const getProductsByDepartment = async ({
+  department,
+  offset,
+  limit
+}: {
+  department: string
+  offset?: number
+  limit?: number
+}) => {
   try {
     const parsedDepartment = paramsResolver.parse(department)
 
@@ -149,6 +146,9 @@ export const getProductsByDepartment = async (department?: string) => {
       .from(productVariations)
       .innerJoin(product, eq(productVariations.product_id, product.id))
       .where(eq(product.department, parsedDepartment))
+      .limit(limit || 0)
+      .offset(offset || 0)
+      .orderBy(asc(product.name))
 
     return data
   } catch (err) {
@@ -158,16 +158,18 @@ export const getProductsByDepartment = async (department?: string) => {
 
 export const getProductBySearchParams = async ({
   department,
-  searchParams
+  searchParams,
+  limit,
+  offset
 }: {
   department?: string
   searchParams: unknown
+  limit?: number
+  offset?: number
 }) => {
   const parsedSearchParams = searchParamsSchema.parse(searchParams)
   const filtersByParams = makeFiltersBySearchParams(parsedSearchParams)
-  const parsedDepartment = department?.length
-    ? paramsResolver.parse(department)
-    : ''
+  const parsedDepartment = paramsResolver.safeParse(department)
 
   const data = await db
     .selectDistinctOn([product.id, product.name, product.price], {
@@ -179,13 +181,45 @@ export const getProductBySearchParams = async ({
     .innerJoin(color, eq(productVariations.color_id, color.id))
     .innerJoin(size, eq(productVariations.size_id, size.id))
     .where(
-      parsedDepartment
-        ? and(eq(product.department, parsedDepartment), ...filtersByParams)
+      parsedDepartment?.data
+        ? and(eq(product.department, parsedDepartment.data), ...filtersByParams)
+        : and(...filtersByParams)
+    )
+    .offset(offset || 0)
+    .limit(limit || 0)
+    .orderBy(ordersByMap[parsedSearchParams.order] || asc(product.name))
+
+  return data
+}
+
+export const getProductsCount = async ({
+  searchParams,
+  department
+}: {
+  searchParams: unknown
+  department?: string
+}) => {
+  const parsedSearchParams = searchParamsSchema.parse(searchParams)
+  const filtersByParams = makeFiltersBySearchParams(parsedSearchParams)
+  const parsedDepartment = paramsResolver.safeParse(department)
+
+  const data = await db
+    .selectDistinctOn([product.id, product.name, product.price], {
+      product
+    })
+    .from(product)
+    .innerJoin(productVariations, eq(product.id, productVariations.product_id))
+    .innerJoin(category, eq(productVariations.category_id, category.id))
+    .innerJoin(color, eq(productVariations.color_id, color.id))
+    .innerJoin(size, eq(productVariations.size_id, size.id))
+    .where(
+      parsedDepartment?.data
+        ? and(eq(product.department, parsedDepartment.data), ...filtersByParams)
         : and(...filtersByParams)
     )
     .orderBy(ordersByMap[parsedSearchParams.order] || asc(product.name))
 
-  return data
+  return data.length
 }
 
 export const deleteProduct = async (id: string) => {
