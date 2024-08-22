@@ -1,3 +1,13 @@
-export default function Page() {
-  return <></>
+import { db } from '@/db'
+import SocialMediaForm from './social-media-form'
+
+export default async function Page() {
+  const shopInfo = await db.query.shopInformation.findFirst({})
+
+  return (
+    <>
+      <h1 className="text-3xl font-bold">Settings</h1>
+      <SocialMediaForm shopInfo={shopInfo!} />
+    </>
+  )
 }

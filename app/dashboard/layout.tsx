@@ -3,7 +3,6 @@ import '../globals.css'
 import Navbar from './_components/navbar'
 import Providers from '@/components/providers'
 import { mainFont } from '@/components/fonts'
-import BreadcrumbWrapper from '@/components/ui/breadcrumb-wrapper'
 import { Toaster } from '@/components/ui/toaster'
 import { ClerkProvider, SignedIn } from '@clerk/nextjs'
 
@@ -28,7 +27,6 @@ export default function RootLayout({
             <SignedIn>
               <Navbar />
               <main className="bg-zinc-50 dark:bg-background h-full flex flex-col gap-4 p-6">
-                <BreadcrumbWrapper isDashboard />
                 {children}
               </main>
               <Toaster />

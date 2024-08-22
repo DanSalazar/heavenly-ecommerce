@@ -215,3 +215,13 @@ export const imagesRelations = relations(imagesTable, ({ one }) => ({
 
 export type ImageSelect = typeof imagesTable.$inferSelect
 export type ImageInsert = typeof imagesTable.$inferInsert
+
+export const shopInformation = createTable('shop_information', {
+  id: serial('id').primaryKey(),
+  facebook: varchar('facebook', { length: 255 }),
+  x: varchar('x', { length: 255 }),
+  instagram: varchar('instagram', { length: 255 })
+})
+
+export type ShopInformation = typeof shopInformation.$inferSelect
+export type ShopInformationInsert = typeof shopInformation.$inferInsert

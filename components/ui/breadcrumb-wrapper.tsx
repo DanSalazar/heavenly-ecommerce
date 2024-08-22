@@ -12,17 +12,11 @@ import {
 } from './breadcrumb'
 import { Fragment } from 'react'
 
-export default function BreadcrumbWrapper({
-  pathname,
-  isDashboard = false
-}: {
-  pathname?: string
-  isDashboard?: boolean
-}) {
+export default function BreadcrumbWrapper({ pathname }: { pathname?: string }) {
   const currentPathname = usePathname()
-  const pathObject = createPathObject(pathname || currentPathname, isDashboard)
+  const pathObject = createPathObject(pathname || currentPathname)
 
-  if (pathObject.length === 1 && isDashboard) return null
+  if (pathObject.length === 1) return null
 
   return (
     <Breadcrumb>

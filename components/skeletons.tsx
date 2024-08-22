@@ -274,3 +274,11 @@ export const PaginationSkeleton = () => (
     <Skeleton className="w-[250px] h-10" />
   </div>
 )
+
+export const SocialsSkeletons = () => (
+  <div className="flex gap-4">
+    <Skeleton className="w-5 h-5 rounded-full" />
+    <Skeleton className="w-5 h-5 rounded-full" />
+    <Skeleton className="w-5 h-5 rounded-full" />
+  </div>
+)

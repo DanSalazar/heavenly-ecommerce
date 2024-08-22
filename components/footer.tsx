@@ -1,4 +1,7 @@
+import { Suspense } from 'react'
 import HeavenlyIcon from './heavenly-icon'
+import { SocialsSkeletons } from './skeletons'
+import SocialMedia from './social-media'
 
 const NavigationList: { title: string; list: string[] }[] = [
   {
@@ -32,6 +35,9 @@ export default function Footer() {
           Online brand clothing store Heavenly focuses on seling only qualify
           and branded items, limited edition collections by fashion designers
         </p>
+        <Suspense fallback={<SocialsSkeletons />}>
+          <SocialMedia />
+        </Suspense>
       </div>
       <div className="flex flex-wrap justify-between md:gap-16">
         {NavigationList.map(navigationItem => (

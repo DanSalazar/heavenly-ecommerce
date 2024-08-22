@@ -6,10 +6,7 @@ type BreadcrumbType = {
   id: string
 }
 
-export const createPathObject = (
-  pathname: string,
-  isDashboard: boolean
-): BreadcrumbType[] => {
+export const createPathObject = (pathname: string): BreadcrumbType[] => {
   const paths = pathname.split('/')
   const result: BreadcrumbType[] = []
   let href = ''
@@ -17,7 +14,7 @@ export const createPathObject = (
   for (let i = 0; i < paths.length; i++) {
     const item = paths[i]
 
-    if (item === '' && isDashboard) continue
+    if (item === '') continue
 
     const id = `item-${i}`
 
