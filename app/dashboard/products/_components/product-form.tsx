@@ -154,7 +154,7 @@ export function ProductForm({
           className="grid flex-1 auto-rows-max gap-4"
           onSubmit={form.handleSubmit(handleSubmit)}>
           <div className="flex flex-wrap items-center gap-4">
-            <h1 className="flex-1 text-xl font-semibold tracking-tight">
+            <h1 className="flex-1 text-3xl font-semibold tracking-tight">
               Create a new product
             </h1>
             <div className="hidden md:block md:ml-auto space-x-2">

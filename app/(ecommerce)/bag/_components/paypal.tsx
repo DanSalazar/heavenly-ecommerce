@@ -13,7 +13,9 @@ export default function Paypal() {
         className="z-0"
         style={{
           layout: 'horizontal',
-          label: 'pay'
+          label: 'checkout',
+          color: 'gold',
+          tagline: false
         }}
         createOrder={async () => {
           const data = await fetch('/api/paypal', {

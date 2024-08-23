@@ -14,8 +14,8 @@ export default async function Page({
 }) {
   return (
     <main className="flex flex-col gap-4">
-      <Suspense fallback={<ProductsWithFiltersSkeleton />}>
-        <ProductsWithFilters searchParams={searchParams} />
+      <Suspense key={searchParams.q} fallback={<ProductsWithFiltersSkeleton />}>
+        <ProductsWithFilters key={searchParams.q} searchParams={searchParams} />
       </Suspense>
       <Suspense fallback={<PaginationSkeleton />}>
         <PaginationWrapper

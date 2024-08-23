@@ -16,9 +16,5 @@ export default async function ProductsTableContainer({
     limit: PRODUCTS_PER_ROW
   })
 
-  return (
-    <>
-      <ProductsTable products={products} />
-    </>
-  )
+  return <ProductsTable products={products} />
 }

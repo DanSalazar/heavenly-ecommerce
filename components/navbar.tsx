@@ -1,16 +1,15 @@
 import Link from 'next/link'
-import { HeartIcon, ShoppingBagIcon } from './icons'
+import { HeartIcon } from './icons'
 import HeavenlyIcon from './heavenly-icon'
-import ShoppingBag from './shopping-bag'
 import Navigation from './navigation'
 import SearchProduct from './search-product'
-import { getBag } from '@/server/actions'
+import ShoppingBag from './shopping-bag'
+import { Suspense } from 'react'
+import { Skeleton } from './ui/skeleton'
 
-export default async function Navbar() {
-  const bag = await getBag()
-
+export default function Navbar() {
   return (
-    <header className="relative z-10 h-16 border-b border-zinc-200 grid items-center grid-cols-3">
+    <header className="bg-white sticky top-0 z-20 h-16 border-b border-zinc-200 grid items-center grid-cols-3">
       <Navigation />
       <div className="bg-white flex items-center md:justify-center">
         <Link href={'/'}>
@@ -22,18 +21,9 @@ export default async function Navbar() {
         <Link href={'/favorites'}>
           <HeartIcon />
         </Link>
-        <div className="relative flex h-full items-center group">
-          {!!bag?.bagItem.length && (
-            <div className="absolute top-3 -right-2 bg-red-500 text-white font-semibold text-sm rounded-full h-5 w-5 flex items-center justify-center">
-              {bag.bagItem.length}
-            </div>
-          )}
-          <Link href={'/bag'}>
-            <ShoppingBagIcon />
-            <span className="sr-only">Shopping Bag</span>
-          </Link>
-          {bag?.bagItem.length && <ShoppingBag bag={bag.bagItem} />}
-        </div>
+        <Suspense fallback={<Skeleton className="w-6 h-6 rounded-lg" />}>
+          <ShoppingBag />
+        </Suspense>
       </div>
     </header>
   )

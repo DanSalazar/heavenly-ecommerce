@@ -3,11 +3,10 @@
 import { addProductInBag } from '@/server/actions'
 import { useSearchParams } from 'next/navigation'
 import ButtonAddBag from './button-add-bag'
-import PickColor from './pick-color'
-import PickSize from './pick-size'
 import { ProductVariantWithJoins } from '@/db/schema'
 import LikeButton from './like-button'
 import useUrlState from '@/hooks/useUrlState'
+import PickOption from './pick-option'
 
 export default function AddToBag({
   variants,
@@ -66,8 +65,8 @@ export default function AddToBag({
 
   return (
     <form action={formAction} className="flex flex-col gap-4">
-      <PickColor colors={colors} />
-      <PickSize sizes={sizes} />
+      <PickOption optionName="Color" options={colors} />
+      <PickOption optionName="Size" options={sizes} />
       <div className="flex h-12 flex-wrap gap-2">
         <ButtonAddBag
           variantSelected={!!variantSelected}

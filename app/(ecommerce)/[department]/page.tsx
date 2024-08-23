@@ -21,7 +21,7 @@ export default async function Page({
     <>
       <BreadcrumbWrapper />
       <main className="flex flex-col gap-2 mt-12">
-        <h2 className="text-7xl md:text-8xl font-medium uppercase break-words">
+        <h2 className="text-7xl md:text-8xl uppercase break-words">
           {params.department}
         </h2>
         <Suspense fallback={<ProductsWithFiltersSkeleton />}>

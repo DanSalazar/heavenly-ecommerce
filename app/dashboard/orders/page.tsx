@@ -11,11 +11,7 @@ import FilterByOrders from './_components/filter-by-orders'
 import { Suspense } from 'react'
 import { OrdersTableSkeleton } from '@/components/skeletons'
 
-export default async function Page({
-  searchParams
-}: {
-  searchParams: unknown
-}) {
+export default async function Page({ searchParams }: { searchParams: any }) {
   return (
     <>
       <div className="flex gap-2 justify-between">
@@ -29,7 +25,7 @@ export default async function Page({
         </CardHeader>
         <CardContent>
           <Suspense fallback={<OrdersTableSkeleton />}>
-            <OrdersTable searchParams={searchParams} />
+            <OrdersTable key={searchParams.q} searchParams={searchParams} />
           </Suspense>
         </CardContent>
       </Card>

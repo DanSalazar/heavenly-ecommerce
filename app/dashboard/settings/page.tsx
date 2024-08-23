@@ -6,7 +6,7 @@ export default async function Page() {
 
   return (
     <>
-      <h1 className="text-3xl font-bold">Settings</h1>
+      <h1 className="text-3xl font-semibold">Settings</h1>
       <SocialMediaForm shopInfo={shopInfo!} />
     </>
   )

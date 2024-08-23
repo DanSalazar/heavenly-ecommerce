@@ -21,11 +21,7 @@ import {
 import PaginationWrapper from '@/components/pagination-wrapper'
 import { PRODUCTS_PER_ROW } from '@/lib/constants'
 
-export default async function Page({
-  searchParams
-}: {
-  searchParams: unknown
-}) {
+export default async function Page({ searchParams }: { searchParams: any }) {
   return (
     <>
       <div className="flex justify-between gap-2 flex-wrap">
@@ -59,16 +55,20 @@ export default async function Page({
         </CardHeader>
         <CardContent>
           <Suspense fallback={<ProductsTableSkeleton />}>
-            <ProductsTableContainer searchParams={searchParams} />
+            <ProductsTableContainer
+              key={searchParams.q}
+              searchParams={searchParams}
+            />
           </Suspense>
+        </CardContent>
+        <CardFooter>
           <Suspense fallback={<PaginationSkeleton />}>
             <PaginationWrapper
               productsPerPage={PRODUCTS_PER_ROW}
               searchParams={searchParams}
             />
           </Suspense>
-        </CardContent>
-        <CardFooter></CardFooter>
+        </CardFooter>
       </Card>
     </>
   )

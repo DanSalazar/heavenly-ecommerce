@@ -9,7 +9,7 @@ export default function SearchInput({
 }: {
   placeholder?: string
 }) {
-  const router = useRouter()
+  const { replace } = useRouter()
   const searchParams = useSearchParams()
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -22,10 +22,9 @@ export default function SearchInput({
       newParams.set('q', search.value)
     } else {
       newParams.delete('q')
-      return
     }
 
-    router.push(newParams.toString())
+    replace(`?${newParams.toString()}`)
   }
 
   return (

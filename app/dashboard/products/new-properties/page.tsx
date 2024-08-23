@@ -20,7 +20,7 @@ export default function NewProperties() {
           Add Properties for Products
         </h1>
       </header>
-      <div className="space-y-8 md:grid md:grid-cols-2 md:px-24 md:space-y-0 md:gap-8">
+      <div className="space-y-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:space-y-0 md:gap-4">
         <Colors />
         <Sizes />
         <Categories />

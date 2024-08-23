@@ -14,7 +14,7 @@ export default function ProductComponent({ product }: ProductComponentProps) {
 
   return (
     <Link
-      href={product.department + '/' + product.id}
+      href={`/${product.department}/${product.id}`}
       className="animate-fade flex flex-col gap-2 cursor-pointer hover:opacity-80 transition-opacity group">
       <div className="relative h-[400px] flex overflow-hidden">
         <Image

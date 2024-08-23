@@ -5,7 +5,7 @@ import { formattedPrice, getDiscountPrice } from '@/utils'
 const priceStyles = cva('', {
   variants: {
     variant: {
-      default: 'text-zinc-500 dark:text-zinc-100',
+      default: 'text-zinc-600 dark:text-zinc-100',
       black: 'text-primary'
     },
     size: {
@@ -46,7 +46,7 @@ export default function Price({
       <p
         className={cn(
           priceStyles({ size }),
-          'hidden text-red-600 font-medium',
+          'hidden text-red-400 font-medium',
           {
             block: discount
           }

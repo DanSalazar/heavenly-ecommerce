@@ -91,3 +91,7 @@ export const isInFavorites = (id: string) => {
   const favorites = getItemsFromLocal()
   return Boolean(favorites.find(val => val === id))
 }
+
+export const capitalizeWord = (word: string) => {
+  return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+}

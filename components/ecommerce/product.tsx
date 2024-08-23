@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm'
 import ProductImagesContainer from './product-images-container'
 import { marcellus } from '../fonts'
 import Price from './price'
-import AddToBag from '@/app/(ecommerce)/[department]/[id]/_components/add-to-bag'
+
 import {
   Accordion,
   AccordionContent,
@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/accordion'
 import Link from 'next/link'
 import { buttonVariants } from '../ui/button'
+import AddToBag from './add-to-bag'
 
 export default async function Product({ id }: { id: string }) {
   const product = await db.query.product.findFirst({
