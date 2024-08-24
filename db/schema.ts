@@ -17,27 +17,38 @@ const createTable = pgTableCreator(name => 'heavenly_' + name)
 export const departmentEnum = pgEnum('department', ['men', 'women'])
 export const statusEnum = pgEnum('status', ['active', 'archived'])
 
-export const product = createTable('product', {
-  id: varchar('id', { length: 36 }).primaryKey().notNull(),
-  name: varchar('name', { length: 255 }).notNull(),
-  brand: varchar('brand', { length: 50 }).notNull(),
-  description: text('description'),
-  price: integer('price').notNull(),
-  discount: boolean('discount').default(false),
-  percentage_off: integer('percentage_off'),
-  thumbnail: text('image').notNull(),
-  department: departmentEnum('department').notNull(),
-  status: statusEnum('status').notNull(),
-  created_at: varchar('created_at', { length: 27 }).notNull(),
-  featured: boolean('featured').notNull().default(false)
-})
+export const product = createTable(
+  'product',
+  {
+    id: varchar('id', { length: 36 }).primaryKey().notNull(),
+    name: varchar('name', { length: 255 }).notNull(),
+    brand: varchar('brand', { length: 50 }).notNull(),
+    description: text('description'),
+    price: integer('price').notNull(),
+    discount: boolean('discount').default(false),
+    percentage_off: integer('percentage_off'),
+    thumbnail: text('image').notNull(),
+    department: departmentEnum('department').notNull(),
+    status: statusEnum('status').notNull(),
+    created_at: varchar('created_at', { length: 27 }).notNull(),
+    featured: boolean('featured').notNull().default(false),
+    category_id: serial('category_id').references(() => category.id)
+  },
+  table => ({
+    categoryIdx: index('category_idx').on(table.category_id)
+  })
+)
 
 export type Product = typeof product.$inferSelect
 export type ProductInsert = typeof product.$inferInsert
 
-export const productRelations = relations(product, ({ many }) => ({
+export const productRelations = relations(product, ({ many, one }) => ({
   productVariations: many(productVariations),
-  images: many(imagesTable)
+  images: many(imagesTable),
+  category: one(category, {
+    fields: [product.category_id],
+    references: [category.id]
+  })
 }))
 
 export const color = createTable('color', {
@@ -64,7 +75,7 @@ export const category = createTable('category', {
 })
 
 export const categoryRelations = relations(category, ({ many }) => ({
-  productVariations: many(productVariations)
+  product: many(product)
 }))
 
 export type Color = typeof color.$inferSelect
@@ -80,20 +91,16 @@ export const productVariations = createTable(
       .references(() => product.id),
     color_id: serial('color_id')
       .notNull()
-      .references(() => color.id),
+      .references(() => color.id, { onDelete: 'cascade' }),
     size_id: serial('size_id')
       .notNull()
-      .references(() => size.id),
-    category_id: serial('category_id')
-      .notNull()
-      .references(() => category.id),
+      .references(() => size.id, { onDelete: 'cascade' }),
     stock: integer('stock').notNull()
   },
   table => {
     return {
       productIdIdx: index('product_id_idx').on(table.product_id),
-      colorSizeIdx: index('color_size_idx').on(table.color_id, table.size_id),
-      categoryIdx: index('category_idx').on(table.category_id)
+      colorSizeIdx: index('color_size_idx').on(table.color_id, table.size_id)
     }
   }
 )
@@ -109,10 +116,6 @@ export const productVariationsRelations = relations(
       fields: [productVariations.color_id],
       references: [color.id]
     }),
-    category: one(category, {
-      fields: [productVariations.category_id],
-      references: [category.id]
-    }),
     size: one(size, {
       fields: [productVariations.size_id],
       references: [size.id]
@@ -125,7 +128,6 @@ export type ProductVariantsInsert = typeof productVariations.$inferInsert
 export type ProductVariantWithJoins = Pick<ProductVariants, 'id' | 'stock'> & {
   product?: Product | null
   color?: Color | null
-  category?: Category | null
   size?: Size | null
 }
 
@@ -152,7 +154,7 @@ export const bagItem = createTable(
       .references(() => bag.id)
       .notNull(),
     item_id: serial('item_id')
-      .references(() => productVariations.id)
+      .references(() => productVariations.id, { onDelete: 'cascade' })
       .notNull(),
     created_at: timestamp('created_at').defaultNow().notNull(),
     quantity: integer('quantity').notNull()

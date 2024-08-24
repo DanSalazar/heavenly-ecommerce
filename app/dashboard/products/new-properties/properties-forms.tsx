@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { addNewCategory, addNewColor, addNewSize } from '@/server/actions'
+import { addNewSize, addNewColor, addNewCategory } from './actions'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
