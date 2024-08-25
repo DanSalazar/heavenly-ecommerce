@@ -17,7 +17,7 @@ export default async function ShoppingBag() {
         <ShoppingBagIcon />
         <span className="sr-only">Shopping Bag</span>
       </Link>
-      {bag?.bagItem.length && <ShoppingBagWrapper bag={bag.bagItem} />}
+      {!!bag?.bagItem.length && <ShoppingBagWrapper bag={bag.bagItem} />}
     </div>
   )
 }

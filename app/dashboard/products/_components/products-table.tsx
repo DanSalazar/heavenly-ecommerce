@@ -23,11 +23,7 @@ import { deleteProduct } from '@/server/actions'
 import Link from 'next/link'
 import { formattedPrice } from '@/utils'
 
-export default function ProductsTable({
-  products
-}: {
-  products: { product: Product }[]
-}) {
+export default function ProductsTable({ products }: { products: Product[] }) {
   return (
     <Table>
       <TableHeader>
@@ -45,7 +41,7 @@ export default function ProductsTable({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {products.map(({ product }) => (
+        {products.map(product => (
           <TableRow key={product.id}>
             <TableCell className="hidden sm:table-cell">
               <Image

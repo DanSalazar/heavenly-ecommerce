@@ -60,7 +60,7 @@ export function EditProductForm({
       archived: product.status === 'archived',
       department: product.department,
       variants: variantsToArray,
-      category: variants[0].category?.id! + ''
+      category: product.category_id + ''
     }
   })
   const [progress, setProgress] = useState('')
@@ -98,7 +98,6 @@ export function EditProductForm({
         const v: Partial<ProductVariants> = {
           color_id: Number(variant.color),
           size_id: Number(variant.size),
-          category_id: Number(values.category),
           stock: variant.stock,
           product_id: product.id
         }

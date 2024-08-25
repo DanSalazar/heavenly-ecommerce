@@ -4,6 +4,7 @@ import Price from '../ecommerce/price'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import DeleteItem from './delete-item'
+import { capitalizeWord } from '@/utils'
 
 export default function ProductBag({ bagItem }: { bagItem: BagItem }) {
   if (!bagItem.product_variant || !bagItem.product_variant.product) return <></>
@@ -23,11 +24,11 @@ export default function ProductBag({ bagItem }: { bagItem: BagItem }) {
         src={product.thumbnail}
         alt={product.name}
       />
-      <div className="flex-1 flex flex-col relative gap-1 overflow-hidden">
-        <p className="font-semibold text-sm uppercase truncate">
-          {product.name}
-        </p>
-        <div className="flex justify-between">
+      <div className="flex-1 flex justify-between relative">
+        <div className="space-y-1 w-full relative overflow-hidden">
+          <p className="font-semibold text-sm uppercase truncate">
+            {product.name}
+          </p>
           <div className="space-y-1 w-full">
             <p className="text-sm font-medium">
               Size{' '}
@@ -36,19 +37,20 @@ export default function ProductBag({ bagItem }: { bagItem: BagItem }) {
             <p className="text-sm font-medium">
               Color{' '}
               <span className="capitalize">
-                {bagItem.product_variant.color?.name}
+                {bagItem.product_variant.color
+                  ? capitalizeWord(bagItem.product_variant.color.name)
+                  : ''}
               </span>
             </p>
             <p className="text-sm font-medium">Qty: {bagItem.quantity}</p>
           </div>
-          <Price
-            className="justify-end"
-            price={product.price}
-            variant={'black'}
-            discount={product.discount}
-            discount_percentage={product.percentage_off}
-          />
         </div>
+        <Price
+          price={product.price}
+          variant={'black'}
+          discount={product.discount}
+          discount_percentage={product.percentage_off}
+        />
       </div>
       <DeleteItem
         className="absolute bottom-0 right-0"

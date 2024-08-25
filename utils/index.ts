@@ -14,8 +14,6 @@ export const createPathObject = (pathname: string): BreadcrumbType[] => {
   for (let i = 0; i < paths.length; i++) {
     const item = paths[i]
 
-    if (item === '') continue
-
     const id = `item-${i}`
 
     if (item === '') {

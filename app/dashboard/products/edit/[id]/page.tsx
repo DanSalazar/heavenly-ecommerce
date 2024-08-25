@@ -13,7 +13,6 @@ export default async function Page({ params }: { params: { id: string } }) {
       productVariations: {
         with: {
           color: true,
-          category: true,
           size: true
         }
       },
@@ -21,7 +20,12 @@ export default async function Page({ params }: { params: { id: string } }) {
     }
   })
 
-  if (!product) return 'No product'
+  if (!product)
+    return (
+      <div className="min-h-[400px] flex items-center justify-center">
+        <h2 className="text-2xl font-semibold">Product not found</h2>
+      </div>
+    )
 
   return (
     <EditProductForm

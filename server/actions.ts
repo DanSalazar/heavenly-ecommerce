@@ -16,98 +16,29 @@ import {
   productVariations,
   size
 } from '@/db/schema'
-import { SQL, and, asc, desc, eq, ilike, inArray, or, sql } from 'drizzle-orm'
-import { PgColumn } from 'drizzle-orm/pg-core'
+import {
+  ordersByMap,
+  makeFiltersBySearchParams,
+  filtersSchema,
+  departmentSchema
+} from '@/db/utils'
+import {
+  SQL,
+  and,
+  asc,
+  desc,
+  eq,
+  ilike,
+  inArray,
+  isNotNull,
+  or,
+  sql
+} from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { cache } from 'react'
 import { z } from 'zod'
-
-const paramsResolver = z.enum(['men', 'women'])
-const searchParamsSchema = z.record(z.string(), z.string())
-
-const addMultipleConditions = (column: PgColumn, string: string) => {
-  const sqlConditions: SQL[] = []
-
-  for (const condition of string.split(',')) {
-    sqlConditions.push(eq(column, condition))
-  }
-
-  const sqlQuery = or(...sqlConditions)
-
-  return sqlQuery || sql.empty()
-}
-
-const ordersByMap: { [k: string]: SQL<unknown> } = {
-  'low to high': asc(product.price),
-  'high to low': desc(product.price)
-}
-
-const makeFiltersBySearchParams = (
-  filters: z.infer<typeof searchParamsSchema>
-) => {
-  const conditions: SQL[] = []
-
-  if (filters.category) {
-    if (filters.category.includes(',')) {
-      const multipleConditions = addMultipleConditions(
-        category.name,
-        filters.category
-      )
-      conditions.push(multipleConditions)
-    } else {
-      conditions.push(eq(category.name, filters.category))
-    }
-  }
-
-  if (filters.color) {
-    if (filters.color.includes(',')) {
-      const multipleConditions = addMultipleConditions(
-        color.name,
-        filters.color
-      )
-      conditions.push(multipleConditions)
-    } else {
-      conditions.push(eq(color.name, filters.color))
-    }
-  }
-
-  if (filters.size) {
-    if (filters.size.includes(',')) {
-      const multipleConditions = addMultipleConditions(size.name, filters.size)
-      conditions.push(multipleConditions)
-    } else {
-      conditions.push(eq(size.name, filters.size))
-    }
-  }
-
-  if (filters.department) {
-    const parsedDepartment = paramsResolver.parse(filters.department)
-    conditions.push(eq(product.department, parsedDepartment))
-  }
-
-  if (filters.q) {
-    const sql = ilike(product.name, filters.q + '%')
-    conditions.push(sql)
-  }
-
-  if (filters.status) {
-    const enumSchema = z.enum(['active', 'archived'])
-    const status = enumSchema.safeParse(filters.status)
-
-    if (status.success) {
-      conditions.push(eq(product.status, status.data))
-    }
-  }
-
-  if (filters.featured) {
-    if (filters.featured === 'featured')
-      conditions.push(eq(product.featured, true))
-  }
-
-  return conditions
-}
 
 export const getProducts = cache(async () => {
   return await db.query.product.findMany({
@@ -119,8 +50,7 @@ export const getProducts = cache(async () => {
         },
         with: {
           color: true,
-          size: true,
-          category: true
+          size: true
         }
       }
     }
@@ -137,14 +67,13 @@ export const getProductsByDepartment = async ({
   limit?: number
 }) => {
   try {
-    const parsedDepartment = paramsResolver.parse(department)
+    const parsedDepartment = departmentSchema.parse(department)
 
     const data = await db
-      .selectDistinct({
+      .select({
         product
       })
-      .from(productVariations)
-      .innerJoin(product, eq(productVariations.product_id, product.id))
+      .from(product)
       .where(eq(product.department, parsedDepartment))
       .limit(limit || 0)
       .offset(offset || 0)
@@ -167,17 +96,17 @@ export const getProductBySearchParams = async ({
   limit?: number
   offset?: number
 }) => {
-  const parsedSearchParams = searchParamsSchema.parse(searchParams)
+  const parsedSearchParams = filtersSchema.parse(searchParams)
   const filtersByParams = makeFiltersBySearchParams(parsedSearchParams)
-  const parsedDepartment = paramsResolver.safeParse(department)
+  const parsedDepartment = departmentSchema.safeParse(department)
 
   const data = await db
     .selectDistinctOn([product.id, product.name, product.price], {
       product
     })
     .from(product)
+    .innerJoin(category, eq(product.category_id, category.id))
     .innerJoin(productVariations, eq(product.id, productVariations.product_id))
-    .innerJoin(category, eq(productVariations.category_id, category.id))
     .innerJoin(color, eq(productVariations.color_id, color.id))
     .innerJoin(size, eq(productVariations.size_id, size.id))
     .where(
@@ -199,17 +128,17 @@ export const getProductsCount = async ({
   searchParams: unknown
   department?: string
 }) => {
-  const parsedSearchParams = searchParamsSchema.parse(searchParams)
+  const parsedSearchParams = filtersSchema.parse(searchParams)
   const filtersByParams = makeFiltersBySearchParams(parsedSearchParams)
-  const parsedDepartment = paramsResolver.safeParse(department)
+  const parsedDepartment = departmentSchema.safeParse(department)
 
   const data = await db
     .selectDistinctOn([product.id, product.name, product.price], {
       product
     })
     .from(product)
+    .innerJoin(category, eq(product.category_id, category.id))
     .innerJoin(productVariations, eq(product.id, productVariations.product_id))
-    .innerJoin(category, eq(productVariations.category_id, category.id))
     .innerJoin(color, eq(productVariations.color_id, color.id))
     .innerJoin(size, eq(productVariations.size_id, size.id))
     .where(
@@ -378,16 +307,22 @@ export const getFilters = async (ids: string[]) => {
     with: {
       color: true,
       size: true,
-      category: true
+      product: {
+        with: {
+          category: true
+        }
+      }
     },
     where: (field, op) => {
       return op.inArray(field.product_id, ids)
     }
   })
 
+  console.log(filters)
+
   const colors = [...new Set(filters.map(f => f.color.name))]
   const sizes = [...new Set(filters.map(f => f.size.name))]
-  const categories = [...new Set(filters.map(f => f.category.name))]
+  const categories = [...new Set(filters.map(f => f.product.category.name))]
 
   return {
     categories,
@@ -469,119 +404,6 @@ export const getDashboardStats = cache(async () => {
     totalRevenue,
     orders
   }
-})
-
-export const getColors = cache(async () => {
-  return await db.query.color.findMany({})
-})
-
-const newColorSchema = z
-  .string({
-    required_error: 'Color is required'
-  })
-  .min(1)
-  .toLowerCase()
-
-export const addNewColor = async (formData: FormData) => {
-  const colorName = newColorSchema.safeParse(formData.get('name'))
-
-  if (!colorName.success) {
-    return colorName.error.issues[0].message
-  }
-
-  await db
-    .insert(color)
-    .values({
-      name: colorName.data
-    })
-    .onConflictDoNothing()
-
-  revalidatePath('/dashboard/products/new')
-}
-
-export const getSizes = cache(async () => {
-  return await db.query.size.findMany({})
-})
-
-const newSizeSchema = z
-  .string({
-    required_error: 'Size is required'
-  })
-  .min(1)
-  .toLowerCase()
-
-export const addNewSize = async (formData: FormData) => {
-  const sizeName = newSizeSchema.safeParse(formData.get('name'))
-
-  if (!sizeName.success) {
-    return sizeName.error.issues[0].message
-  }
-
-  await db
-    .insert(size)
-    .values({
-      name: sizeName.data
-    })
-    .onConflictDoNothing()
-
-  revalidatePath('/dashboard/products/new')
-}
-
-export const getCategories = cache(async () => {
-  return await db.query.category.findMany({})
-})
-
-const newCategorySchema = z
-  .string({
-    required_error: 'Category is required'
-  })
-  .min(1)
-  .toLowerCase()
-
-export const addNewCategory = async (formData: FormData) => {
-  const categoryName = newCategorySchema.safeParse(formData.get('name'))
-
-  if (!categoryName.success) {
-    return categoryName.error.issues[0].message
-  }
-
-  await db
-    .insert(category)
-    .values({
-      name: categoryName.data
-    })
-    .onConflictDoNothing()
-
-  revalidatePath('/dashboard/products/new')
-}
-
-const idSchema = z.coerce.number()
-
-export const deleteCategory = cache(async (formData: FormData) => {
-  const id = idSchema.safeParse(formData.get('id'))
-
-  if (!id.success) return
-
-  await db.delete(category).where(eq(category.id, id.data))
-  revalidatePath('/dashboard/products/new-properties')
-})
-
-export const deleteColor = cache(async (formData: FormData) => {
-  const id = idSchema.safeParse(formData.get('id'))
-
-  if (!id.success) return
-
-  await db.delete(color).where(eq(color.id, id.data))
-  revalidatePath('/dashboard/products/new-properties')
-})
-
-export const deleteSize = cache(async (formData: FormData) => {
-  const id = idSchema.safeParse(formData.get('id'))
-
-  if (!id.success) return
-
-  await db.delete(size).where(eq(size.id, id.data))
-  revalidatePath('/dashboard/products/new-properties')
 })
 
 const orderQuerySchema = z.object({

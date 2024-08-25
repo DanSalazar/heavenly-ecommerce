@@ -112,12 +112,12 @@ export function ProductForm({
       percentage_off: values.discount || 0,
       status: values.archived ? 'archived' : 'active',
       created_at: new Date().toISOString(),
-      featured: values.featured
+      featured: values.featured,
+      category_id: Number(values.category)
     }
     const variants: ProductVariantsInsert[] = values.variants.map(variant => ({
       color_id: Number(variant.color),
       size_id: Number(variant.size),
-      category_id: Number(values.category),
       stock: variant.stock,
       product_id: product_id
     }))
