@@ -18,7 +18,9 @@ import {
   ImageInsert,
   ImageSelect,
   Product,
+  ProductInsert,
   ProductVariants,
+  ProductVariantsInsert,
   ProductVariantWithJoins
 } from '@/db/schema'
 import { updateProduct } from '@/server/actions'
@@ -43,12 +45,6 @@ export function EditProductForm({
   variants: ProductVariantWithJoins[]
   images: ImageSelect[]
 }) {
-  const variantsToArray = variants.map(({ id, color, size, stock }) => ({
-    id,
-    color: color?.id! + '',
-    size: size?.id! + '',
-    stock: stock!
-  }))
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,7 +55,12 @@ export function EditProductForm({
       featured: product.featured,
       archived: product.status === 'archived',
       department: product.department,
-      variants: variantsToArray,
+      variants: variants.map(({ id, color, size, stock }) => ({
+        id,
+        color: color?.id! + '',
+        size: size?.id! + '',
+        stock: stock!
+      })),
       category: product.category_id + ''
     }
   })
@@ -84,18 +85,18 @@ export function EditProductForm({
 
     setProgress('Saving product...')
 
-    const productUpdated: Partial<Product> | null =
+    const productUpdated: Partial<ProductInsert> | null =
       Object.keys(dirtyData).length < 1
         ? null
         : {
             ...dirtyData
           }
 
-    let variants: Partial<ProductVariants>[] | null = null
+    let variants: ProductVariantsInsert[] | null = null
 
     if (form.formState.dirtyFields.variants) {
       variants = values.variants.map(variant => {
-        const v: Partial<ProductVariants> = {
+        const v: ProductVariantsInsert = {
           color_id: Number(variant.color),
           size_id: Number(variant.size),
           stock: variant.stock,
@@ -113,6 +114,7 @@ export function EditProductForm({
       ...file,
       product_id: product.id
     }))
+
     const err = await updateProduct(
       product.id,
       productUpdated,
@@ -132,7 +134,8 @@ export function EditProductForm({
     }
   }
 
-  const isDirty = form.formState.isDirty || myNewFiles.length > 0
+  const isDirty =
+    Object.keys(form.formState.dirtyFields).length > 0 || myNewFiles.length > 0
 
   return (
     <>

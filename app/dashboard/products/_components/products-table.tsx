@@ -21,21 +21,20 @@ import { MoreHorizontalIcon } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { deleteProduct } from '@/server/actions'
 import Link from 'next/link'
-import { formattedPrice } from '@/utils'
+import { formatDate, formatPrice } from '@/utils'
 
 export default function ProductsTable({ products }: { products: Product[] }) {
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="hidden w-[100px] sm:table-cell">
+          <TableHead className="hidden w-[120px] sm:table-cell">
             <span className="sr-only">Image</span>
           </TableHead>
           <TableHead>Name</TableHead>
           <TableHead className="hidden md:table-cell">Price</TableHead>
-          <TableHead className="hidden md:table-cell">Total Sales</TableHead>
           <TableHead className="hidden md:table-cell">Created at</TableHead>
-          <TableHead>
+          <TableHead className="w-[80px]">
             <span className="sr-only">Actions</span>
           </TableHead>
         </TableRow>
@@ -47,18 +46,17 @@ export default function ProductsTable({ products }: { products: Product[] }) {
               <Image
                 alt="Product image"
                 className="aspect-square rounded-md object-cover"
-                height="64"
+                height="72"
                 src={product.thumbnail}
-                width="64"
+                width="72"
               />
             </TableCell>
             <TableCell className="font-medium">{product.name}</TableCell>
             <TableCell className="hidden md:table-cell">
-              ${formattedPrice(product.price)}
+              ${formatPrice(product.price)}
             </TableCell>
-            <TableCell className="hidden md:table-cell">25</TableCell>
             <TableCell className="hidden md:table-cell">
-              2023-07-12 10:42 AM
+              {formatDate(product.created_at)}
             </TableCell>
             <TableCell>
               <DropdownMenu>

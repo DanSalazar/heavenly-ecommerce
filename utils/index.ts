@@ -33,7 +33,7 @@ export const createPathObject = (pathname: string): BreadcrumbType[] => {
   return result
 }
 
-export const formattedPrice = (price: number) => {
+export const formatPrice = (price: number) => {
   return price.toLocaleString('en', {
     style: 'decimal',
     minimumFractionDigits: 2,
@@ -44,7 +44,7 @@ export const formattedPrice = (price: number) => {
 export const getDiscountPrice = (price: number, discount: number) => {
   const discountPrice = price - (price * discount) / 100
 
-  return formattedPrice(discountPrice)
+  return formatPrice(discountPrice)
 }
 
 export const reduceBagPrice = (bag: BagItem[]) => {
@@ -92,4 +92,14 @@ export const isInFavorites = (id: string) => {
 
 export const capitalizeWord = (word: string) => {
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+}
+
+export const formatDate = (date: string) => {
+  return new Date(date).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric'
+  })
 }

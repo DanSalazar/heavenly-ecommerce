@@ -9,7 +9,7 @@ export default async function ShoppingBag() {
   return (
     <div className="relative flex h-full items-center group">
       {!!bag?.bagItem.length && (
-        <div className="absolute top-3 -right-2 bg-red-500 pointer-events-none text-white font-semibold text-sm rounded-full h-5 w-5 flex items-center justify-center">
+        <div className="absolute top-3 -right-2 bg-red-400 pointer-events-none text-white font-semibold text-sm rounded-full h-5 w-5 flex items-center justify-center">
           {bag.bagItem.length}
         </div>
       )}

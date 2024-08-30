@@ -1,6 +1,6 @@
 import { VariantProps, cva } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
-import { formattedPrice, getDiscountPrice } from '@/utils'
+import { formatPrice, getDiscountPrice } from '@/utils'
 
 const priceStyles = cva('', {
   variants: {
@@ -41,7 +41,7 @@ export default function Price({
         className={cn(priceStyles({ variant, size }), {
           'line-through': discount
         })}>
-        ${formattedPrice(price)}
+        ${formatPrice(price)}
       </p>
       <p
         className={cn(

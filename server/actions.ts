@@ -101,14 +101,14 @@ export const getProductBySearchParams = async ({
   const parsedDepartment = departmentSchema.safeParse(department)
 
   const data = await db
-    .selectDistinctOn([product.id, product.name, product.price], {
+    .select({
       product
     })
     .from(product)
     .innerJoin(category, eq(product.category_id, category.id))
-    .innerJoin(productVariations, eq(product.id, productVariations.product_id))
-    .innerJoin(color, eq(productVariations.color_id, color.id))
-    .innerJoin(size, eq(productVariations.size_id, size.id))
+    .leftJoin(productVariations, eq(product.id, productVariations.product_id))
+    .leftJoin(color, eq(productVariations.color_id, color.id))
+    .leftJoin(size, eq(productVariations.size_id, size.id))
     .where(
       parsedDepartment?.data
         ? and(eq(product.department, parsedDepartment.data), ...filtersByParams)
@@ -137,10 +137,10 @@ export const getProductsCount = async ({
       product
     })
     .from(product)
-    .innerJoin(category, eq(product.category_id, category.id))
-    .innerJoin(productVariations, eq(product.id, productVariations.product_id))
-    .innerJoin(color, eq(productVariations.color_id, color.id))
-    .innerJoin(size, eq(productVariations.size_id, size.id))
+    .leftJoin(category, eq(product.category_id, category.id))
+    .leftJoin(productVariations, eq(product.id, productVariations.product_id))
+    .leftJoin(color, eq(productVariations.color_id, color.id))
+    .leftJoin(size, eq(productVariations.size_id, size.id))
     .where(
       parsedDepartment?.data
         ? and(eq(product.department, parsedDepartment.data), ...filtersByParams)
@@ -162,17 +162,15 @@ const variantsFields = z.object({
   stock: z.number(),
   color_id: z.number(),
   size_id: z.number(),
-  category_id: z.number(),
   product_id: z.string(),
-  product_type_Id: z.number(),
   id: z.number().optional()
 })
 const updateProductVariantSchema = z.array(variantsFields)
 
 export const updateProduct = async (
   id: string,
-  product_values: Partial<Product> | null,
-  variants_values: Partial<ProductVariants>[] | null,
+  product_values: Partial<ProductInsert> | null,
+  variants_values: ProductVariantsInsert[] | null,
   images: ImageInsert[]
 ) => {
   const variantsParsed = updateProductVariantSchema.safeParse(variants_values)
@@ -199,23 +197,33 @@ export const updateProduct = async (
       sqlChunks.push(sql`end)`)
       updateSets[field] = sql.join(sqlChunks, sql.raw(' '))
     })
+  } else {
+    return 'Something went wrong'
   }
 
-  await db.transaction(async tx => {
-    if (product_values)
-      await db.update(product).set(product_values).where(eq(product.id, id))
-    if (variantsParsed.success)
-      await db
-        .insert(productVariations)
-        .values(variantsParsed.data)
-        .onConflictDoUpdate({
-          target: productVariations.id,
-          set: updateSets
-        })
-    if (images.length) {
-      await db.insert(imagesTable).values(images)
-    }
-  })
+  try {
+    await db.transaction(async tx => {
+      if (product_values) {
+        await tx.update(product).set(product_values).where(eq(product.id, id))
+      }
+
+      if (variantsParsed.success) {
+        await tx
+          .insert(productVariations)
+          .values(variantsParsed.data)
+          .onConflictDoUpdate({
+            target: productVariations.id,
+            set: updateSets
+          })
+      }
+
+      if (images.length) {
+        await tx.insert(imagesTable).values(images)
+      }
+    })
+  } catch (error) {
+    return `Failed to update product: ${error instanceof Error ? error.message : 'Unknown error'}`
+  }
 
   revalidatePath('/dashboard/products')
   redirect('/dashboard/products')
@@ -317,8 +325,6 @@ export const getFilters = async (ids: string[]) => {
       return op.inArray(field.product_id, ids)
     }
   })
-
-  console.log(filters)
 
   const colors = [...new Set(filters.map(f => f.color.name))]
   const sizes = [...new Set(filters.map(f => f.size.name))]
