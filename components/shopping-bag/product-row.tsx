@@ -35,7 +35,7 @@ export default function ProductRow({
   return (
     <div
       className={cn(
-        'relative border-b border-t border-zinc-200 py-4 flex flex-col md:flex-row gap-4',
+        'relative border-b border-t border-zinc-200 py-4 flex flex-col md:flex-row gap-6',
         {
           'pointer-events-none opacity-40': isDeletingPending
         }
@@ -47,7 +47,7 @@ export default function ProductRow({
         height={200}
         alt={product.name}
       />
-      <div className="overflow-hidden col-span-2 flex flex-col gap-2">
+      <div className="overflow-hidden col-span-2 flex flex-col gap-2 pr-2">
         <Link href={'/'} className={'font-medium truncate uppercase'}>
           {product.name}
         </Link>

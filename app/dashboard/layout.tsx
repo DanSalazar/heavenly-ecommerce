@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import '../globals.css'
+import './dashboard.css'
 import Navbar from './_components/navbar'
 import Providers from '@/components/providers'
 import { mainFont } from '@/components/fonts'

@@ -38,7 +38,7 @@ export default function SearchProduct({
     <form onSubmit={onSubmit} className={cn('relative', className)}>
       <SearchIcon
         strokeWidth={1.5}
-        className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground"
+        className="absolute left-2.5 top-2.5 h-4 w-4 text-primary"
       />
       <Input
         name="search"

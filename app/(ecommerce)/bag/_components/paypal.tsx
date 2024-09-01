@@ -14,7 +14,8 @@ export default function Paypal() {
         style={{
           layout: 'horizontal',
           label: 'checkout',
-          color: 'gold',
+          color: 'black',
+          shape: 'rect',
           tagline: false
         }}
         createOrder={async () => {
@@ -25,7 +26,7 @@ export default function Paypal() {
 
           return id
         }}
-        onApprove={async (data, actions) => {
+        onApprove={async (_data, actions) => {
           const order = await actions.order?.capture()
           const orderDetails = {
             customerName: order?.purchase_units![0].shipping?.name?.full_name!,

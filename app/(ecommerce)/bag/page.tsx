@@ -18,8 +18,8 @@ export default async function Page() {
       <div className="mt-12 flex flex-col md:grid md:grid-cols-3 gap-8">
         <div className="col-span-2">
           <header className="mb-8 flex justify-between items-center flex-wrap">
-            <h2 className="uppercase text-7xl">Bag</h2>
-            <span className="font-medium bg-primary py-1 px-2 rounded-md text-white">
+            <h2 className="uppercase text-7xl font-medium">Shopping Bag</h2>
+            <span className="font-medium bg-primary py-1 px-3 rounded-md text-white">
               {bag.bagItem.length}
             </span>
           </header>
