@@ -5,7 +5,6 @@ import {
   ImageInsert,
   Product,
   ProductInsert,
-  ProductVariants,
   ProductVariantsInsert,
   bag,
   bagItem,
@@ -22,18 +21,7 @@ import {
   filtersSchema,
   departmentSchema
 } from '@/db/utils'
-import {
-  SQL,
-  and,
-  asc,
-  desc,
-  eq,
-  ilike,
-  inArray,
-  isNotNull,
-  or,
-  sql
-} from 'drizzle-orm'
+import { SQL, and, asc, eq, inArray, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -101,11 +89,11 @@ export const getProductBySearchParams = async ({
   const parsedDepartment = departmentSchema.safeParse(department)
 
   const data = await db
-    .select({
+    .selectDistinct({
       product
     })
     .from(product)
-    .innerJoin(category, eq(product.category_id, category.id))
+    .leftJoin(category, eq(product.category_id, category.id))
     .leftJoin(productVariations, eq(product.id, productVariations.product_id))
     .leftJoin(color, eq(productVariations.color_id, color.id))
     .leftJoin(size, eq(productVariations.size_id, size.id))
@@ -294,13 +282,7 @@ export const addProductInBag = async (variantId: number | undefined) => {
 }
 
 export const getFilters = async (ids: string[]) => {
-  if (!ids.length)
-    return {
-      categories: [],
-      colors: [],
-      sizes: [],
-      minAndMaxPrice: { min: 0, max: 0 }
-    }
+  if (!ids.length) return null
 
   const minAndMaxPrice = await db
     .select({
@@ -317,12 +299,16 @@ export const getFilters = async (ids: string[]) => {
       size: true,
       product: {
         with: {
-          category: true
+          category: {
+            columns: {
+              name: true
+            }
+          }
         }
       }
     },
-    where: (field, op) => {
-      return op.inArray(field.product_id, ids)
+    where: (field, { inArray }) => {
+      return inArray(field.product_id, ids)
     }
   })
 
@@ -335,14 +321,8 @@ export const getFilters = async (ids: string[]) => {
     colors,
     sizes,
     minAndMaxPrice: minAndMaxPrice[0]
-      ? {
-          min: minAndMaxPrice[0].min as number,
-          max: minAndMaxPrice[0].max as number
-        }
-      : {
-          min: 0,
-          max: 0
-        }
+      ? [minAndMaxPrice[0].min as number, minAndMaxPrice[0].max as number]
+      : [0, 0]
   }
 }
 

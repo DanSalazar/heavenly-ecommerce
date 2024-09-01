@@ -1,40 +1,53 @@
-import React, { useState } from 'react'
+import { forwardRef, useState } from 'react'
 import * as SliderPrimitive from '@radix-ui/react-slider'
-import useUrlState from '@/hooks/useUrlState'
 import { cn } from '@/lib/utils'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 type PriceRangeProps = {
-  min: number
-  max: number
+  minAndMaxPrice: number[]
 }
 
-export const PriceRange = ({ min, max }: PriceRangeProps) => {
-  const { add, getState } = useUrlState()
-  const [minState, setMinState] = useState(min)
-  const [maxState, setMaxState] = useState(max)
+export const PriceRange = ({ minAndMaxPrice }: PriceRangeProps) => {
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
+  const { replace } = useRouter()
+  const [state, setState] = useState<number[]>(minAndMaxPrice)
+  const [min, max] = minAndMaxPrice
+  const steps = max - min <= 300 ? 1 : 3
 
-  const value = getState('price')?.split('-').map(Number) || [min, max]
+  const handleRangeChange = (value: number[]) => {
+    setState(value)
+  }
 
-  const handleRangeChange = (value: readonly number[]) => {
-    setMinState(value[0])
-    setMaxState(value[1])
+  const handleRangeCommit = (value: number[]) => {
+    const params = new URLSearchParams(searchParams)
+    const [minValue, maxValue] = value
 
-    add('price', value[0] + '-' + value[1])
+    if (minValue >= min) {
+      params.set('price_from', minValue.toString())
+    }
+
+    if (maxValue <= max) {
+      params.set('price_to', maxValue.toString())
+    }
+
+    replace(`${pathname}?${params.toString()}`, { scroll: false })
   }
 
   return (
-    <div className="space-y-2">
-      <div className="flex justify-between">
-        <p className={'text-sm font-medium'}>${minState}</p>
-        <p className="text-sm font-medium">${maxState}</p>
+    <div className="space-y-4">
+      <div className="flex justify-between font-medium">
+        <p>${state[0]}</p>
+        <p>${state[1]}</p>
       </div>
       <Slider
         minStepsBetweenThumbs={1}
-        max={max}
         min={min}
-        step={5}
-        value={value}
+        max={max}
+        step={steps}
+        value={state}
         onValueChange={handleRangeChange}
+        onValueCommit={handleRangeCommit}
       />
     </div>
   )
@@ -46,45 +59,53 @@ type SliderProps = {
   max: number
   minStepsBetweenThumbs: number
   step: number
-  value?: number[] | readonly number[]
-  onValueChange?: (values: number[]) => void
+  value: number[]
+  onValueChange: (values: number[]) => void
+  onValueCommit?: (values: number[]) => void
 }
 
-const Slider = React.forwardRef(
+const Slider = forwardRef(
   (
-    { className, min, max, step, value, onValueChange, ...props }: SliderProps,
+    {
+      className,
+      min,
+      max,
+      step,
+      value,
+      onValueChange,
+      onValueCommit,
+      ...props
+    }: SliderProps,
     ref
   ) => {
-    const initialValue = Array.isArray(value) ? value : [min, max]
-    const [localValues, setLocalValues] = useState(initialValue)
-
     const handleValueChange = (newValues: number[]) => {
-      setLocalValues(newValues)
-      if (onValueChange) {
-        onValueChange(newValues)
-      }
+      onValueChange(newValues)
     }
+
+    // Adjust the value array if min and max are the same
+    const adjustedValue = min === max ? [min, max + 1] : value
 
     return (
       <SliderPrimitive.Root
         ref={ref as React.RefObject<HTMLDivElement>}
         min={min}
-        max={max}
+        max={min === max ? max + 1 : max}
         step={step}
-        value={localValues}
+        value={adjustedValue}
         onValueChange={handleValueChange}
+        onValueCommit={onValueCommit}
         className={cn(
           'relative flex w-full touch-none select-none mb-6 items-center',
           className
         )}
         {...props}>
-        <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-primary/20">
+        <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-secondary">
           <SliderPrimitive.Range className="absolute h-full bg-primary" />
         </SliderPrimitive.Track>
-        {localValues.map((_, index) => (
+        {adjustedValue.map((_, index) => (
           <SliderPrimitive.Thumb
             key={index}
-            className="cursor-pointer block h-4 w-4 rounded-full bg-primary focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+            className="cursor-pointer block h-6 w-6 rounded-full bg-background transition ease-in-out border-2 border-primary focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
           />
         ))}
       </SliderPrimitive.Root>

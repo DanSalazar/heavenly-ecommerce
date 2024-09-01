@@ -1,27 +1,24 @@
 'use client'
 
-import React, { MouseEvent, useState } from 'react'
+import { MouseEvent } from 'react'
 import { Button } from '../ui/button'
 import SortBy from './sort-by'
-import { Filter, FilterChildren } from '.'
+import { FilterChildren } from '.'
 import useUrlState from '@/hooks/useUrlState'
-import { PriceRange } from './price-slider'
 import FiltersSelected from './filters-selected'
+import { PriceRange } from './price-slider'
+import { usePathname, useRouter } from 'next/navigation'
+import FilterPopover from './filter-popover'
 
 export type AllFiltersType = {
   categories: string[]
   colors: string[]
   sizes: string[]
-  productTypes?: string[]
-  minAndMaxPrice: { min: number; max: number }
-}
+  minAndMaxPrice: number[]
+} | null
 
 export default function Filters({ filters }: { filters: AllFiltersType }) {
-  const { categories, colors, sizes, minAndMaxPrice } = filters
-  const [open, setOpen] = useState(false)
   const { getState, push } = useUrlState()
-
-  const handleOpen = () => setOpen(!open)
 
   const handleSelectFilter = (event: MouseEvent<HTMLDivElement>) => {
     const element = event.target as HTMLButtonElement
@@ -31,82 +28,130 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
     if (key && value) push(key, value)
   }
 
+  if (!filters)
+    return (
+      <div className="relative flex justify-between flex-wrap">
+        <div className="flex gap-2 flex-1">
+          <FilterPopover>
+            <div className="flex flex-col gap-2 py-4">
+              <h2 className="text-center text-xl font-semibold">
+                No items to show with these filters
+              </h2>
+              <p className="text-center">Reset filters to see more items</p>
+            </div>
+            <div className="flex justify-end">
+              <ResetAll />
+            </div>
+          </FilterPopover>
+          <FiltersSelected />
+        </div>
+        <SortBy />
+      </div>
+    )
+
+  const { categories, colors, sizes, minAndMaxPrice } = filters
+
   return (
     <div className="relative flex justify-between flex-wrap">
       <div className="flex gap-2 flex-1">
-        <Button className="uppercase" onClick={handleOpen}>
-          Filters
-        </Button>
+        <FilterPopover>
+          {minAndMaxPrice[0] !== 0 && minAndMaxPrice[1] !== 0 && (
+            <FilterChildren title="Price Range">
+              <PriceRange
+                key={minAndMaxPrice.join('-')}
+                minAndMaxPrice={minAndMaxPrice}
+              />
+            </FilterChildren>
+          )}
+
+          {categories.length > 0 && (
+            <FilterChildren onClick={handleSelectFilter} title="Category">
+              <div className="flex gap-2 flex-wrap">
+                {categories.map((category, idx) => (
+                  <Button
+                    key={category + idx}
+                    data-key="category"
+                    data-value={category}
+                    className="rounded-lg capitalize"
+                    variant={
+                      getState('category')?.includes(category + '')
+                        ? 'default'
+                        : 'outline'
+                    }>
+                    {category}
+                  </Button>
+                ))}
+              </div>
+            </FilterChildren>
+          )}
+
+          {colors.length > 0 && (
+            <FilterChildren onClick={handleSelectFilter} title="Colors">
+              <div className="flex gap-2 flex-wrap">
+                {colors.map((color, idx) => (
+                  <Button
+                    key={color + idx}
+                    data-key="color"
+                    data-value={color}
+                    className="rounded-lg capitalize"
+                    variant={
+                      getState('color')?.includes(color + '')
+                        ? 'default'
+                        : 'outline'
+                    }>
+                    {color}
+                  </Button>
+                ))}
+              </div>
+            </FilterChildren>
+          )}
+
+          {sizes.length > 0 && (
+            <FilterChildren onClick={handleSelectFilter} title="Sizes">
+              <div className="flex gap-2 flex-wrap">
+                {sizes.map((size, idx) => (
+                  <Button
+                    size={'sm'}
+                    key={size + idx}
+                    data-key="size"
+                    data-value={size}
+                    className="rounded-lg capitalize"
+                    variant={
+                      getState('size')?.includes(size + '')
+                        ? 'default'
+                        : 'outline'
+                    }>
+                    {size}
+                  </Button>
+                ))}
+              </div>
+            </FilterChildren>
+          )}
+          <div className="flex justify-end">
+            <ResetAll />
+          </div>
+        </FilterPopover>
+
         <FiltersSelected />
       </div>
 
       <SortBy />
-
-      <Filter
-        onClose={handleOpen}
-        className="absolute top-12 left-0 w-full md:w-[300px]"
-        open={open}
-        onClick={handleSelectFilter}>
-        <FilterChildren title="Price Range">
-          <PriceRange min={minAndMaxPrice.min} max={minAndMaxPrice.max} />
-        </FilterChildren>
-
-        <FilterChildren title="Category">
-          <div className="flex gap-2 flex-wrap">
-            {categories.map(category => (
-              <Button
-                key={crypto.randomUUID()}
-                data-key="category"
-                data-value={category}
-                className="rounded-lg capitalize"
-                variant={
-                  getState('category')?.includes(category + '')
-                    ? 'default'
-                    : 'outline'
-                }>
-                {category}
-              </Button>
-            ))}
-          </div>
-        </FilterChildren>
-
-        <FilterChildren title="Colors">
-          <div className="flex gap-2 flex-wrap">
-            {colors.map(color => (
-              <Button
-                key={crypto.randomUUID()}
-                data-key="color"
-                data-value={color}
-                className="rounded-lg capitalize"
-                variant={
-                  getState('color')?.includes(color + '')
-                    ? 'default'
-                    : 'outline'
-                }>
-                {color}
-              </Button>
-            ))}
-          </div>
-        </FilterChildren>
-
-        <FilterChildren title="Sizes">
-          <div className="flex gap-2 flex-wrap">
-            {sizes.map(size => (
-              <Button
-                size={'sm'}
-                key={crypto.randomUUID()}
-                data-key="size"
-                data-value={size}
-                className="rounded-lg capitalize"
-                variant={
-                  getState('size')?.includes(size + '') ? 'default' : 'outline'
-                }>
-                {size}
-              </Button>
-            ))}
-          </div>
-        </FilterChildren>
-      </Filter>
     </div>
   )
+}
+
+export const ResetAll = () => {
+  const { replace } = useRouter()
+  const pathname = usePathname()
+
+  const resetAll = () => {
+    if (pathname.includes('search')) {
+      replace(pathname + '?q=', { scroll: false })
+      return
+    }
+
+    replace(pathname, { scroll: false })
+  }
+
+  return <Button onClick={resetAll}>Reset all</Button>
 }

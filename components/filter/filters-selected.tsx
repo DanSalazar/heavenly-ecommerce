@@ -3,14 +3,18 @@ import useUrlState from '@/hooks/useUrlState'
 import { Button } from '../ui/button'
 import { MarkIcon } from '../icons'
 import { NOT_LISTED_FILTERS } from '@/lib/constants'
+import { usePathname, useRouter } from 'next/navigation'
 
 export default function FiltersSelected() {
-  const { params, remove } = useUrlState()
+  const pathname = usePathname()
+  const { replace } = useRouter()
+  const { params, getState, remove } = useUrlState()
 
   const handleRemoveFilter = (event: MouseEvent<HTMLDivElement>) => {
     const element = event.target as HTMLButtonElement
 
     if (element.tagName !== 'BUTTON') return
+
     const { key, value } = element.dataset
     if (key && value) remove(key, value)
   }
@@ -19,26 +23,51 @@ export default function FiltersSelected() {
     entry => !NOT_LISTED_FILTERS.includes(entry[0])
   )
 
+  const removePrice = () => {
+    const p = new URLSearchParams(params)
+
+    p.delete('price_from')
+    p.delete('price_to')
+
+    replace(`${pathname}?${p.toString()}`, { scroll: false })
+  }
+
+  const priceFrom = getState('price_from')
+  const priceTo = getState('price_to')
+
   return (
     <>
-      {!!filtersSelected.length && <div className="border-r border-zinc-200" />}
+      {!!filtersSelected.length && <div className="border-r border-primary" />}
       <div
         onClick={handleRemoveFilter}
         className="hidden md:flex flex-wrap gap-2">
         {filtersSelected.map(([key, filter]) => {
-          if (key === 'search') return null
-
           return filter.split(',').map((value, j) => (
             <Button
               key={value + j}
               data-key={key}
               data-value={value}
-              className="uppercase"
+              className="uppercase gap-2"
               variant={'outline'}>
-              {value} <MarkIcon className="ml-1 pointer-events-none" />
+              {value}{' '}
+              <MarkIcon
+                width={20}
+                height={20}
+                className="pointer-events-none"
+              />
             </Button>
           ))
         })}
+
+        {(priceFrom || priceTo) && (
+          <Button
+            className="uppercase gap-2"
+            variant={'outline'}
+            onClick={removePrice}>
+            ${priceFrom || '0'} - ${priceTo || '...'}{' '}
+            <MarkIcon width={20} height={20} className="pointer-events-none" />
+          </Button>
+        )}
       </div>
     </>
   )

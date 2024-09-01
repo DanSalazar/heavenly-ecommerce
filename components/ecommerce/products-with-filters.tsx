@@ -42,25 +42,31 @@ export default async function ProductsWithFilters({
   const ids = products.map(({ product }) => product.id)
   const filters = await getFilters(ids)
 
-  const priceRange =
-    searchParams.price && searchParams.price.split('-').map(Number)
-  const proudctsWithinPriceRange = priceRange
-    ? products.filter(({ product: { price } }) => {
-        return price >= priceRange[0] && price <= priceRange[1]
-      })
-    : products
+  const productsWithinPriceRange =
+    searchParams.price_from || searchParams.price_to
+      ? products.filter(({ product }) => {
+          const price = product.price
+          const price_from = Number(searchParams.price_from)
+          const price_to = Number(searchParams.price_to)
+
+          return (
+            (price_from ? price >= price_from : true) &&
+            (price_to ? price <= price_to : true)
+          )
+        })
+      : products
 
   return (
     <>
       <Filters filters={filters} />
       <ProductsWrapper
         className={
-          !proudctsWithinPriceRange.length
+          !productsWithinPriceRange.length
             ? 'flex flex-col items-center text-center justify-center gap-2'
             : ''
         }>
-        {proudctsWithinPriceRange.length
-          ? proudctsWithinPriceRange.map(product => (
+        {productsWithinPriceRange.length
+          ? productsWithinPriceRange.map(product => (
               <ProductComponent
                 key={product.product.id}
                 product={product.product}
@@ -76,7 +82,7 @@ export default async function ProductsWithFilters({
             )}
 
         {/* For search page */}
-        {searchParams?.q && !proudctsWithinPriceRange.length && (
+        {searchParams?.q && !productsWithinPriceRange.length && (
           <>
             <p className="text-3xl md:text-4xl text-center font-semibold">
               NOTHING MATCHES YOUR SEARCH

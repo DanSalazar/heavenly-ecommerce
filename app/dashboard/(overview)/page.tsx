@@ -1,7 +1,7 @@
 import { getDashboardStats } from '@/server/actions'
 import ChartDashboard from '../_components/chart-dashboard'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { formattedPrice } from '@/utils'
+import { formatPrice } from '@/utils'
 import { CreditCardIcon, DollarSignIcon, PackageIcon } from '@/components/icons'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { OrderType } from '@/db/schema'
@@ -19,7 +19,7 @@ export default async function Page() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">
-              ${formattedPrice(totalRevenue)}
+              ${formatPrice(totalRevenue)}
             </div>
             <p className="text-xs text-muted-foreground">
               +20.1% from last month
@@ -89,7 +89,7 @@ function RecentOrders({ orders }: { orders: OrderType[] }) {
                 </p>
               </div>
               <div className="ml-auto font-medium">
-                +${formattedPrice(total_amount / 100)}
+                +${formatPrice(total_amount / 100)}
               </div>
             </div>
           )
