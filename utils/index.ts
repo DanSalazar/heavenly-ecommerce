@@ -42,9 +42,9 @@ export const formatPrice = (price: number) => {
 }
 
 export const getDiscountPrice = (price: number, discount: number) => {
-  const discountPrice = price - (price * discount) / 100
+  const discountPrice = price * (discount / 100)
 
-  return formatPrice(discountPrice)
+  return price - discountPrice
 }
 
 export const reduceBagPrice = (bag: BagItem[]) => {

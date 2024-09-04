@@ -3,6 +3,7 @@ import '../globals.css'
 import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 import { mainFont } from '@/components/fonts'
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -24,6 +25,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
+        <Toaster />
       </body>
     </html>
   )

@@ -1,9 +1,12 @@
 'use client'
 
+import { useToast } from '@/components/ui/use-toast'
 import { createPayPalOrder } from '@/server/paypal'
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js'
 
 export default function Paypal() {
+  const { toast } = useToast()
+
   return (
     <PayPalScriptProvider
       options={{
@@ -22,7 +25,11 @@ export default function Paypal() {
           const data = await fetch('/api/paypal', {
             method: 'POST'
           })
-          const { id } = await data.json()
+          const { error, id } = await data.json()
+
+          if (error) {
+            return ''
+          }
 
           return id
         }}
@@ -37,6 +44,20 @@ export default function Paypal() {
 
           await createPayPalOrder(orderDetails)
           return
+        }}
+        onError={error => {
+          if (
+            typeof error.message === 'string' &&
+            error.message.includes('Detected popup close')
+          )
+            return
+
+          toast({
+            title: 'Checkout Failed',
+            description:
+              'An error occurred during the PayPal transaction. Please try again.',
+            variant: 'destructive'
+          })
         }}
       />
     </PayPalScriptProvider>

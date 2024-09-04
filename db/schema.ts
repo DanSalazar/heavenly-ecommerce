@@ -26,7 +26,7 @@ export const product = createTable(
     description: text('description'),
     price: integer('price').notNull(),
     discount: boolean('discount').default(false),
-    percentage_off: integer('percentage_off'),
+    percentage_off: integer('percentage_off').notNull(),
     thumbnail: text('image').notNull(),
     department: departmentEnum('department').notNull(),
     status: statusEnum('status').notNull(),

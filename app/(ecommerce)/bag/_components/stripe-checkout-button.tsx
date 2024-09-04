@@ -1,10 +1,8 @@
-'use client'
-
 import { Button } from '@/components/ui/button'
 import { SpinnerStatus } from '@/components/ui/spinner'
 import { useFormStatus } from 'react-dom'
 
-export const CheckoutButton = () => {
+export const StripeCheckoutButton = () => {
   const { pending } = useFormStatus()
 
   return (

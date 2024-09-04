@@ -1,8 +1,7 @@
 import Price from '@/components/ecommerce/price'
 import { OrderSummary } from '@/components/shopping-bag/order-summary'
-import { createSession } from '@/server/stripe'
 import Paypal from './paypal'
-import { CheckoutButton } from './checkout-button'
+import Stripe from './stripe'
 
 const SHIPPING_PRICE = 0
 
@@ -23,9 +22,8 @@ export default function Summary({ total }: { total: number }) {
           price={SHIPPING_PRICE + total}
         />
       </div>
-      <form action={createSession}>
-        <CheckoutButton />
-      </form>
+
+      <Stripe />
       <Paypal />
     </div>
   )

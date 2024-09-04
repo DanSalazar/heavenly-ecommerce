@@ -45,7 +45,7 @@ export const ProductsWithFiltersSkeleton = () => (
 )
 
 export const ProductPageSkeleton = () => (
-  <>
+  <div className="min-h-[600px] flex flex-col md:grid grid-cols-2 gap-4 md:gap-12 mt-4 mb-12">
     <div className="grid grid-cols-2 gap-4">
       <Skeleton className="h-[500px] col-span-2" />
       <Skeleton className="hidden md:block h-[250px]" />
@@ -72,7 +72,7 @@ export const ProductPageSkeleton = () => (
       {/* Payment & Delivery */}
       <Skeleton className="h-6 w-48 mt-6" />
     </div>
-  </>
+  </div>
 )
 
 export const BagPageSkeleton = () => {

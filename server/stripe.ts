@@ -1,7 +1,8 @@
 'use server'
 
 import { db } from '@/db'
-import { redirect } from 'next/navigation'
+import { capitalizeWord, getDiscountPrice } from '@/utils'
+import { cookies, headers } from 'next/headers'
 import Stripe from 'stripe'
 
 const stripe = new Stripe(process.env.STRIPE_KEY!)
@@ -22,34 +23,68 @@ type LineItem = {
 }
 
 export const createSession = async () => {
-  const bagItem = await db.query.bagItem.findMany({
+  const url = 'http://' + headers().get('host')
+  const bagId = cookies().get('bag_id')?.value
+
+  if (!bagId) {
+    return {
+      error:
+        'No items found in the bag. Please ensure you have added items to your bag before proceeding.'
+    }
+  }
+
+  const bag = await db.query.bag.findFirst({
+    where: ({ id }, { eq }) => eq(id, bagId),
     with: {
-      product_variant: {
+      bagItem: {
         with: {
-          product: true,
-          size: true,
-          color: true
+          product_variant: {
+            with: {
+              product: {
+                columns: {
+                  name: true,
+                  description: true,
+                  price: true,
+                  discount: true,
+                  percentage_off: true,
+                  thumbnail: true
+                }
+              },
+              size: { columns: { name: true } },
+              color: { columns: { name: true } }
+            }
+          }
         }
       }
     }
   })
 
-  const productsMap: LineItem[] = bagItem?.map(
+  if (!bag || !bag.bagItem.length) {
+    return {
+      error: 'The bag is empty. Please check your bag and try again.'
+    }
+  }
+
+  const lineItems: LineItem[] = bag.bagItem?.map(
     ({ quantity, product_variant }) => {
-      if (!product_variant || !product_variant.product) return {} as LineItem
-      const { product: p } = product_variant
+      const { product } = product_variant
+      const amount = product.discount
+        ? getDiscountPrice(product.price, product.percentage_off) * 100
+        : product.price * 100
 
       return {
         price_data: {
-          currency: 'usd',
+          currency: 'usd' as const,
           product_data: {
-            name: p.name,
-            images: [p.image!],
-            description: `Size: ${product_variant.size?.name?.toUpperCase()} / Color: ${product_variant.color?.name}`
+            name: product.name,
+            images: [product.thumbnail],
+            description: `Size: ${product_variant.size?.name?.toUpperCase()} / Color: ${capitalizeWord(product_variant.color.name)} / 
+            ${product.discount ? 'Discount:' + product.percentage_off + '%' : ''}
+            `
           },
-          unit_amount: p.price * 100
+          unit_amount: amount
         },
-        quantity: quantity || 1
+        quantity: quantity
       }
     }
   )
@@ -58,13 +93,20 @@ export const createSession = async () => {
 
   try {
     session = await stripe.checkout.sessions.create({
-      success_url: 'http://localhost:3000/success',
-      line_items: productsMap,
+      success_url: url + '/success',
+      cancel_url: url + '/bag',
+      line_items: lineItems,
       mode: 'payment'
     })
   } catch (error) {
-    return {}
+    return {
+      error:
+        'An error occurred while creating the checkout session. Please try again later.'
+    }
   }
 
-  if (session.url) redirect(session.url)
+  if (session.url)
+    return {
+      url: session.url
+    }
 }
