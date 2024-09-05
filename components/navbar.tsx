@@ -9,14 +9,14 @@ import { Skeleton } from './ui/skeleton'
 
 export default function Navbar() {
   return (
-    <header className="bg-white sticky top-0 z-20 h-16 border-b border-zinc-200 grid items-center grid-cols-3">
+    <header className="bg-white sticky top-0 h-16 z-20 border-b border-zinc-200 grid grid-cols-3">
       <Navigation />
       <div className="bg-white flex items-center md:justify-center">
         <Link href={'/'}>
           <HeavenlyIcon />
         </Link>
       </div>
-      <div className="self-stretch flex gap-3 justify-end items-center bg-white">
+      <div className="flex gap-3 justify-end items-center bg-white">
         <SearchProduct className="hidden md:block w-[300px]" />
         <Link href={'/favorites'}>
           <HeartIcon />

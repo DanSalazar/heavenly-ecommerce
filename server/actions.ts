@@ -276,8 +276,10 @@ export const addProductInBag = async (variantId: number | undefined) => {
       })
 
     revalidatePath('/[department]/[id]', 'page')
+
+    return true
   } catch (err) {
-    return null
+    return false
   }
 }
 

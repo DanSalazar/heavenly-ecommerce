@@ -4,6 +4,7 @@ import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 import { mainFont } from '@/components/fonts'
 import { Toaster } from '@/components/ui/toaster'
+import { ShoppingBagProvider } from '@/components/providers/shopping-bag-provider'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -17,16 +18,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        style={{
-          padding: '0 1.75rem'
-        }}
-        className={mainFont.className + ' flex flex-col gap-4'}>
-        <Navbar />
-        {children}
-        <Footer />
-        <Toaster />
-      </body>
+      <ShoppingBagProvider>
+        <body
+          style={{
+            padding: '0 1.75rem'
+          }}
+          className={mainFont.className + ' flex flex-col gap-4'}>
+          <Navbar />
+          {children}
+          <Footer />
+          <Toaster />
+        </body>
+      </ShoppingBagProvider>
     </html>
   )
 }

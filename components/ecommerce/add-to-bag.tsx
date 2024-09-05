@@ -1,6 +1,5 @@
 'use client'
 
-import { addProductInBag } from '@/server/actions'
 import { useSearchParams } from 'next/navigation'
 import ButtonAddBag from './button-add-bag'
 import { ProductVariantWithJoins } from '@/db/schema'
@@ -21,7 +20,6 @@ export default function AddToBag({
       product.color?.name === searchParams.get('color') &&
       product.size?.name === searchParams.get('size')
   )
-  const formAction = addProductInBag.bind(null, variantSelected?.id)
   const { getState } = useUrlState()
 
   const sizes = [...new Set(variants.map(({ size }) => size?.name || ''))].map(
@@ -64,16 +62,17 @@ export default function AddToBag({
   })
 
   return (
-    <form action={formAction} className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <PickOption optionName="Color" options={colors} />
       <PickOption optionName="Size" options={sizes} />
       <div className="flex h-12 flex-wrap gap-2">
         <ButtonAddBag
+          variantSelectedId={variantSelected?.id}
           variantSelected={!!variantSelected}
-          isOutOfStock={variantSelected?.stock || 0}
+          isOutOfStock={variantSelected?.stock === 0}
         />
         <LikeButton productId={productId} />
       </div>
-    </form>
+    </div>
   )
 }

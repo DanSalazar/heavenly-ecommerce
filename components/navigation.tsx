@@ -37,7 +37,7 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className="hidden md:flex gap-4">
+      <nav className="hidden md:flex items-center gap-4">
         {links.map((link, i) => (
           <Link
             key={link.title}
