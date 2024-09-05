@@ -72,28 +72,38 @@ export default async function ProductsWithFilters({
                 product={product.product}
               />
             ))
-          : !searchParams.q && (
-              <>
-                <p className="text-2xl font-semibold md:text-4xl">
-                  NO PRODUCTS AVAILABLE FOR THIS DEPARTMENT
-                </p>
-                <p>Try searching for other departments</p>
-              </>
-            )}
+          : !searchParams.q && <NoProductsAvailable />}
 
         {/* For search page */}
         {searchParams?.q && !productsWithinPriceRange.length && (
-          <>
-            <p className="text-3xl md:text-4xl text-center font-semibold">
-              NOTHING MATCHES YOUR SEARCH
-            </p>
-            <p>
-              But don't give up – check the spelling or try less specific search
-              terms.
-            </p>
-          </>
+          <NoSearchResults />
         )}
       </ProductsWrapper>
+    </>
+  )
+}
+
+function NoProductsAvailable() {
+  return (
+    <>
+      <p className="text-3xl">Oops! No Products Found in This Department</p>
+      <p>
+        It seems we don't have any products available right now. Please consider
+        exploring other departments or check back later for new arrivals.
+      </p>
+    </>
+  )
+}
+
+function NoSearchResults() {
+  return (
+    <>
+      <p className="text-3xl">No products matched your search</p>
+      <p>
+        We couldn't find any products matching your search criteria. Please
+        check your spelling, try using broader terms, or explore our popular
+        categories for more options.
+      </p>
     </>
   )
 }

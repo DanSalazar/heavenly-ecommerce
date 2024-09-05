@@ -23,7 +23,7 @@ export default function FilterPopover({
         align="start">
         <div className="flex items-center gap-2">
           <Settings2Icon strokeWidth={1.5} />
-          <h3 className="text-lg font-bold">Filters</h3>
+          <h3 className="text-lg font-medium">Filters</h3>
         </div>
         {children}
         <PopoverClose asChild>

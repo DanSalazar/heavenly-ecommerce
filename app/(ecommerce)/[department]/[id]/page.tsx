@@ -1,10 +1,10 @@
 import { Suspense } from 'react'
-import Product from '@/components/ecommerce/product'
 import {
   ProductPageSkeleton,
   ProductsWrapperSkeleton
 } from '@/components/skeletons'
 import RelatedProducts from '@/components/ecommerce/related-products'
+import ProductDetail from '@/components/ecommerce/product-detail'
 
 export default async function Page({
   params
@@ -14,7 +14,7 @@ export default async function Page({
   return (
     <>
       <Suspense fallback={<ProductPageSkeleton />}>
-        <Product id={params.id} />
+        <ProductDetail id={params.id} />
       </Suspense>
       <Suspense fallback={<ProductsWrapperSkeleton />}>
         <RelatedProducts />

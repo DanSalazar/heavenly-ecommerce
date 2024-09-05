@@ -51,7 +51,7 @@ export default function Price({
             block: discount
           }
         )}>
-        ${getDiscountPrice(price, discount_percentage!)}
+        ${formatPrice(getDiscountPrice(price, discount_percentage!))}
       </p>
     </div>
   )

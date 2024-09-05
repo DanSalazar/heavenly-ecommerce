@@ -33,11 +33,11 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
       <div className="relative flex justify-between flex-wrap">
         <div className="flex gap-2 flex-1">
           <FilterPopover>
-            <div className="flex flex-col gap-2 py-4">
-              <h2 className="text-center text-xl font-semibold">
+            <div className="flex flex-col text-center py-4">
+              <h2 className="text-xl font-medium">
                 No items to show with these filters
               </h2>
-              <p className="text-center">Reset filters to see more items</p>
+              <p>Adjust filters or try looking for other products</p>
             </div>
             <div className="flex justify-end">
               <ResetAll />
