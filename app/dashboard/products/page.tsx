@@ -24,7 +24,7 @@ import { PRODUCTS_PER_ROW } from '@/lib/constants'
 export default async function Page({ searchParams }: { searchParams: any }) {
   return (
     <>
-      <div className="flex justify-between gap-2 flex-wrap">
+      <div className="flex justify-between gap-2 flex-wrap mb-4">
         <SearchInput placeholder="Search product name..." />
         <div className="flex items-center gap-2">
           <FilterByProducts />
@@ -48,7 +48,7 @@ export default async function Page({ searchParams }: { searchParams: any }) {
       </div>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Products</CardTitle>
+          <CardTitle className="text-2xl">Your Products</CardTitle>
           <CardDescription>
             Manage your products and view their sales performance.
           </CardDescription>

@@ -11,7 +11,7 @@ export default async function Page() {
 
   return (
     <>
-      <div className="grid md:grid-cols-3 gap-2">
+      <div className="grid md:grid-cols-3 gap-2 mb-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>

@@ -4,15 +4,15 @@ import { MoonIcon, SunIcon } from '@/components/icons'
 import { useThemeContext } from '@/components/providers/theme-provider'
 import { Button } from '@/components/ui/button'
 
-export default function ToggleTheme() {
+export default function ToggleTheme({ className }: { className?: string }) {
   const theme = useThemeContext()
 
   return (
     <Button
-      variant={'outline'}
+      variant={'ghost'}
       title="Toggle Theme"
       size="icon"
-      className="rounded-full"
+      className={className}
       onClick={theme?.toggleTheme}>
       <span className="sr-only">Toggle Theme</span>
       {theme?.isDarkTheme ? <MoonIcon /> : <SunIcon />}

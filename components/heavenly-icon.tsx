@@ -1,5 +1,10 @@
+import { cn } from '@/lib/utils'
 import { marcellus } from './fonts'
 
-export default function HeavenlyIcon() {
-  return <p className={marcellus.className + ' text-2xl uppercase'}>Heavenly</p>
+export default function HeavenlyIcon({ className }: { className?: string }) {
+  return (
+    <p className={cn(marcellus.className + ' text-2xl uppercase', className)}>
+      Heavenly
+    </p>
+  )
 }
