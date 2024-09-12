@@ -1,14 +1,15 @@
-import { useState } from 'react'
 import { BagItem } from '@/db/schema'
 import Price from '../ecommerce/price'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import DeleteItem from './delete-item'
 import { capitalizeWord } from '@/utils'
+import { useAction } from 'next-safe-action/hooks'
+import { removeProductFromBag } from '@/actions/bag'
 
 export default function ProductBag({ bagItem }: { bagItem: BagItem }) {
   if (!bagItem.product_variant || !bagItem.product_variant.product) return <></>
-  const [isDeletePending, setDeletePending] = useState(false)
+  const { execute, isPending } = useAction(removeProductFromBag)
   const {
     product_variant: { product }
   } = bagItem
@@ -16,7 +17,7 @@ export default function ProductBag({ bagItem }: { bagItem: BagItem }) {
   return (
     <div
       className={cn('relative flex gap-2', {
-        'pointer-events-none opacity-40': isDeletePending
+        'pointer-events-none opacity-20': isPending
       })}>
       <Image
         width={92}
@@ -53,9 +54,9 @@ export default function ProductBag({ bagItem }: { bagItem: BagItem }) {
         />
       </div>
       <DeleteItem
+        deleteAction={execute}
         className="absolute bottom-0 right-0"
         id={bagItem.id}
-        setPending={(bool: boolean) => setDeletePending(bool)}
       />
     </div>
   )

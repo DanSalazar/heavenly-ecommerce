@@ -3,10 +3,10 @@
 import { Button } from '@/components/ui/button'
 import { SpinnerStatus } from '@/components/ui/spinner'
 import { cn } from '@/lib/utils'
-import { addProductInBag } from '@/server/actions'
-import { MouseEvent, useState } from 'react'
+import { useState } from 'react'
 import { useToast } from '../ui/use-toast'
 import { useShoppingBagContext } from '../providers/shopping-bag-provider'
+import { addProductInBag } from '@/actions/bag'
 
 export default function ButtonAddBag({
   variantSelected,
@@ -24,7 +24,7 @@ export default function ButtonAddBag({
   const buttonClasses = 'transition-opacity h-full flex-1 uppercase rounded-lg'
   const disabledClasses = 'cursor-not-allowed opacity-60 hover:opacity-60'
 
-  if (!variantSelected)
+  if (!variantSelected || !variantSelectedId)
     return (
       <Button
         type="button"
@@ -50,19 +50,26 @@ export default function ButtonAddBag({
 
     setIsPending(true)
     const result = await addProductInBag(variantSelectedId)
+    setIsPending(false)
 
-    if (result) {
-      setIsPending(false)
-      handleOpen(true)
-      return
-    } else {
+    if (
+      result?.serverError ||
+      result?.validationErrors ||
+      result?.data?.error
+    ) {
       toast({
         title: 'Add to Bag Failed',
         description:
-          'Unable to add the selected item to your bag. Please try again. If the issue persists, contact customer support.',
+          result?.serverError ||
+          result?.data?.error ||
+          'Unable to add the selected item to your bag. Please try again. If the issue persists,  customer support.',
         variant: 'destructive'
       })
+
+      return
     }
+
+    handleOpen(true)
   }
 
   return (

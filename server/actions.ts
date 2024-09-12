@@ -139,13 +139,6 @@ export const getProductsCount = async ({
   return data.length
 }
 
-export const deleteProduct = async (id: string) => {
-  await db.delete(product).where(eq(product.id, id))
-  await db.delete(productVariations).where(eq(productVariations.product_id, id))
-
-  revalidatePath('/dashboard/products')
-}
-
 const variantsFields = z.object({
   stock: z.number(),
   color_id: z.number(),
@@ -244,45 +237,6 @@ export const getBag = cache(async () => {
   return bag
 })
 
-const productInBagSchema = z.coerce.number()
-
-export const addProductInBag = async (variantId: number | undefined) => {
-  try {
-    let bag_id = cookies().get('bag_id')?.value
-
-    if (!bag_id) {
-      bag_id = crypto.randomUUID()
-      await db.insert(bag).values({
-        id: bag_id
-      })
-
-      cookies().set('bag_id', bag_id, {
-        path: '/'
-      })
-    }
-
-    const item_id = productInBagSchema.parse(variantId)
-
-    await db
-      .insert(bagItem)
-      .values({
-        bag_id,
-        item_id,
-        quantity: 1
-      })
-      .onConflictDoUpdate({
-        target: [bagItem.bag_id, bagItem.item_id],
-        set: { quantity: sql`${bagItem.quantity} + 1` }
-      })
-
-    revalidatePath('/[department]/[id]', 'page')
-
-    return true
-  } catch (err) {
-    return false
-  }
-}
-
 export const getFilters = async (ids: string[]) => {
   if (!ids.length) return null
 
@@ -328,19 +282,6 @@ export const getFilters = async (ids: string[]) => {
   }
 }
 
-export const updateQuantityInBag = async (id: number, value: number) => {
-  await db.update(bagItem).set({ quantity: value }).where(eq(bagItem.id, id))
-
-  revalidatePath('/bag')
-}
-
-export const deleteItemFromBag = async (id: number) => {
-  await db.delete(bagItem).where(eq(bagItem.id, id))
-
-  revalidatePath('/')
-  return true
-}
-
 export const getFavorites = async (ids: string[]): Promise<Product[] | []> => {
   if (!ids.length) return []
 
@@ -354,25 +295,6 @@ export const getNewProductFields = async () => {
   const size = await db.query.size.findMany({})
 
   return { categories, colors, size }
-}
-
-export const createProduct = async (
-  p: ProductInsert,
-  variants: ProductVariantsInsert[],
-  images: ImageInsert[]
-) => {
-  try {
-    await db.transaction(async tx => {
-      await tx.insert(product).values(p)
-      await tx.insert(productVariations).values(variants)
-      await tx.insert(imagesTable).values(images)
-    })
-  } catch (error) {
-    return 'Error creating product'
-  }
-
-  revalidatePath('/dashboard/products')
-  redirect('/dashboard/products')
 }
 
 export const getDashboardStats = cache(async () => {

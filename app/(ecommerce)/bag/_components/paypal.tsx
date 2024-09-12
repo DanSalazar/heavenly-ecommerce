@@ -1,11 +1,23 @@
 'use client'
 
+import { createOrder } from '@/actions/order'
+import { CreateOrderType } from '@/actions/order-schema'
 import { useToast } from '@/components/ui/use-toast'
-import { createPayPalOrder } from '@/server/paypal'
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js'
+import { useRouter } from 'next/navigation'
 
 export default function Paypal() {
   const { toast } = useToast()
+  const router = useRouter()
+
+  const generateErrorToast = () => {
+    toast({
+      title: 'Checkout Failed',
+      description:
+        'An error occurred during the PayPal transaction. Please try again.',
+      variant: 'destructive'
+    })
+  }
 
   return (
     <PayPalScriptProvider
@@ -35,15 +47,22 @@ export default function Paypal() {
         }}
         onApprove={async (_data, actions) => {
           const order = await actions.order?.capture()
-          const orderDetails = {
-            customerName: order?.purchase_units![0].shipping?.name?.full_name!,
-            customerEmail: order?.purchase_units![0].payee?.email_address!,
-            amount: Number(order?.purchase_units![0].amount?.value),
-            created_at: order?.create_time!
+
+          const orderDetails: CreateOrderType = {
+            customer_name: order?.purchase_units![0].shipping?.name?.full_name!,
+            customer_email: order?.purchase_units![0].payee?.email_address!,
+            total_amount: Number(order?.purchase_units![0].amount?.value) * 100,
+            payment_method: 'paypal'
           }
 
-          await createPayPalOrder(orderDetails)
-          return
+          const result = await createOrder(orderDetails)
+
+          if (result?.serverError || result?.validationErrors) {
+            generateErrorToast()
+            return
+          }
+
+          router.push('/success')
         }}
         onError={error => {
           if (
@@ -52,12 +71,7 @@ export default function Paypal() {
           )
             return
 
-          toast({
-            title: 'Checkout Failed',
-            description:
-              'An error occurred during the PayPal transaction. Please try again.',
-            variant: 'destructive'
-          })
+          generateErrorToast()
         }}
       />
     </PayPalScriptProvider>

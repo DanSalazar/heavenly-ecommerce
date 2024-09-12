@@ -6,9 +6,11 @@ import { QuantitySelector } from './quantity-selector'
 import Image from 'next/image'
 import { Product } from '@/db/schema'
 import { useState } from 'react'
-import { updateQuantityInBag } from '@/server/actions'
 import { cn } from '@/lib/utils'
 import DeleteItem from './delete-item'
+import { useAction } from 'next-safe-action/hooks'
+import { removeProductFromBag, updateQuantityInBag } from '@/actions/bag'
+import { useToast } from '../ui/use-toast'
 
 export default function ProductRow({
   id,
@@ -23,13 +25,35 @@ export default function ProductRow({
   color: string
   size: string
 }) {
-  const [quantityState, setQuantityState] = useState(quantity)
-  const [isDeletingPending, setDeletePending] = useState(false)
-  const isUpdated = quantityState !== quantity
+  const { execute: removeProduct, isPending: isRemovePending } =
+    useAction(removeProductFromBag)
+  const [isPending, setPending] = useState(false)
+  const { toast } = useToast()
 
   const handleQuantityChange = async (value: number) => {
-    setQuantityState(value)
-    await updateQuantityInBag(id, value)
+    setPending(true)
+
+    const result = await updateQuantityInBag({ id, quantity: value })
+
+    setPending(false)
+
+    if (
+      result?.serverError ||
+      result?.validationErrors ||
+      result?.data?.error
+    ) {
+      toast({
+        title: 'Error',
+        description: result.serverError
+          ? `Server Error: ${result.serverError}`
+          : result.data?.error
+            ? `Error: ${result.data.error}`
+            : (result.validationErrors?.quantity &&
+                'Quantity cannot exceed 10 items') ||
+              'Unable to update quantity. Please try again later.'
+      })
+      return
+    }
   }
 
   return (
@@ -37,7 +61,7 @@ export default function ProductRow({
       className={cn(
         'relative border-b border-t border-zinc-200 py-4 flex flex-col md:flex-row gap-6',
         {
-          'pointer-events-none opacity-40': isDeletingPending
+          'pointer-events-none opacity-40': isRemovePending
         }
       )}>
       <Image
@@ -65,12 +89,12 @@ export default function ProductRow({
           quantity={quantity}
           handleChange={handleQuantityChange}
         />
-        {isUpdated && <UpdateLoading />}
+        {isPending && <UpdateLoading />}
       </div>
       <DeleteItem
         className="absolute right-0 bottom-2"
         id={id}
-        setPending={(bool: boolean) => setDeletePending(bool)}
+        deleteAction={removeProduct}
       />
     </div>
   )

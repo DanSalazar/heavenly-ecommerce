@@ -1,3 +1,5 @@
+'use client'
+
 import { BagItem } from '@/db/schema'
 
 type BreadcrumbType = {

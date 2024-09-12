@@ -18,6 +18,7 @@ import { useForm } from 'react-hook-form'
 import { addShopInformation } from './actions'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { SpinnerStatus } from '@/components/ui/spinner'
+import { updateSocialMedia } from '@/actions/social-media'
 
 const formSchema = z.object({
   facebook: z.string().url().or(z.literal('')),
@@ -43,12 +44,21 @@ export default function SocialMediaForm({
   })
 
   const onSubmit = async (data: FormValues) => {
-    const { error, success } = await addShopInformation(data)
+    const result = await updateSocialMedia(data)
 
-    if (error) {
+    if (result?.serverError || result?.validationErrors) {
       toast({
         title: 'Error',
-        description: error
+        description: 'An unexpected error occurred. Please try again.'
+      })
+
+      return
+    }
+
+    if (result?.data?.error) {
+      toast({
+        title: 'Error',
+        description: result.data.error
       })
 
       return
@@ -56,7 +66,7 @@ export default function SocialMediaForm({
 
     toast({
       title: 'Success',
-      description: success
+      description: result?.data?.success
     })
 
     form.reset(data, { keepValues: true })

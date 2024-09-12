@@ -19,11 +19,40 @@ import { Product } from '@/db/schema'
 import Image from 'next/image'
 import { MoreHorizontalIcon } from '@/components/icons'
 import { Button } from '@/components/ui/button'
-import { deleteProduct } from '@/server/actions'
 import Link from 'next/link'
 import { formatDate, formatPrice } from '@/utils'
+import { deleteProduct } from '@/actions/product'
+import { useToast } from '@/components/ui/use-toast'
 
 export default function ProductsTable({ products }: { products: Product[] }) {
+  const { toast } = useToast()
+
+  const handleDeleteProduct = async (id: string) => {
+    const result = await deleteProduct({ id })
+
+    if (
+      result?.serverError ||
+      result?.validationErrors ||
+      result?.data?.error
+    ) {
+      toast({
+        title: 'Deletion Failed',
+        description:
+          result?.serverError ||
+          result.data?.error ||
+          'Unable to delete the product. Please try again.',
+        variant: 'destructive'
+      })
+
+      return
+    }
+
+    toast({
+      title: 'Product Deleted Successfully',
+      description: 'The product has been removed from your inventory.'
+    })
+  }
+
   return (
     <Table>
       <TableHeader>
@@ -75,11 +104,12 @@ export default function ProductsTable({ products }: { products: Product[] }) {
                       Edit
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={async () => {
-                      await deleteProduct(product.id)
-                    }}>
-                    Delete
+                  <DropdownMenuItem>
+                    <button
+                      className="flex-1 text-left"
+                      onClick={() => handleDeleteProduct(product.id)}>
+                      Delete
+                    </button>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

@@ -31,7 +31,13 @@ export async function POST(request: NextRequest) {
         total_amount: checkoutSessionCompleted.amount_total!
       }
 
-      await db.insert(order).values(orderObject)
+      try {
+        await db.insert(order).values(orderObject)
+      } catch (err) {
+        return new Response(null, {
+          status: 400
+        })
+      }
       break
   }
 

@@ -1,21 +1,18 @@
-import { deleteItemFromBag } from '@/server/actions'
 import { MarkIcon } from '../icons'
 
 export default function DeleteItem({
   className,
-  setPending,
+  deleteAction,
   id
 }: {
   className: string
-  setPending: (bool: boolean) => void
+  deleteAction: (id: number) => void
   id: number
 }) {
   return (
     <button
-      onClick={async () => {
-        setPending(true)
-        await deleteItemFromBag(id)
-        setPending(false)
+      onClick={() => {
+        deleteAction(id)
       }}
       className={className}>
       <MarkIcon width={22} height={22} />

@@ -88,7 +88,7 @@ export const productVariations = createTable(
     id: serial('id').primaryKey(),
     product_id: varchar('product_id')
       .notNull()
-      .references(() => product.id),
+      .references(() => product.id, { onDelete: 'cascade' }),
     color_id: serial('color_id')
       .notNull()
       .references(() => color.id, { onDelete: 'cascade' }),
@@ -124,7 +124,9 @@ export const productVariationsRelations = relations(
 )
 
 export type ProductVariants = typeof productVariations.$inferSelect
-export type ProductVariantsInsert = typeof productVariations.$inferInsert
+export type ProductVariantsInsert = Omit<ProductVariants, 'id'> & {
+  id?: number
+}
 export type ProductVariantWithJoins = Pick<ProductVariants, 'id' | 'stock'> & {
   product?: Product | null
   color?: Color | null
@@ -205,7 +207,7 @@ export const imagesTable = createTable('images', {
   url: varchar('image_url', { length: 255 }).notNull(),
   product_id: varchar('product_id', { length: 36 })
     .notNull()
-    .references(() => product.id)
+    .references(() => product.id, { onDelete: 'cascade' })
 })
 
 export const imagesRelations = relations(imagesTable, ({ one }) => ({
@@ -226,4 +228,3 @@ export const shopInformation = createTable('shop_information', {
 })
 
 export type ShopInformation = typeof shopInformation.$inferSelect
-export type ShopInformationInsert = typeof shopInformation.$inferInsert
