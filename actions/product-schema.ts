@@ -11,10 +11,14 @@ export const productSchema = z.object({
   thumbnail: z.string(),
   department: z.enum(['men', 'women']),
   status: z.enum(['active', 'archived']),
-  created_at: z.string().length(27),
+  created_at: z.string().max(27),
   featured: z.boolean().default(false),
   category_id: z.number().int().nonnegative()
 })
+
+export type ProductSchema = z.infer<typeof productSchema>
+export const updateProductSchema = productSchema.partial()
+export type UpdateProductType = z.infer<typeof updateProductSchema>
 
 export const productVariationsSchema = z.object({
   id: z.number().int().nonnegative(),

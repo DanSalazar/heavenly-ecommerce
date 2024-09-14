@@ -23,13 +23,17 @@ import {
   ProductVariantsInsert,
   ProductVariantWithJoins
 } from '@/db/schema'
-import { updateProduct } from '@/server/actions'
+// import { updateProduct } from '@/server/actions'
 import { VariantFields } from '../new/page'
 import Uploader from './multi-uploader'
 import { deleteFiles } from '@/server/uploadthing'
 import Link from 'next/link'
 import { PreventNavigation } from './prevent-navigation'
 import { FormSchema, formSchema } from './product-form'
+import { updateProduct } from '@/actions/product'
+import { productSchema, UpdateProductType } from '@/actions/product-schema'
+import { z } from 'zod'
+import { useToast } from '@/components/ui/use-toast'
 
 const keysFromSchema = formSchema.keyof().options
 type Keys = (typeof keysFromSchema)[number]
@@ -64,6 +68,8 @@ export function EditProductForm({
       category: product.category_id + ''
     }
   })
+
+  const { toast } = useToast()
   const [progress, setProgress] = useState('')
   const [generalError, setGeneralError] = useState('')
   const [myNewFiles, setMyNewFiles] = useState<
@@ -85,7 +91,7 @@ export function EditProductForm({
 
     setProgress('Saving product...')
 
-    const productUpdated: Partial<ProductInsert> | null =
+    const productUpdated: UpdateProductType | null =
       Object.keys(dirtyData).length < 1
         ? null
         : {
@@ -103,7 +109,7 @@ export function EditProductForm({
           product_id: product.id
         }
 
-        // Product variant edited
+        // Add the variant id if it exists, indicating an update to an existing variant
         if (variant.id) v.id = variant.id
 
         return v
@@ -115,16 +121,28 @@ export function EditProductForm({
       product_id: product.id
     }))
 
-    const err = await updateProduct(
-      product.id,
-      productUpdated,
+    const result = await updateProduct({
+      product_id: product.id,
       variants,
-      newImages
-    )
+      images: newImages,
+      product: productUpdated
+    })
 
-    if (err) {
-      setProgress('')
-      setGeneralError(err)
+    setProgress('')
+
+    if (
+      result?.serverError ||
+      result?.validationErrors ||
+      result?.data?.error
+    ) {
+      toast({
+        title: 'Error',
+        description:
+          result?.serverError ||
+          result?.data?.error ||
+          'An unexpected error occurred while saving the product. Please try again.',
+        variant: 'destructive'
+      })
     }
   }
 

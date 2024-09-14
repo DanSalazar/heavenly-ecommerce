@@ -17,10 +17,12 @@ import {
 import Uploader from './multi-uploader'
 import { useState } from 'react'
 import { ImageInsert, ProductInsert, ProductVariantsInsert } from '@/db/schema'
-import { createProduct } from '@/server/actions'
 import { VariantFields } from '../new/page'
 import { deleteFiles } from '@/server/uploadthing'
 import { PreventNavigation } from './prevent-navigation'
+import { createProduct } from '@/actions/product'
+import { ProductSchema } from '@/actions/product-schema'
+import { useToast } from '@/components/ui/use-toast'
 
 export const formSchema = z.object({
   name: z
@@ -81,6 +83,8 @@ export function ProductForm({
       discount: 0
     }
   })
+
+  const { toast } = useToast()
   const [progress, setProgress] = useState('')
   const [generalError, setGeneralError] = useState('')
   const [myFiles, setFiles] = useState<{ key: string; url: string }[]>([])
@@ -100,7 +104,7 @@ export function ProductForm({
     setProgress('Saving product...')
     const product_id = crypto.randomUUID()
 
-    const product: ProductInsert = {
+    const product: ProductSchema = {
       id: product_id,
       name: values.name,
       brand: values.brand,
@@ -115,22 +119,35 @@ export function ProductForm({
       featured: values.featured,
       category_id: Number(values.category)
     }
+
     const variants: ProductVariantsInsert[] = values.variants.map(variant => ({
       color_id: Number(variant.color),
       size_id: Number(variant.size),
       stock: variant.stock,
       product_id: product_id
     }))
+
     const images: ImageInsert[] = myFiles.map(file => ({
       ...file,
       product_id: product_id
     }))
 
-    const err = await createProduct(product, variants, images)
+    const result = await createProduct({ product, variants, images })
+    setProgress('')
 
-    if (err) {
-      setProgress('')
-      setGeneralError(err)
+    if (
+      result?.serverError ||
+      result?.validationErrors ||
+      result?.data?.error
+    ) {
+      toast({
+        title: 'Error',
+        description:
+          result?.serverError ||
+          result?.data?.error ||
+          'An unexpected error occurred while saving the product. Please try again.',
+        variant: 'destructive'
+      })
     }
   }
 

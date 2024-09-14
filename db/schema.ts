@@ -32,7 +32,9 @@ export const product = createTable(
     status: statusEnum('status').notNull(),
     created_at: varchar('created_at', { length: 27 }).notNull(),
     featured: boolean('featured').notNull().default(false),
-    category_id: serial('category_id').references(() => category.id)
+    category_id: serial('category_id')
+      .references(() => category.id)
+      .notNull()
   },
   table => ({
     categoryIdx: index('category_idx').on(table.category_id)
