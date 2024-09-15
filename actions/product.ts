@@ -125,7 +125,7 @@ export const updateProduct = safeAction
       } catch (error) {
         return {
           error: `Failed to update product: ${error instanceof Error ? error.message : 'Unknown error'}`
-        } // {{ edit_2 }}
+        }
       }
 
       revalidatePath('/dashboard/products')

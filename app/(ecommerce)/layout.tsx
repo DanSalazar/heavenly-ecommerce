@@ -5,6 +5,7 @@ import Footer from '@/components/footer'
 import { mainFont } from '@/components/fonts'
 import { Toaster } from '@/components/ui/toaster'
 import { ShoppingBagProvider } from '@/components/providers/shopping-bag-provider'
+import GoToTopButton from '@/components/go-to-top-button'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -28,6 +29,7 @@ export default function RootLayout({
           {children}
           <Footer />
           <Toaster />
+          <GoToTopButton />
         </body>
       </ShoppingBagProvider>
     </html>

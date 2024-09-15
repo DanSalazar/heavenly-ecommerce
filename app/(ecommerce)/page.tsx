@@ -8,7 +8,8 @@ import ProductComponent from '@/components/ecommerce/product-component'
 
 export default async function Page() {
   const featuredProducts = await db.query.product.findMany({
-    where: ({ featured }, { eq }) => eq(featured, true)
+    where: ({ featured }, { eq }) => eq(featured, true),
+    limit: 4
   })
 
   return (
