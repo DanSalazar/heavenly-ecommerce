@@ -1,9 +1,11 @@
 'use client'
 
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Form } from '@/components/ui/form'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { zodResolver } from '@hookform/resolvers/zod'
+
 import {
   ProductArchive,
   ProductCategory,
@@ -13,27 +15,25 @@ import {
   ProductVariantsForm
 } from './product-form-components'
 
-import { useState } from 'react'
 import {
   ImageInsert,
+  ImageInsertNoProductId,
   ImageSelect,
   Product,
-  ProductInsert,
-  ProductVariants,
   ProductVariantsInsert,
   ProductVariantWithJoins
 } from '@/db/schema'
 // import { updateProduct } from '@/server/actions'
 import { VariantFields } from '../new/page'
-import Uploader from './multi-uploader'
 import { deleteFiles } from '@/server/uploadthing'
 import Link from 'next/link'
 import { PreventNavigation } from './prevent-navigation'
 import { FormSchema, formSchema } from './product-form'
 import { updateProduct } from '@/actions/product'
-import { productSchema, UpdateProductType } from '@/actions/product-schema'
-import { z } from 'zod'
+import { UpdateProductType } from '@/actions/product-schema'
 import { useToast } from '@/components/ui/use-toast'
+import { ImagesState } from '@/components/uploader/types'
+import Uploader from '@/components/uploader'
 
 const keysFromSchema = formSchema.keyof().options
 type Keys = (typeof keysFromSchema)[number]
@@ -72,12 +72,35 @@ export function EditProductForm({
   const { toast } = useToast()
   const [progress, setProgress] = useState('')
   const [generalError, setGeneralError] = useState('')
-  const [myNewFiles, setMyNewFiles] = useState<
-    Omit<ImageSelect, 'id' | 'product_id'>[]
-  >([])
+  const [newImages, setImages] = useState<ImagesState>({
+    pendingImages: [],
+    uploadedImages: [],
+    productImages: images
+  })
 
-  const addFiles = (files: Omit<ImageSelect, 'id' | 'product_id'>[]) => {
-    setMyNewFiles(cFiles => [...cFiles, ...files])
+  const addImages = (files: ImageInsertNoProductId[], uploaded: boolean) => {
+    if (uploaded) {
+      const fileNames = files.map(file => file.name)
+      setImages(currentImages => ({
+        ...currentImages,
+        pendingImages: currentImages.pendingImages.filter(image => {
+          return !fileNames.includes(image.name)
+        }),
+        uploadedImages: [...currentImages.uploadedImages, ...files]
+      }))
+    } else {
+      setImages(currentImages => ({
+        ...currentImages,
+        pendingImages: [...currentImages.pendingImages, ...files]
+      }))
+    }
+  }
+
+  const cancelPendingImages = () => {
+    setImages({
+      ...newImages,
+      pendingImages: []
+    })
   }
 
   const handleSubmit = async (values: FormSchema) => {
@@ -116,16 +139,16 @@ export function EditProductForm({
       })
     }
 
-    const newImages: ImageInsert[] = myNewFiles.map(file => ({
+    const newImagesData: ImageInsert[] = newImages.uploadedImages.map(file => ({
       ...file,
       product_id: product.id
     }))
 
     const result = await updateProduct({
       product_id: product.id,
-      variants,
-      images: newImages,
-      product: productUpdated
+      product: productUpdated,
+      images: newImagesData,
+      variants
     })
 
     setProgress('')
@@ -147,13 +170,14 @@ export function EditProductForm({
   }
 
   const resetData = async () => {
-    if (myNewFiles.length) {
-      await deleteFiles(myNewFiles.map(({ key }) => key))
+    if (newImages.uploadedImages.length) {
+      await deleteFiles(newImages.uploadedImages.map(({ key }) => key))
     }
   }
 
   const isDirty =
-    Object.keys(form.formState.dirtyFields).length > 0 || myNewFiles.length > 0
+    Object.keys(form.formState.dirtyFields).length > 0 ||
+    newImages.uploadedImages.length > 0
 
   return (
     <>
@@ -204,9 +228,9 @@ export function EditProductForm({
               <ProductDepartment control={form.control} />
               <ProductImage>
                 <Uploader
-                  uploadedFiles={images}
-                  myFiles={myNewFiles}
-                  addFiles={addFiles}
+                  cancelPendingImages={cancelPendingImages}
+                  addImages={addImages}
+                  images={newImages}
                 />
               </ProductImage>
             </div>

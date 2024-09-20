@@ -206,7 +206,10 @@ export type OrderType = typeof order.$inferSelect
 export const imagesTable = createTable('images', {
   id: serial('id').primaryKey(),
   key: varchar('key', { length: 255 }).notNull(),
-  url: varchar('image_url', { length: 255 }).notNull(),
+  src: varchar('src', { length: 255 }).notNull(),
+  alt: varchar('alt', { length: 255 }).notNull(),
+  name: varchar('name', { length: 255 }).notNull(),
+  created_at: varchar('created_at', { length: 27 }).notNull(),
   product_id: varchar('product_id', { length: 36 })
     .notNull()
     .references(() => product.id, { onDelete: 'cascade' })
@@ -221,6 +224,7 @@ export const imagesRelations = relations(imagesTable, ({ one }) => ({
 
 export type ImageSelect = typeof imagesTable.$inferSelect
 export type ImageInsert = typeof imagesTable.$inferInsert
+export type ImageInsertNoProductId = Omit<ImageInsert, 'product_id'>
 
 export const shopInformation = createTable('shop_information', {
   id: serial('id').primaryKey(),

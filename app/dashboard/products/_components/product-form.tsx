@@ -14,15 +14,20 @@ import {
   ProductImage,
   ProductVariantsForm
 } from './product-form-components'
-import Uploader from './multi-uploader'
 import { useState } from 'react'
-import { ImageInsert, ProductInsert, ProductVariantsInsert } from '@/db/schema'
+import {
+  ImageInsert,
+  ImageInsertNoProductId,
+  ProductVariantsInsert
+} from '@/db/schema'
 import { VariantFields } from '../new/page'
 import { deleteFiles } from '@/server/uploadthing'
 import { PreventNavigation } from './prevent-navigation'
 import { createProduct } from '@/actions/product'
 import { ProductSchema } from '@/actions/product-schema'
 import { useToast } from '@/components/ui/use-toast'
+import Uploader from '@/components/uploader'
+import { ImagesState } from '@/components/uploader/types'
 
 export const formSchema = z.object({
   name: z
@@ -83,20 +88,42 @@ export function ProductForm({
       discount: 0
     }
   })
-
   const { toast } = useToast()
+  const [images, setImages] = useState<ImagesState>({
+    pendingImages: [],
+    uploadedImages: []
+  })
   const [progress, setProgress] = useState('')
   const [generalError, setGeneralError] = useState('')
-  const [myFiles, setFiles] = useState<{ key: string; url: string }[]>([])
 
-  const addFiles = (files: { key: string; url: string }[]) => {
-    setFiles(cFiles => [...cFiles, ...files])
+  const addImages = (files: ImageInsertNoProductId[], uploaded: boolean) => {
+    if (uploaded) {
+      const fileNames = files.map(file => file.name)
+      setImages(currentImages => ({
+        pendingImages: currentImages.pendingImages.filter(image => {
+          return !fileNames.includes(image.name)
+        }),
+        uploadedImages: [...currentImages.uploadedImages, ...files]
+      }))
+    } else {
+      setImages(currentImages => ({
+        ...images,
+        pendingImages: [...currentImages.pendingImages, ...files]
+      }))
+    }
+  }
+
+  const cancelPendingImages = () => {
+    setImages({
+      ...images,
+      pendingImages: []
+    })
   }
 
   const handleSubmit = async (values: FormSchema) => {
     setGeneralError('')
 
-    if (myFiles.length < 1) {
+    if (images.uploadedImages.length < 1) {
       setGeneralError('You need at least add one image.')
       return
     }
@@ -110,7 +137,9 @@ export function ProductForm({
       brand: values.brand,
       description: values.description || '',
       price: values.price,
-      thumbnail: myFiles?.length ? myFiles[0].url : '',
+      thumbnail: images.uploadedImages.length
+        ? images.uploadedImages[0].src
+        : '',
       department: values.department,
       discount: Boolean(values.discount),
       percentage_off: values.discount || 0,
@@ -127,12 +156,16 @@ export function ProductForm({
       product_id: product_id
     }))
 
-    const images: ImageInsert[] = myFiles.map(file => ({
+    const imageInserts: ImageInsert[] = images.uploadedImages.map(file => ({
       ...file,
       product_id: product_id
     }))
 
-    const result = await createProduct({ product, variants, images })
+    const result = await createProduct({
+      product,
+      variants,
+      images: imageInserts
+    })
     setProgress('')
 
     if (
@@ -152,12 +185,12 @@ export function ProductForm({
   }
 
   const resetData = async () => {
-    if (myFiles.length) {
-      await deleteFiles(myFiles.map(({ key }) => key))
+    if (images.uploadedImages.length) {
+      await deleteFiles(images.uploadedImages.map(({ key }) => key))
     }
   }
 
-  const isDirty = form.formState.isDirty || myFiles.length > 0
+  const isDirty = form.formState.isDirty || images.uploadedImages.length > 0
 
   return (
     <>
@@ -207,7 +240,11 @@ export function ProductForm({
               />
               <ProductDepartment control={form.control} />
               <ProductImage>
-                <Uploader myFiles={myFiles} addFiles={addFiles} />
+                <Uploader
+                  images={images}
+                  addImages={addImages}
+                  cancelPendingImages={cancelPendingImages}
+                />
               </ProductImage>
             </div>
           </div>

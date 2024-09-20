@@ -8,7 +8,7 @@ export const SpinnerStatus = ({
   <div className="flex gap-2 items-center" role="status">
     <svg
       aria-hidden="true"
-      className="w-5 h-5 text-zinc-500 animate-spin fill-zinc-200"
+      className="w-5 h-5 text-primary/20 animate-spin fill-primary"
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">

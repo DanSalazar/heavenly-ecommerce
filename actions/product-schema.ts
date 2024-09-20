@@ -31,6 +31,9 @@ export const productVariationsSchema = z.object({
 export const imagesSchema = z.object({
   id: z.number().int().nonnegative(),
   key: z.string().max(255),
-  url: z.string().max(255),
+  src: z.string().max(255),
+  alt: z.string().max(255),
+  name: z.string().max(255),
+  created_at: z.string().max(27),
   product_id: z.string().length(36)
 })

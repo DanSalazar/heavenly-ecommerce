@@ -14,7 +14,7 @@ export default function ProductImagesContainer({
 }) {
   const { openLightbox, renderLightbox } = useLightbox()
 
-  const slides = images.map(({ url }) => ({ src: url }))
+  const slides = images.map(({ src }) => ({ src }))
 
   return (
     <div className="grid grid-cols-2 gap-4">
@@ -27,7 +27,7 @@ export default function ProductImagesContainer({
             className="hidden md:block"
             width={400}
             height={500}
-            src={images[1].url}
+            src={images[1].src}
             alt={'Product Image'}
           />
         </button>
@@ -38,7 +38,7 @@ export default function ProductImagesContainer({
             className="hidden md:block"
             width={400}
             height={500}
-            src={images[2].url}
+            src={images[2].src}
             alt={'Product Image'}
           />
         </button>
