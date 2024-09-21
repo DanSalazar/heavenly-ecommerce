@@ -1,6 +1,6 @@
-import { auth } from '@clerk/nextjs/server'
 import { createUploadthing, type FileRouter } from 'uploadthing/next'
 import { UploadThingError } from 'uploadthing/server'
+import { auth } from '@clerk/nextjs/server'
 
 const f = createUploadthing()
 
@@ -11,11 +11,11 @@ export const ourFileRouter = {
 
       if (!userId) throw new UploadThingError('Unauthorized')
 
-      return { userId }
+      return {}
     })
 
     .onUploadComplete(async ({ metadata, file: _ }) => {
-      return { uploadedBy: metadata.userId }
+      return {}
     })
 } satisfies FileRouter
 

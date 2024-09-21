@@ -148,68 +148,6 @@ const variantsFields = z.object({
 })
 const updateProductVariantSchema = z.array(variantsFields)
 
-export const updateProduct = async (
-  id: string,
-  product_values: Partial<ProductInsert> | null,
-  variants_values: ProductVariantsInsert[] | null,
-  images: ImageInsert[]
-) => {
-  const variantsParsed = updateProductVariantSchema.safeParse(variants_values)
-  const updateSets: Record<string, SQL> = {}
-
-  if (variantsParsed.success) {
-    const fields = variantsFields
-      .omit({ id: true, product_id: true })
-      .keyof().options
-
-    fields.forEach(field => {
-      const sqlChunks: SQL[] = []
-      sqlChunks.push(sql`(case`)
-
-      for (const variant of variantsParsed.data) {
-        // New product variant
-        if (typeof variant.id !== 'undefined') {
-          sqlChunks.push(
-            sql`when ${productVariations.id} = ${variant.id} then ${variant[field]}::integer`
-          )
-        }
-      }
-
-      sqlChunks.push(sql`end)`)
-      updateSets[field] = sql.join(sqlChunks, sql.raw(' '))
-    })
-  } else {
-    return 'Something went wrong'
-  }
-
-  try {
-    await db.transaction(async tx => {
-      if (product_values) {
-        await tx.update(product).set(product_values).where(eq(product.id, id))
-      }
-
-      if (variantsParsed.success) {
-        await tx
-          .insert(productVariations)
-          .values(variantsParsed.data)
-          .onConflictDoUpdate({
-            target: productVariations.id,
-            set: updateSets
-          })
-      }
-
-      if (images.length) {
-        await tx.insert(imagesTable).values(images)
-      }
-    })
-  } catch (error) {
-    return `Failed to update product: ${error instanceof Error ? error.message : 'Unknown error'}`
-  }
-
-  revalidatePath('/dashboard/products')
-  redirect('/dashboard/products')
-}
-
 export const getBag = cache(async () => {
   const bagId = cookies().get('bag_id')?.value || ''
   const bag = await db.query.bag.findFirst({

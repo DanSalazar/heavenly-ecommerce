@@ -39,6 +39,7 @@ import {
 import { Category } from '@/db/schema'
 import { VariantFields } from '../new/page'
 import { Checkbox } from '@/components/ui/checkbox'
+import Image from 'next/image'
 
 type FormControl = Control<FormSchema>
 
@@ -297,13 +298,28 @@ export const ProductDepartment = ({ control }: { control: FormControl }) => (
   </Card>
 )
 
-export const ProductImage = ({ children }: { children: React.ReactNode }) => (
+export const ProductImage = ({
+  children,
+  thumbnail
+}: {
+  children: React.ReactNode
+  thumbnail: string
+}) => (
   <Card className="overflow-hidden">
     <CardHeader>
       <CardTitle>Product Images</CardTitle>
       <CardDescription>Manage your product images</CardDescription>
     </CardHeader>
-    <CardContent>{children}</CardContent>
+    <CardContent className="flex flex-col gap-2">
+      <Image
+        src={thumbnail || '/placeholder.svg'}
+        width={280}
+        height={280}
+        alt="Product Thumbnail"
+        className="object-cover rounded-lg  self-center"
+      />
+      {children}
+    </CardContent>
   </Card>
 )
 

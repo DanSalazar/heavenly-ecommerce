@@ -14,7 +14,7 @@ import {
   generatePermittedFileTypes
 } from 'uploadthing/client'
 import { cn } from '@/lib/utils'
-import { ImageItem } from './images'
+import { ImageItem, UploadImage, UploadImagePending } from './images'
 import { Button } from '../ui/button'
 import { SCROLLBAR_CLASS } from '@/lib/constants'
 import { ImageInsertNoProductId } from '@/db/schema'
@@ -25,15 +25,33 @@ import { useToast } from '../ui/use-toast'
 interface UploaderProps {
   addImages: (files: ImageInsertNoProductId[], uploaded: boolean) => void
   cancelPendingImages: () => void
+  deleteFile: (key: string, src?: string) => void
+  setThumbnail: (src: string) => void
   images: ImagesState
+  thumbnail: string
+}
+
+const getGridClass = (imageCount: number) => {
+  switch (imageCount) {
+    case 1:
+      return 'md:grid-cols-1'
+    case 2:
+      return 'md:grid-cols-2'
+    default:
+      return 'md:grid-cols-3'
+  }
 }
 
 export default function Uploader({
   addImages,
+  cancelPendingImages,
+  setThumbnail,
+  deleteFile,
   images,
-  cancelPendingImages
+  thumbnail
 }: UploaderProps) {
   const { toast } = useToast()
+
   const { startUpload, routeConfig } = useUploadThing('imageUploader', {
     onClientUploadComplete: response => {
       const images: ImageInsertNoProductId[] = response.map(image => ({
@@ -131,33 +149,37 @@ export default function Uploader({
           </h3>
           <div className={cn('grid gap-6 grid-cols-1', gridClass)}>
             {images.productImages?.map((image, index) => (
-              <ImageItem
-                key={index}
-                title={image.name}
-                src={image.src}
-                alt={image.alt}
-                date={image.created_at}
-              />
+              <ImageItem key={index} title={image.name} date={image.created_at}>
+                <UploadImage
+                  src={image.src}
+                  alt={image.alt}
+                  key={image.key}
+                  thumbnail={thumbnail}
+                  deleteFile={deleteFile}
+                  setThumbnail={setThumbnail}
+                />
+              </ImageItem>
             ))}
             {images.uploadedImages.map((image, index) => (
-              <ImageItem
-                key={index}
-                title={image.name}
-                src={image.src}
-                alt={image.alt}
-                date={image.created_at}
-              />
+              <ImageItem key={index} title={image.name} date={image.created_at}>
+                <UploadImage
+                  src={image.src}
+                  alt={image.alt}
+                  key={image.key}
+                  thumbnail={thumbnail}
+                  deleteFile={deleteFile}
+                  setThumbnail={setThumbnail}
+                />
+              </ImageItem>
             ))}
             {images.pendingImages.map((image, index) => (
-              <ImageItem
-                key={index}
-                title={image.name}
-                src={image.src}
-                alt={image.alt}
-              />
+              <ImageItem key={index} title={image.name}>
+                <UploadImagePending />
+              </ImageItem>
             ))}
           </div>
         </div>
+
         <div
           {...getRootProps()}
           className={cn(uploaderClassName, {
@@ -172,15 +194,4 @@ export default function Uploader({
       </DialogContent>
     </Dialog>
   )
-}
-
-const getGridClass = (imageCount: number) => {
-  switch (imageCount) {
-    case 1:
-      return 'md:grid-cols-1'
-    case 2:
-      return 'md:grid-cols-2'
-    default:
-      return 'md:grid-cols-3'
-  }
 }

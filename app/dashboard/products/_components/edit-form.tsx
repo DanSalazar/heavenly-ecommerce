@@ -23,9 +23,7 @@ import {
   ProductVariantsInsert,
   ProductVariantWithJoins
 } from '@/db/schema'
-// import { updateProduct } from '@/server/actions'
 import { VariantFields } from '../new/page'
-import { deleteFiles } from '@/server/uploadthing'
 import Link from 'next/link'
 import { PreventNavigation } from './prevent-navigation'
 import { FormSchema, formSchema } from './product-form'
@@ -34,6 +32,7 @@ import { UpdateProductType } from '@/actions/product-schema'
 import { useToast } from '@/components/ui/use-toast'
 import { ImagesState } from '@/components/uploader/types'
 import Uploader from '@/components/uploader'
+import { deleteFilesAction } from '@/actions/files'
 
 const keysFromSchema = formSchema.keyof().options
 type Keys = (typeof keysFromSchema)[number]
@@ -70,13 +69,14 @@ export function EditProductForm({
   })
 
   const { toast } = useToast()
-  const [progress, setProgress] = useState('')
-  const [generalError, setGeneralError] = useState('')
+  const [thumbnail, setThumbnail] = useState(product.thumbnail)
   const [newImages, setImages] = useState<ImagesState>({
     pendingImages: [],
     uploadedImages: [],
     productImages: images
   })
+
+  const isSubmitting = form.formState.isSubmitting
 
   const addImages = (files: ImageInsertNoProductId[], uploaded: boolean) => {
     if (uploaded) {
@@ -96,6 +96,10 @@ export function EditProductForm({
     }
   }
 
+  const addThumbnail = (thumbnailSrc: string) => {
+    setThumbnail(thumbnailSrc)
+  }
+
   const cancelPendingImages = () => {
     setImages({
       ...newImages,
@@ -103,8 +107,57 @@ export function EditProductForm({
     })
   }
 
+  const deleteFile = async (key: string, src?: string) => {
+    setImages(currentImages => ({
+      ...currentImages,
+      uploadedImages: currentImages.uploadedImages.filter(
+        ({ key: uploadKey }) => uploadKey !== key
+      ),
+      productImages: currentImages.productImages?.filter(
+        ({ key: uploadKey }) => uploadKey !== key
+      )
+    }))
+
+    if (src === thumbnail) {
+      setThumbnail('')
+    }
+
+    const result = await deleteFilesAction(key)
+
+    if (
+      result?.serverError ||
+      result?.validationErrors ||
+      result?.data?.error
+    ) {
+      toast({
+        title: 'Deleting file error',
+        description: result?.serverError || result?.data?.error || 'Error',
+        variant: 'destructive'
+      })
+    }
+  }
+
   const handleSubmit = async (values: FormSchema) => {
-    setGeneralError('')
+    if (!thumbnail) {
+      toast({
+        title: 'Submit Error',
+        description: 'You need to add the thumbnail 📷.',
+        variant: 'destructive'
+      })
+      return
+    }
+
+    if (
+      newImages.uploadedImages.length < 1 &&
+      (newImages.productImages?.length || 0) < 1
+    ) {
+      toast({
+        title: 'Submit Error',
+        description: 'You need to add at least 1 image 📷.',
+        variant: 'destructive'
+      })
+      return
+    }
 
     const dirtyKeys = Object.keys(form.formState.dirtyFields) as Keys[]
     const dirtyData = dirtyKeys.reduce((acc, key) => {
@@ -112,14 +165,17 @@ export function EditProductForm({
       return { ...acc, [key]: values[key] }
     }, {})
 
-    setProgress('Saving product...')
-
-    const productUpdated: UpdateProductType | null =
+    let productUpdated: UpdateProductType | null =
       Object.keys(dirtyData).length < 1
         ? null
         : {
             ...dirtyData
           }
+
+    if (!!thumbnail) {
+      if (!productUpdated) productUpdated = { thumbnail }
+      else productUpdated.thumbnail = thumbnail
+    }
 
     let variants: ProductVariantsInsert[] | null = null
 
@@ -151,8 +207,6 @@ export function EditProductForm({
       variants
     })
 
-    setProgress('')
-
     if (
       result?.serverError ||
       result?.validationErrors ||
@@ -171,13 +225,14 @@ export function EditProductForm({
 
   const resetData = async () => {
     if (newImages.uploadedImages.length) {
-      await deleteFiles(newImages.uploadedImages.map(({ key }) => key))
+      await deleteFilesAction(newImages.uploadedImages.map(({ key }) => key))
     }
   }
 
   const isDirty =
     Object.keys(form.formState.dirtyFields).length > 0 ||
-    newImages.uploadedImages.length > 0
+    newImages.uploadedImages.length > 0 ||
+    !!thumbnail.length
 
   return (
     <>
@@ -200,14 +255,9 @@ export function EditProductForm({
                 className={buttonVariants({ variant: 'outline' })}>
                 Cancel
               </Link>
-              <Button type="submit" disabled={!!progress || !isDirty}>
-                {progress ? progress : 'Save changes'}
+              <Button type="submit" disabled={isSubmitting || !isDirty}>
+                {isSubmitting ? 'Saving...' : 'Save changes'}
               </Button>
-              {generalError && (
-                <p className="text-red-500 text-sm font-medium">
-                  {generalError}
-                </p>
-              )}
             </div>
           </div>
           <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
@@ -226,8 +276,11 @@ export function EditProductForm({
                 control={form.control}
               />
               <ProductDepartment control={form.control} />
-              <ProductImage>
+              <ProductImage thumbnail={thumbnail}>
                 <Uploader
+                  deleteFile={deleteFile}
+                  thumbnail={thumbnail}
+                  setThumbnail={addThumbnail}
                   cancelPendingImages={cancelPendingImages}
                   addImages={addImages}
                   images={newImages}
@@ -241,12 +294,9 @@ export function EditProductForm({
               className={buttonVariants({ variant: 'outline' })}>
               Cancel
             </Link>
-            <Button type="submit" disabled={!!progress || !isDirty}>
-              {progress ? progress : 'Save changes'}
+            <Button type="submit" disabled={isSubmitting || !isDirty}>
+              {isSubmitting ? 'Saving...' : 'Save changes'}
             </Button>
-            {generalError && (
-              <p className="text-red-500 text-sm font-medium">{generalError}</p>
-            )}
           </div>
         </form>
       </Form>

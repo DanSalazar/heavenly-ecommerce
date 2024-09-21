@@ -21,13 +21,13 @@ import {
   ProductVariantsInsert
 } from '@/db/schema'
 import { VariantFields } from '../new/page'
-import { deleteFiles } from '@/server/uploadthing'
 import { PreventNavigation } from './prevent-navigation'
 import { createProduct } from '@/actions/product'
 import { ProductSchema } from '@/actions/product-schema'
 import { useToast } from '@/components/ui/use-toast'
 import Uploader from '@/components/uploader'
 import { ImagesState } from '@/components/uploader/types'
+import { deleteFilesAction } from '@/actions/files'
 
 export const formSchema = z.object({
   name: z
@@ -93,8 +93,9 @@ export function ProductForm({
     pendingImages: [],
     uploadedImages: []
   })
-  const [progress, setProgress] = useState('')
-  const [generalError, setGeneralError] = useState('')
+  const [thumbnail, setThumbnail] = useState('')
+
+  const isSubmitting = form.formState.isSubmitting
 
   const addImages = (files: ImageInsertNoProductId[], uploaded: boolean) => {
     if (uploaded) {
@@ -120,15 +121,29 @@ export function ProductForm({
     })
   }
 
-  const handleSubmit = async (values: FormSchema) => {
-    setGeneralError('')
+  const addThumbnail = (src: string) => {
+    setThumbnail(src)
+  }
 
-    if (images.uploadedImages.length < 1) {
-      setGeneralError('You need at least add one image.')
+  const handleSubmit = async (values: FormSchema) => {
+    if (!thumbnail) {
+      toast({
+        title: 'Error',
+        description: 'You need to add a thumbnail 📷.',
+        variant: 'destructive'
+      })
       return
     }
 
-    setProgress('Saving product...')
+    if (images.uploadedImages.length < 1) {
+      toast({
+        title: 'Error',
+        description: 'You need to add at least one image 📷.',
+        variant: 'destructive'
+      })
+      return
+    }
+
     const product_id = crypto.randomUUID()
 
     const product: ProductSchema = {
@@ -137,16 +152,14 @@ export function ProductForm({
       brand: values.brand,
       description: values.description || '',
       price: values.price,
-      thumbnail: images.uploadedImages.length
-        ? images.uploadedImages[0].src
-        : '',
       department: values.department,
       discount: Boolean(values.discount),
       percentage_off: values.discount || 0,
       status: values.archived ? 'archived' : 'active',
       created_at: new Date().toISOString(),
       featured: values.featured,
-      category_id: Number(values.category)
+      category_id: Number(values.category),
+      thumbnail
     }
 
     const variants: ProductVariantsInsert[] = values.variants.map(variant => ({
@@ -166,7 +179,6 @@ export function ProductForm({
       variants,
       images: imageInserts
     })
-    setProgress('')
 
     if (
       result?.serverError ||
@@ -178,7 +190,7 @@ export function ProductForm({
         description:
           result?.serverError ||
           result?.data?.error ||
-          'An unexpected error occurred while saving the product. Please try again.',
+          'An error occurred while saving the product. Please check your inputs and try again.',
         variant: 'destructive'
       })
     }
@@ -186,7 +198,7 @@ export function ProductForm({
 
   const resetData = async () => {
     if (images.uploadedImages.length) {
-      await deleteFiles(images.uploadedImages.map(({ key }) => key))
+      await deleteFilesAction(images.uploadedImages.map(({ key }) => key))
     }
   }
 
@@ -213,14 +225,9 @@ export function ProductForm({
                 className={buttonVariants({ variant: 'outline' })}>
                 Cancel
               </Link>
-              <Button type="submit" disabled={!!progress}>
-                {progress ? progress : 'Create Product'}
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Saving...' : 'Create Product'}
               </Button>
-              {generalError && (
-                <p className="text-red-500 text-sm font-medium">
-                  {generalError}
-                </p>
-              )}
             </div>
           </div>
           <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
@@ -239,8 +246,11 @@ export function ProductForm({
                 control={form.control}
               />
               <ProductDepartment control={form.control} />
-              <ProductImage>
+              <ProductImage thumbnail={thumbnail}>
                 <Uploader
+                  deleteFile={(key: string) => {}}
+                  thumbnail={thumbnail}
+                  setThumbnail={addThumbnail}
                   images={images}
                   addImages={addImages}
                   cancelPendingImages={cancelPendingImages}
@@ -254,12 +264,9 @@ export function ProductForm({
               className={buttonVariants({ variant: 'outline' })}>
               Cancel
             </Link>
-            <Button type="submit" disabled={!!progress}>
-              {progress ? progress : 'Create Product'}
+            <Button type="submit" disabled={!!isSubmitting}>
+              {isSubmitting ? 'Saving...' : 'Create Product'}
             </Button>
-            {generalError && (
-              <p className="text-red-500 text-sm font-medium">{generalError}</p>
-            )}
           </div>
         </form>
       </Form>
