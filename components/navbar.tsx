@@ -9,7 +9,7 @@ import { Skeleton } from './ui/skeleton'
 
 export default function Navbar() {
   return (
-    <header className="bg-white sticky top-0 h-16 z-20 border-b border-zinc-200 grid grid-cols-3">
+    <header className="bg-white relative top-0 h-16 z-20 border-b border-zinc-200 grid grid-cols-3">
       <Navigation />
       <div className="bg-white flex items-center md:justify-center">
         <Link href={'/'}>
