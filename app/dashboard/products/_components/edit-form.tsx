@@ -27,7 +27,7 @@ import { VariantFields } from '../new/page'
 import Link from 'next/link'
 import { PreventNavigation } from './prevent-navigation'
 import { FormSchema, formSchema } from './product-form'
-import { updateProduct } from '@/actions/product'
+import { deleteProductVariant, updateProduct } from '@/actions/product'
 import { UpdateProductType } from '@/actions/product-schema'
 import { useToast } from '@/components/ui/use-toast'
 import { ImagesState } from '@/components/uploader/types'
@@ -59,10 +59,11 @@ export function EditProductForm({
       archived: product.status === 'archived',
       department: product.department,
       variants: variants.map(({ id, color, size, stock }) => ({
-        id,
+        ownId: id,
         color: color?.id! + '',
         size: size?.id! + '',
-        stock: stock!
+        stock: stock!,
+        id
       })),
       category: product.category_id + ''
     }
@@ -75,6 +76,12 @@ export function EditProductForm({
     uploadedImages: [],
     productImages: images
   })
+
+  const [removeVariantsId, setRemoveVariantsId] = useState<number[]>([])
+
+  const addRemoveVariantId = (id: number) => {
+    setRemoveVariantsId([...removeVariantsId, id])
+  }
 
   const isSubmitting = form.formState.isSubmitting
 
@@ -200,6 +207,25 @@ export function EditProductForm({
       product_id: product.id
     }))
 
+    if (removeVariantsId.length) {
+      const result = await deleteProductVariant(removeVariantsId)
+
+      if (
+        result?.serverError ||
+        result?.validationErrors ||
+        result?.data?.error
+      ) {
+        toast({
+          title: 'Error',
+          description:
+            'An unexpected error occurred while saving the product. Please try again.',
+          variant: 'destructive'
+        })
+
+        return
+      }
+    }
+
     const result = await updateProduct({
       product_id: product.id,
       product: productUpdated,
@@ -232,7 +258,7 @@ export function EditProductForm({
   const isDirty =
     Object.keys(form.formState.dirtyFields).length > 0 ||
     newImages.uploadedImages.length > 0 ||
-    !!thumbnail.length
+    thumbnail !== product.thumbnail
 
   return (
     <>
@@ -264,7 +290,12 @@ export function EditProductForm({
             <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
               <ProductDetailsForm control={form.control} />
               <ProductVariantsForm
-                error={form.formState.errors.variants?.message || ''}
+                addRemoveVariantId={addRemoveVariantId}
+                error={
+                  form.formState.errors.variants?.message ||
+                  form.formState.errors.variants?.root?.message ||
+                  ''
+                }
                 control={form.control}
                 variantFields={variantFields}
               />

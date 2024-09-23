@@ -1,6 +1,6 @@
 'use server'
 
-import { eq, sql, SQL } from 'drizzle-orm'
+import { eq, inArray, sql, SQL } from 'drizzle-orm'
 import { db } from '@/db'
 import {
   productVariations,
@@ -63,6 +63,20 @@ export const deleteProduct = safeAction
     }
   })
 
+export const deleteProductVariant = safeAction
+  .schema(z.array(z.number().min(1)))
+  .action(async ({ parsedInput: ids }) => {
+    try {
+      await db
+        .delete(productVariations)
+        .where(inArray(productVariations.id, ids))
+
+      return { success: 'Product variants deleted successfully' }
+    } catch (error) {
+      return { error: `Failed to delete products variant, please try again.` }
+    }
+  })
+
 const updateProductFuncSchema = z.object({
   product: updateProductSchema.nullable(),
   variants: z.array(productVariationsSchema.partial({ id: true })).nullable(),
@@ -91,10 +105,15 @@ export const updateProduct = safeAction
               sqlChunks.push(
                 sql`when ${productVariations.id} = ${variant.id} then ${variant[field]}::integer`
               )
+            } else {
+              continue
             }
           }
 
           sqlChunks.push(sql`end)`)
+
+          if (sqlChunks.length === 2) return
+
           updateSets[field] = sql.join(sqlChunks, sql.raw(' '))
         })
       }
@@ -109,13 +128,17 @@ export const updateProduct = safeAction
           }
 
           if (variants?.length) {
-            await tx
-              .insert(productVariations)
-              .values(variants)
-              .onConflictDoUpdate({
-                target: productVariations.id,
-                set: updateSets
-              })
+            if (Object.keys(updateSets).length > 0) {
+              await tx
+                .insert(productVariations)
+                .values(variants)
+                .onConflictDoUpdate({
+                  target: productVariations.id,
+                  set: updateSets
+                })
+            } else {
+              await tx.insert(productVariations).values(variants)
+            }
           }
 
           if (images?.length) {

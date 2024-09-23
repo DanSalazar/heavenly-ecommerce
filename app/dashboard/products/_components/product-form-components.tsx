@@ -40,6 +40,7 @@ import { Category } from '@/db/schema'
 import { VariantFields } from '../new/page'
 import { Checkbox } from '@/components/ui/checkbox'
 import Image from 'next/image'
+import { X } from 'lucide-react'
 
 type FormControl = Control<FormSchema>
 
@@ -66,8 +67,7 @@ export const ProductDetailsForm = ({ control }: { control: FormControl }) => {
                     {input === 'description' ? (
                       <Textarea
                         {...field}
-                        className="min-h-32"
-                        placeholder="Product description (optional)..."
+                        placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl nec ultricies ultricies, nunc nisl ultricies nunc, nec ultricies nunc nisl nec nunc."
                       />
                     ) : (
                       <Input
@@ -95,14 +95,16 @@ export const ProductDetailsForm = ({ control }: { control: FormControl }) => {
 export const ProductVariantsForm = ({
   error,
   control,
-  variantFields
+  variantFields,
+  addRemoveVariantId
 }: {
   error: string
   control: FormControl
   variantFields: VariantFields
+  addRemoveVariantId?: (id: number) => void
 }) => {
   const { colors, size } = variantFields
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control: control,
     name: 'variants'
   })
@@ -114,6 +116,18 @@ export const ProductVariantsForm = ({
       size: string
       color: string
     })
+  }
+
+  const removeVariant = (index: number) => {
+    const variant = fields[index]
+
+    if (!variant) return
+
+    remove(index)
+
+    if (variant.ownId) {
+      addRemoveVariantId && addRemoveVariantId(variant.ownId)
+    }
   }
 
   return (
@@ -130,6 +144,7 @@ export const ProductVariantsForm = ({
               <TableHead className="w-[80px]">Stock</TableHead>
               <TableHead className="w-[200px]">Size</TableHead>
               <TableHead className="w-[200px]">Color</TableHead>
+              <TableHead className="w-[20px]"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -207,6 +222,14 @@ export const ProductVariantsForm = ({
                       </FormItem>
                     )}
                   />
+                </TableCell>
+                <TableCell>
+                  <Button
+                    onClick={() => removeVariant(index)}
+                    variant={'ghost'}
+                    size={'icon'}>
+                    <X className="w-4 h-4" />
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

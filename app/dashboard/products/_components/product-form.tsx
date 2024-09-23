@@ -55,6 +55,7 @@ export const formSchema = z.object({
         stock: z.coerce.number().max(99),
         color: z.string({ required_error: 'Color is required' }),
         size: z.string({ required_error: 'Size is required' }),
+        ownId: z.number().optional(),
         id: z.number().optional()
       })
     )
