@@ -38,7 +38,7 @@ export default function NewProperties() {
           Add Properties for Products
         </h1>
       </header>
-      <Tabs defaultValue="Colors">
+      <Tabs defaultValue="Colors" className="mt-4">
         <TabsList>
           {TABS.map(tab => (
             <TabsTrigger key={tab} value={tab}>

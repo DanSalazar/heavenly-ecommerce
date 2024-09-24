@@ -9,16 +9,39 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { addNewSize, addNewColor, addNewCategory } from './actions'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import { SpinnerStatus } from '@/components/ui/spinner'
 import { DialogClose } from '@radix-ui/react-dialog'
+import {
+  addNewColor,
+  addNewSize,
+  addNewCategory,
+  deleteColor,
+  deleteCategory,
+  deleteSize
+} from '@/actions/categories'
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger
+} from '@/components/ui/alert-dialog'
+import { XIcon } from 'lucide-react'
+import { useToast } from '@/components/ui/use-toast'
 
 const ColorForm = () => {
+  const { toast } = useToast()
   const [open, setOpen] = useState(false)
-  const [error, setError] = useState('')
+  const [name, setName] = useState('')
+  const [hexCode, setHexCode] = useState('')
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -30,21 +53,62 @@ const ColorForm = () => {
           <DialogTitle>Add a new color</DialogTitle>
         </DialogHeader>
         <form
-          action={async (formData: FormData) => {
-            const err = await addNewColor(formData)
+          action={async () => {
+            const result = await addNewColor({
+              hex_code: hexCode,
+              name
+            })
 
-            if (err) {
-              setError(err)
+            if (
+              result?.serverError ||
+              result?.validationErrors ||
+              result?.data?.error
+            ) {
+              const validationError = result.validationErrors?.hex_code?._errors
+                ?.length
+                ? 'The HEX Code provided is invalid. Please ensure it starts with "#" and is followed by 6 hexadecimal characters.'
+                : false
+              toast({
+                title: 'Error',
+                description:
+                  validationError ||
+                  result?.serverError ||
+                  result.data?.error ||
+                  'An unexpected error occurred while trying to add the color. Please try again later.',
+                variant: 'destructive'
+              })
+
               return
             }
 
             setOpen(false)
           }}
           className="grid gap-4 py-4">
-          <div className="grid gap-2 ">
+          <div className="grid gap-4">
             <Label htmlFor="name">Color Name</Label>
-            <Input name="name" id="name" placeholder="Red..." />
-            {error && <span className="text-red-500 font-medium">{error}</span>}
+            <Input
+              name="name"
+              id="name"
+              placeholder="Green..."
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
+
+            <Label htmlFor="hexCode">HEX Code</Label>
+            <Input
+              id="hexCode"
+              name="hexCode"
+              value={hexCode}
+              onChange={e => setHexCode(e.target.value)}
+              placeholder="#FF0000"
+            />
+
+            <div className="grid gap-4">
+              <Label>Color Preview</Label>
+              <div
+                className="h-8 w-8 rounded-full border"
+                style={{ backgroundColor: hexCode }}></div>
+            </div>
           </div>
           <Submit />
         </form>
@@ -54,8 +118,9 @@ const ColorForm = () => {
 }
 
 const SizeForm = () => {
+  const { toast } = useToast()
   const [open, setOpen] = useState(false)
-  const [error, setError] = useState('')
+  const [name, setName] = useState('')
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -67,21 +132,38 @@ const SizeForm = () => {
           <DialogTitle>Add a new size</DialogTitle>
         </DialogHeader>
         <form
-          action={async (formData: FormData) => {
-            const err = await addNewSize(formData)
+          action={async () => {
+            const result = await addNewSize({
+              name
+            })
 
-            if (err) {
-              setError(err)
+            if (
+              result?.serverError ||
+              result?.validationErrors ||
+              result?.data?.error
+            ) {
+              toast({
+                title: 'Error',
+                description:
+                  result?.serverError ||
+                  result.data?.error ||
+                  'Unable to delete the product. Please try again.',
+                variant: 'destructive'
+              })
+
               return
             }
-
             setOpen(false)
           }}
           className="grid gap-4 py-4">
           <div className="grid gap-2 ">
             <Label htmlFor="name">Size Name</Label>
-            <Input name="name" id="name" placeholder="XL..." />
-            {error && <span className="text-red-500 font-medium">{error}</span>}
+            <Input
+              name="name"
+              id="name"
+              placeholder="XL..."
+              onChange={e => setName(e.target.value)}
+            />
           </div>
           <Submit />
         </form>
@@ -91,8 +173,9 @@ const SizeForm = () => {
 }
 
 const CategoryForm = () => {
+  const { toast } = useToast()
   const [open, setOpen] = useState(false)
-  const [error, setError] = useState('')
+  const [name, setName] = useState('')
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -104,11 +187,25 @@ const CategoryForm = () => {
           <DialogTitle>Add a new category</DialogTitle>
         </DialogHeader>
         <form
-          action={async (formData: FormData) => {
-            const err = await addNewCategory(formData)
+          action={async () => {
+            const result = await addNewCategory({
+              name
+            })
 
-            if (err) {
-              setError(err)
+            if (
+              result?.serverError ||
+              result?.validationErrors ||
+              result?.data?.error
+            ) {
+              toast({
+                title: 'Error',
+                description:
+                  result?.serverError ||
+                  result.data?.error ||
+                  'Unable to delete the product. Please try again.',
+                variant: 'destructive'
+              })
+
               return
             }
 
@@ -117,8 +214,12 @@ const CategoryForm = () => {
           className="grid gap-4 py-4">
           <div className="grid gap-2 ">
             <Label htmlFor="name">Category Name</Label>
-            <Input name="name" id="name" placeholder="Shirts..." />
-            {error && <span className="text-red-500 font-medium">{error}</span>}
+            <Input
+              name="name"
+              id="name"
+              placeholder="Shirts..."
+              onChange={e => setName(e.target.value)}
+            />
           </div>
           <Submit />
         </form>
@@ -144,4 +245,72 @@ const Submit = () => {
   )
 }
 
-export { ColorForm, SizeForm, CategoryForm }
+const DeleteAlertDialog = ({ children }: { children: React.ReactNode }) => (
+  <AlertDialog>
+    <AlertDialogTrigger>
+      <span className="sr-only">Delete</span>
+      <XIcon className="w-4 h-4" strokeWidth={1.5} />
+    </AlertDialogTrigger>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+        <AlertDialogDescription>
+          This action cannot be undone. It will permanently delete the property
+          and all its product variants.
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+      <AlertDialogFooter>
+        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        {children}
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialog>
+)
+
+const DeleteColor = ({ id }: { id: number }) => {
+  return (
+    <DeleteAlertDialog>
+      <AlertDialogAction
+        onClick={async () => {
+          await deleteColor(id)
+        }}>
+        Delete
+      </AlertDialogAction>
+    </DeleteAlertDialog>
+  )
+}
+
+const DeleteSize = ({ id }: { id: number }) => {
+  return (
+    <DeleteAlertDialog>
+      <AlertDialogAction
+        onClick={async () => {
+          await deleteSize(id)
+        }}>
+        Delete
+      </AlertDialogAction>
+    </DeleteAlertDialog>
+  )
+}
+
+const DeleteCategory = ({ id }: { id: number }) => {
+  return (
+    <DeleteAlertDialog>
+      <AlertDialogAction
+        onClick={async () => {
+          await deleteCategory(id)
+        }}>
+        Delete
+      </AlertDialogAction>
+    </DeleteAlertDialog>
+  )
+}
+
+export {
+  ColorForm,
+  SizeForm,
+  CategoryForm,
+  DeleteCategory,
+  DeleteSize,
+  DeleteColor
+}

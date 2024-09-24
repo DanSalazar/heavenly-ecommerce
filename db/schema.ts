@@ -55,7 +55,8 @@ export const productRelations = relations(product, ({ many, one }) => ({
 
 export const color = createTable('color', {
   id: serial('id').primaryKey(),
-  name: varchar('name', { length: 30 }).unique().notNull()
+  name: varchar('name', { length: 30 }).unique().notNull(),
+  hex_code: varchar('hex_code', { length: 7 }).unique().notNull()
 })
 
 export const colorRelations = relations(color, ({ many }) => ({

@@ -7,11 +7,13 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import {
-  deleteCategory,
-  deleteColor,
-  deleteSize
-} from '../new-properties/actions'
-import { CategoryForm, ColorForm, SizeForm } from './properties-forms'
+  CategoryForm,
+  ColorForm,
+  DeleteCategory,
+  DeleteColor,
+  DeleteSize,
+  SizeForm
+} from './properties-forms'
 import {
   Table,
   TableBody,
@@ -20,19 +22,9 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import { MarkIcon } from '@/components/icons'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger
-} from '@/components/ui/alert-dialog'
+
 import { db } from '@/db'
+import React from 'react'
 
 const PropertyTable = ({
   children,
@@ -56,16 +48,56 @@ const PropertyTable = ({
   )
 }
 
+const ColorTable = ({
+  children,
+  title
+}: {
+  children: React.ReactNode
+  title: string
+}) => {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>{title}</TableHead>
+          <TableHead>Hex Code</TableHead>
+          <TableHead>Color</TableHead>
+          <TableHead>
+            <span className="sr-only">Delete</span>
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>{children}</TableBody>
+    </Table>
+  )
+}
 const Colors = async () => {
-  const colors = await await db.query.color.findMany({})
+  const colors = await db.query.color.findMany({})
 
   return (
     <CardWrapper
-      property={colors}
       title="Colors"
       description="Manage all product colors"
-      dialog={<ColorForm />}
-      action={deleteColor}></CardWrapper>
+      dialog={<ColorForm />}>
+      <ColorTable title="Color">
+        {colors.map(({ name, id, hex_code }) => (
+          <TableRow key={id}>
+            <TableCell className="capitalize font-medium">{name}</TableCell>
+            <TableCell className="uppercase">{hex_code}</TableCell>
+            <TableCell>
+              <div
+                className={`h-6 w-6 rounded-full`}
+                style={{
+                  backgroundColor: hex_code
+                }}></div>
+            </TableCell>
+            <TableCell>
+              <DeleteColor id={id} />
+            </TableCell>
+          </TableRow>
+        ))}
+      </ColorTable>
+    </CardWrapper>
   )
 }
 
@@ -74,11 +106,20 @@ const Sizes = async () => {
 
   return (
     <CardWrapper
-      property={sizes}
       title="Sizes"
       description="Manage all product sizes"
-      dialog={<SizeForm />}
-      action={deleteSize}></CardWrapper>
+      dialog={<SizeForm />}>
+      <PropertyTable title="Sizes">
+        {sizes.map(({ name, id }) => (
+          <TableRow key={id}>
+            <TableCell className="uppercase font-medium">{name}</TableCell>
+            <TableCell>
+              <DeleteSize id={id} />
+            </TableCell>
+          </TableRow>
+        ))}
+      </PropertyTable>
+    </CardWrapper>
   )
 }
 
@@ -87,31 +128,33 @@ const Categories = async () => {
 
   return (
     <CardWrapper
-      property={categories}
       title="Categories"
       description="Manage all product categories"
-      dialog={<CategoryForm />}
-      action={deleteCategory}></CardWrapper>
+      dialog={<CategoryForm />}>
+      <PropertyTable title="Categories">
+        {categories.map(({ name, id }) => (
+          <TableRow key={id}>
+            <TableCell className="capitalize font-medium">{name}</TableCell>
+            <TableCell>
+              <DeleteCategory id={id} />
+            </TableCell>
+          </TableRow>
+        ))}
+      </PropertyTable>
+    </CardWrapper>
   )
 }
 
-type Property = {
-  id: number
-  name: string
-}
-
 const CardWrapper = ({
-  property,
   title,
   description,
   dialog,
-  action
+  children
 }: {
-  property: Property[]
   title: string
   description: string
   dialog: React.ReactNode
-  action: (formData: FormData) => void
+  children: React.ReactNode
 }) => {
   return (
     <Card>
@@ -119,51 +162,7 @@ const CardWrapper = ({
         <CardTitle className="text-xl">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-4">
-        <PropertyTable title={title}>
-          {property.length &&
-            property.map(item => (
-              <TableRow key={item.id}>
-                <TableCell className="font-medium capitalize">
-                  {item.name}
-                </TableCell>
-                <TableCell>
-                  <AlertDialog>
-                    <AlertDialogTrigger>
-                      <span className="sr-only">Delete</span>
-                      <MarkIcon />
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          Are you absolutely sure?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This action cannot be undone. It will permanently
-                          delete the property and all its product variants.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <form action={action}>
-                          <input
-                            type="hidden"
-                            value={item.id}
-                            name="id"></input>
-                          <AlertDialogAction
-                            type="submit"
-                            className="bg-destructive hover:bg-destructive/90">
-                            Delete
-                          </AlertDialogAction>
-                        </form>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </TableCell>
-              </TableRow>
-            ))}
-        </PropertyTable>
-      </CardContent>
+      <CardContent>{children}</CardContent>
       <CardFooter className="justify-end">{dialog}</CardFooter>
     </Card>
   )
