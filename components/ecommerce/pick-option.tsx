@@ -17,7 +17,7 @@ export default function PickOption({
 
   return (
     <div className="flex flex-col gap-2">
-      <p className="text-xl">{optionName}</p>
+      <h2 className="text-xl">{optionName}</h2>
       <div className="flex gap-2 flex-wrap">
         {options.map(option => {
           if (!option) return null

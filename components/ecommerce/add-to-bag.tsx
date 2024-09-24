@@ -6,6 +6,7 @@ import { ProductVariantWithJoins } from '@/db/schema'
 import LikeButton from './like-button'
 import useUrlState from '@/hooks/useUrlState'
 import PickOption from './pick-option'
+import ColorSelector from './color-selector'
 
 export default function AddToBag({
   variants,
@@ -42,28 +43,32 @@ export default function AddToBag({
     }
   )
   const colors = [
-    ...new Set(variants.map(({ color }) => color?.name || ''))
+    ...new Set(
+      variants.map(({ color }) => color?.name! + color?.hex_code! || '')
+    )
   ].map(color => {
     let isAvailable = true
+    const [name, hex_code] = color.split('#')
 
     if (getState('size')) {
       isAvailable = !!variants.find(
         variant =>
           variant.size?.name === getState('size') &&
-          variant.color?.name === color &&
+          variant.color?.name === name &&
           variant.stock > 0
       )
     }
 
     return {
-      name: color,
+      name,
+      hex_code: '#' + hex_code,
       isAvailable
     }
   })
 
   return (
     <div className="flex flex-col gap-4">
-      <PickOption optionName="Color" options={colors} />
+      <ColorSelector colors={colors} />
       <PickOption optionName="Size" options={sizes} />
       <div className="flex h-12 flex-wrap gap-2">
         <ButtonAddBag
