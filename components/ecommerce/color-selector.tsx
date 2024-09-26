@@ -17,9 +17,9 @@ export default function ColorSelector({
             key={name}
             onClick={() => add('color', name)}
             className={cn(
-              'w-6 h-6 rounded-full transition-all duration-200 ease-in-out hover:ring-2 hover:ring-primary hover:ring-offset-2 focus:outline-none',
+              'w-6 h-6 rounded-full transition-all duration-200 ease-in-out hover:ring-1 hover:ring-primary hover:ring-offset-2',
               {
-                'ring-2 ring-primary ring-offset-2':
+                'ring-1 ring-primary ring-offset-2':
                   getState('color')?.toLowerCase() === name,
                 'opacity-40 pointer-events-none': !isAvailable
               }

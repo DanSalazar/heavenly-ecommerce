@@ -4,14 +4,19 @@ type IconComponent = SVGProps<SVGSVGElement>
 
 export const HeartIcon = (props: IconComponent) => (
   <svg
+    width="18px"
+    height="18px"
+    strokeWidth="1.5"
     viewBox="0 0 24 24"
-    width="24px"
-    height="24px"
-    fill="currentColor"
-    focusable="false"
-    aria-hidden="false">
-    <title id="wish-list-:Rtm5e5:">Wish list</title>
-    <path d="M17.488 1.11h-.146a6.55 6.55 0 0 0-5.35 2.81A6.57 6.57 0 0 0 6.62 1.116 6.406 6.406 0 0 0 .09 7.428c0 7.672 11.028 15.028 11.497 15.338a.75.75 0 0 0 .826 0c.47-.31 11.496-7.666 11.496-15.351a6.43 6.43 0 0 0-6.42-6.306M12 21.228C10.018 19.83 1.59 13.525 1.59 7.442c.05-2.68 2.246-4.826 4.934-4.826h.088c2.058-.005 3.93 1.251 4.684 3.155.226.572 1.168.572 1.394 0 .755-1.907 2.677-3.17 4.69-3.16h.02c2.7-.069 4.96 2.118 5.01 4.817 0 6.089-8.429 12.401-10.41 13.8"></path>
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    color="currentColor"
+    {...props}>
+    <path
+      d="M22 8.86222C22 10.4087 21.4062 11.8941 20.3458 12.9929C17.9049 15.523 15.5374 18.1613 13.0053 20.5997C12.4249 21.1505 11.5042 21.1304 10.9488 20.5547L3.65376 12.9929C1.44875 10.7072 1.44875 7.01723 3.65376 4.73157C5.88044 2.42345 9.50794 2.42345 11.7346 4.73157L11.9998 5.00642L12.2648 4.73173C13.3324 3.6245 14.7864 3 16.3053 3C17.8242 3 19.2781 3.62444 20.3458 4.73157C21.4063 5.83045 22 7.31577 22 8.86222Z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinejoin="round"></path>
   </svg>
 )
 
@@ -20,11 +25,11 @@ export const HeartIconSolid = (props: IconComponent) => (
     width="18px"
     height="18px"
     viewBox="0 0 24 24"
-    {...props}
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     color="currentColor"
-    strokeWidth="2">
+    strokeWidth="1.5"
+    {...props}>
     <path
       fillRule="evenodd"
       clipRule="evenodd"

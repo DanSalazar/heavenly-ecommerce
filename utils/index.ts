@@ -81,6 +81,16 @@ export const saveItemInLocal = (id: string) => {
   setToLocalStorage<string[]>('items_saved', items)
 }
 
+export const removeItemFromLocal = (id: string) => {
+  const items = getFromLocalStorage<string[]>('items_saved') || []
+  const index = items.findIndex(item_id => item_id === id)
+
+  if (index !== -1) {
+    items.splice(index, 1)
+    setToLocalStorage<string[]>('items_saved', items)
+  }
+}
+
 export const getItemsFromLocal = (): string[] => {
   return getFromLocalStorage<string[]>('items_saved') || []
 }

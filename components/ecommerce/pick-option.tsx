@@ -54,9 +54,10 @@ const OptionButton = ({
 
   return (
     <Button
-      className={cn('rounded-full', {
+      className={cn({
         [NOT_AVAILABLE_BUTTON_CLASS]: !isAvailable
       })}
+      size={'sm'}
       aria-disabled={!isAvailable}
       disabled={!isAvailable}
       type="button"

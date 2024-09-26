@@ -53,7 +53,7 @@ export default async function ProductDetail({ id }: { id: string }) {
             discount={product.discount}
             discount_percentage={product.percentage_off}
           />
-          <p className="text-zinc-700">
+          <p className="text-zinc-700 mb-4">
             {product.description ||
               `Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
             Similique cum facere quibusdam, iste enim repellat fugiat deleniti voluptatem`}

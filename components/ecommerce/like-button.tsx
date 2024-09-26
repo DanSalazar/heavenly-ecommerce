@@ -1,8 +1,10 @@
+'use client'
+
 import { useState } from 'react'
 import { HeartIcon, HeartIconSolid } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { isInFavorites, saveItemInLocal } from '@/utils'
+import { isInFavorites, removeItemFromLocal, saveItemInLocal } from '@/utils'
 
 export default function LikeButton({ productId }: { productId: string }) {
   const [like, setLike] = useState(false)
@@ -12,26 +14,32 @@ export default function LikeButton({ productId }: { productId: string }) {
     if (!isLiked && !like) {
       setLike(true)
       saveItemInLocal(productId)
+      return
     }
+
+    setLike(false)
+    removeItemFromLocal(productId)
   }
 
   return (
     <Button
       onClick={handleLike}
-      className={cn('h-full border-primary w-16', {
-        'text-rose-500 hover:text-rose-600': isLiked || like
-      })}
+      className={cn('h-full border-primary/60 w-20 group')}
       type="button"
       variant={'outline'}>
-      {isLiked || like ? (
+      <div className="relative">
+        <HeartIcon width={24} height={24} />
         <HeartIconSolid
-          className={cn({ 'animate-heart': like })}
-          width={20}
-          height={20}
+          width={24}
+          height={24}
+          className={cn(
+            'scale-0 group-hover:scale-100 absolute inset-0 text-red-500 transition-transform duration-200',
+            {
+              'scale-100': like
+            }
+          )}
         />
-      ) : (
-        <HeartIcon width={20} height={20} />
-      )}
+      </div>
     </Button>
   )
 }

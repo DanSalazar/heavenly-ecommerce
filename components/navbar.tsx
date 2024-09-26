@@ -19,7 +19,7 @@ export default function Navbar() {
       <div className="flex gap-3 justify-end items-center bg-white">
         <SearchProduct className="hidden md:block w-[300px]" />
         <Link href={'/favorites'}>
-          <HeartIcon />
+          <HeartIcon width={24} height={24} />
         </Link>
         <Suspense fallback={<Skeleton className="w-6 h-6 rounded-lg" />}>
           <ShoppingBag />
