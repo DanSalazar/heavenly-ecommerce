@@ -19,11 +19,11 @@ type PreventNavigationProps = {
   resetData: () => void
 }
 
-export const PreventNavigation = ({
+export default function PreventNavigation({
   isDirty,
   backHref,
   resetData
-}: PreventNavigationProps) => {
+}: PreventNavigationProps) {
   const [leavingPage, setLeavingPage] = useState(false)
   const router = useRouter()
 

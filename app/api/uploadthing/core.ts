@@ -5,7 +5,7 @@ import { auth } from '@clerk/nextjs/server'
 const f = createUploadthing()
 
 export const ourFileRouter = {
-  imageUploader: f({ image: { maxFileSize: '1024MB', maxFileCount: 8 } })
+  imageUploader: f({ image: { maxFileSize: '1MB', maxFileCount: 8 } })
     .middleware(async () => {
       const { userId } = auth()
 

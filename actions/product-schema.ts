@@ -7,7 +7,7 @@ export const productSchema = z.object({
   description: z.string().optional(),
   price: z.number().int().nonnegative(),
   discount: z.boolean().default(false),
-  percentage_off: z.number().int().nonnegative(),
+  percentage_off: z.number().int().nonnegative().max(100),
   thumbnail: z.string(),
   department: z.enum(['men', 'women']),
   status: z.enum(['active', 'archived']),

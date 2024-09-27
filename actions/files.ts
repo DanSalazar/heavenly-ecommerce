@@ -21,15 +21,13 @@ export const deleteFilesAction = safeAction
         if (typeof keys === 'string') {
           await db.delete(imagesTable).where(eq(imagesTable.key, keys))
         } else {
-          await db
-            .delete(imagesTable)
-            .where(inArray(imagesTable.key, keys))
-            .returning()
-        }
-        return {
-          success: 'Files successfully deleted.'
+          await db.delete(imagesTable).where(inArray(imagesTable.key, keys))
         }
       } else throw new Error('')
+
+      return {
+        success: 'Files successfully deleted.'
+      }
     } catch (error) {
       return {
         error:

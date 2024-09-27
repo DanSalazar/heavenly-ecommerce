@@ -29,16 +29,16 @@ export const Thumbnail = ({
 export const UploadImage = ({
   src,
   alt,
-  key,
+  uploadKey,
   thumbnail,
   deleteFile,
   setThumbnail
 }: {
   src: string
   alt: string
-  key: string
+  uploadKey: string
   thumbnail: string
-  deleteFile: (key: string, src?: string) => void
+  deleteFile: (uploadKey: string, src?: string) => void
   setThumbnail: (thumbnailSrc: string) => void
 }) => {
   return (
@@ -53,7 +53,7 @@ export const UploadImage = ({
       <div className="absolute inset-0 bg-primary/40 opacity-0 rounded-lg group-hover:opacity-100 transition-opacity flex items-end justify-end p-2 gap-2">
         <button title="Delete this image">
           <Trash
-            onClick={() => deleteFile(key, src)}
+            onClick={() => deleteFile(uploadKey, src)}
             strokeWidth={1.5}
             className="w-5 h-5 text-white"
           />

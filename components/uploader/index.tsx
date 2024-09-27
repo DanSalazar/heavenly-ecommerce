@@ -1,13 +1,5 @@
 'use client'
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
 import { useUploadThing } from '@/lib/uploadthing'
 import {
   generateClientDropzoneAccept,
@@ -15,21 +7,10 @@ import {
 } from 'uploadthing/client'
 import { cn } from '@/lib/utils'
 import { ImageItem, UploadImage, UploadImagePending } from './images'
-import { Button } from '../ui/button'
-import { SCROLLBAR_CLASS } from '@/lib/constants'
 import { ImageInsertNoProductId } from '@/db/schema'
-import { ImagesState } from './types'
+import { UploaderProps } from './types'
 import { useDropzone } from '@uploadthing/react'
 import { useToast } from '../ui/use-toast'
-
-interface UploaderProps {
-  addImages: (files: ImageInsertNoProductId[], uploaded: boolean) => void
-  cancelPendingImages: () => void
-  deleteFile: (key: string, src?: string) => void
-  setThumbnail: (src: string) => void
-  images: ImagesState
-  thumbnail: string
-}
 
 const getGridClass = (imageCount: number) => {
   switch (imageCount) {
@@ -126,72 +107,66 @@ export default function Uploader({
   })
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant={'outline'}>Manage Product Images</Button>
-      </DialogTrigger>
-      <DialogContent
-        className={cn(
-          'max-w-[700px] max-h-[85%] overflow-y-auto',
-          SCROLLBAR_CLASS
-        )}>
-        <DialogHeader>
-          <DialogTitle className="text-3xl">Product Images</DialogTitle>
-          <DialogDescription>Manage your product images</DialogDescription>
-        </DialogHeader>
-
-        <div className="">
-          <h3
-            className={cn('text-sm font-medium', {
-              'mb-4': images.pendingImages.length + images.uploadedImages.length
-            })}>
-            Attachments
-          </h3>
-          <div className={cn('grid gap-6 grid-cols-1', gridClass)}>
-            {images.productImages?.map((image, index) => (
+    <>
+      <div className="mb-4">
+        <h3
+          className={cn('text-sm font-medium', {
+            'mb-4':
+              (images.productImages?.length || 0) +
+              images.pendingImages.length +
+              images.uploadedImages.length
+          })}>
+          Attachments
+        </h3>
+        <div className={cn('grid gap-6 grid-cols-1', gridClass)}>
+          {images.productImages?.map((image, index) => (
+            <ImageItem
+              key={image.key}
+              title={image.name}
+              date={image.created_at}>
+              <UploadImage
+                src={image.src}
+                alt={image.alt}
+                uploadKey={image.key}
+                thumbnail={thumbnail}
+                deleteFile={deleteFile}
+                setThumbnail={setThumbnail}
+              />
+            </ImageItem>
+          ))}
+          {images.uploadedImages.length > 0 &&
+            images.uploadedImages.map((image, index) => (
               <ImageItem key={index} title={image.name} date={image.created_at}>
                 <UploadImage
                   src={image.src}
                   alt={image.alt}
-                  key={image.key}
+                  uploadKey={image.key}
                   thumbnail={thumbnail}
                   deleteFile={deleteFile}
                   setThumbnail={setThumbnail}
                 />
               </ImageItem>
             ))}
-            {images.uploadedImages.map((image, index) => (
-              <ImageItem key={index} title={image.name} date={image.created_at}>
-                <UploadImage
-                  src={image.src}
-                  alt={image.alt}
-                  key={image.key}
-                  thumbnail={thumbnail}
-                  deleteFile={deleteFile}
-                  setThumbnail={setThumbnail}
-                />
-              </ImageItem>
-            ))}
-            {images.pendingImages.map((image, index) => (
+          {images.pendingImages.length > 0 &&
+            images.pendingImages.map((image, index) => (
               <ImageItem key={index} title={image.name}>
                 <UploadImagePending />
               </ImageItem>
             ))}
-          </div>
         </div>
+      </div>
 
-        <div
-          {...getRootProps()}
-          className={cn(uploaderClassName, {
-            'pointer-events-none opacity-50': disabled
-          })}>
-          <input {...getInputProps()} disabled={disabled} />
-          Click to add / drop your files here
-          <span className="text-sm">
-            Images up to {routeConfig?.image?.maxFileSize}, max {maxFileCount}
-          </span>
-        </div>
-      </DialogContent>
-    </Dialog>
+      <div
+        {...getRootProps()}
+        className={cn(uploaderClassName, {
+          'pointer-events-none opacity-50': disabled
+        })}>
+        <input {...getInputProps()} disabled={disabled} />
+        Click to add / drop your files here
+        <span className="text-sm">
+          Images up to {routeConfig?.image?.maxFileSize}, max {maxFileCount}
+        </span>
+      </div>
+    </>
   )
 }

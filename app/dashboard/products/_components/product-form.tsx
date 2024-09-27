@@ -21,13 +21,17 @@ import {
   ProductVariantsInsert
 } from '@/db/schema'
 import { VariantFields } from '../new/page'
-import { PreventNavigation } from './prevent-navigation'
 import { createProduct } from '@/actions/product'
 import { ProductSchema } from '@/actions/product-schema'
 import { useToast } from '@/components/ui/use-toast'
-import Uploader from '@/components/uploader'
 import { ImagesState } from '@/components/uploader/types'
 import { deleteFilesAction } from '@/actions/files'
+import dynamic from 'next/dynamic'
+import ImagesDialog from './images-dialog'
+
+const PreventNavigation = dynamic(() => import('./prevent-navigation'), {
+  ssr: false
+})
 
 export const formSchema = z.object({
   name: z
@@ -120,6 +124,22 @@ export function ProductForm({
       ...images,
       pendingImages: []
     })
+  }
+
+  const deleteFile = async (key: string, src?: string) => {
+    setImages(currentImages => ({
+      ...currentImages,
+      uploadedImages: currentImages.uploadedImages.filter(
+        ({ key: uploadKey }) => uploadKey !== key
+      ),
+      productImages: currentImages.productImages?.filter(
+        ({ key: uploadKey }) => uploadKey !== key
+      )
+    }))
+
+    if (src === thumbnail) {
+      setThumbnail('')
+    }
   }
 
   const addThumbnail = (src: string) => {
@@ -248,8 +268,8 @@ export function ProductForm({
               />
               <ProductDepartment control={form.control} />
               <ProductImage thumbnail={thumbnail}>
-                <Uploader
-                  deleteFile={(key: string) => {}}
+                <ImagesDialog
+                  deleteFile={deleteFile}
                   thumbnail={thumbnail}
                   setThumbnail={addThumbnail}
                   images={images}

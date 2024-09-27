@@ -44,8 +44,6 @@ import { X } from 'lucide-react'
 
 type FormControl = Control<FormSchema>
 
-const Inputs = ['name', 'brand', 'description', 'price', 'discount'] as const
-
 export const ProductDetailsForm = ({ control }: { control: FormControl }) => {
   return (
     <Card>
@@ -55,37 +53,91 @@ export const ProductDetailsForm = ({ control }: { control: FormControl }) => {
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
-          {Inputs.map(input => (
-            <FormField
-              control={control}
-              name={input}
-              key={input}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="capitalize">{input}</FormLabel>
-                  <FormControl>
-                    {input === 'description' ? (
-                      <Textarea
-                        {...field}
-                        placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl nec ultricies ultricies, nunc nisl ultricies nunc, nec ultricies nunc nisl nec nunc."
-                      />
-                    ) : (
-                      <Input
-                        {...field}
-                        type={
-                          field.name === 'price' || field.name === 'discount'
-                            ? 'number'
-                            : 'string'
-                        }
-                        placeholder={`Product ${field.name}...`}
-                      />
-                    )}
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ))}
+          <FormField
+            control={control}
+            name="name"
+            key="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="capitalize">name</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Enter the product name..." />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="brand"
+            key="brand"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="capitalize">brand</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="string"
+                    placeholder="Enter the brand name..."
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="description"
+            key="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="capitalize">description</FormLabel>
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    placeholder="Provide a brief description of the product..."
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="price"
+            key="price"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="capitalize">price</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="number"
+                    placeholder="Enter the product price..."
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="discount"
+            key="discount"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="capitalize">discount</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="number"
+                    placeholder="Enter any discount percentage..."
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
       </CardContent>
     </Card>
@@ -176,16 +228,23 @@ export const ProductVariantsForm = ({
                           onValueChange={field.onChange}
                           defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger id="status" aria-label="Select size">
+                            <SelectTrigger
+                              id="status"
+                              aria-label="Select size"
+                              className="uppercase">
                               <SelectValue placeholder="Pick a size" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {size?.map((s, i) => (
-                              <SelectItem key={s.id!} value={s.id + ''}>
-                                {s.name}
-                              </SelectItem>
-                            ))}
+                            {!!size?.length &&
+                              size.map(s => (
+                                <SelectItem
+                                  className="uppercase"
+                                  key={s.id}
+                                  value={s.id + ''}>
+                                  {s.name}
+                                </SelectItem>
+                              ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -202,20 +261,25 @@ export const ProductVariantsForm = ({
                         <FormLabel className="sr-only">Color</FormLabel>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={field.value}>
+                          value={field.value}>
                           <FormControl>
                             <SelectTrigger
+                              className="capitalize"
                               id="status"
                               aria-label="Select color">
                               <SelectValue placeholder="Pick a color" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {colors?.map((c, i) => (
-                              <SelectItem key={c.id!} value={c.id + ''}>
-                                {c.name}
-                              </SelectItem>
-                            ))}
+                            {!!colors?.length &&
+                              colors.map(color => (
+                                <SelectItem
+                                  className="capitalize"
+                                  key={color.id}
+                                  value={color.id + ''}>
+                                  {color.name}
+                                </SelectItem>
+                              ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -240,7 +304,6 @@ export const ProductVariantsForm = ({
         <Button
           type="button"
           onClick={addVariant}
-          size="sm"
           variant="ghost"
           className="gap-1">
           <PlusIcon /> Add Variant
@@ -268,18 +331,25 @@ export const ProductCategory = ({
         name="category"
         render={({ field }) => (
           <FormItem>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select onValueChange={field.onChange} value={field.value}>
               <FormControl>
-                <SelectTrigger id="status" aria-label="Select Category">
+                <SelectTrigger
+                  id="status"
+                  aria-label="Select Category"
+                  className="capitalize">
                   <SelectValue placeholder="Select Category" />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                {categories?.map(category => (
-                  <SelectItem key={category.id!} value={category.id! + ''}>
-                    {category.name}
-                  </SelectItem>
-                ))}
+                {!!categories?.length &&
+                  categories.map(category => (
+                    <SelectItem
+                      className="capitalize"
+                      key={category.id}
+                      value={category.id + ''}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
               </SelectContent>
             </Select>
             <FormMessage />
@@ -302,9 +372,12 @@ export const ProductDepartment = ({ control }: { control: FormControl }) => (
         name="department"
         render={({ field }) => (
           <FormItem>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select onValueChange={field.onChange} value={field.value}>
               <FormControl>
-                <SelectTrigger id="status" aria-label="Select Department">
+                <SelectTrigger
+                  id="status"
+                  aria-label="Select Department"
+                  className="capitalize">
                   <SelectValue placeholder="Select Department" />
                 </SelectTrigger>
               </FormControl>

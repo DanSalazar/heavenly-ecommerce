@@ -25,14 +25,18 @@ import {
 } from '@/db/schema'
 import { VariantFields } from '../new/page'
 import Link from 'next/link'
-import { PreventNavigation } from './prevent-navigation'
 import { FormSchema, formSchema } from './product-form'
 import { deleteProductVariant, updateProduct } from '@/actions/product'
 import { UpdateProductType } from '@/actions/product-schema'
 import { useToast } from '@/components/ui/use-toast'
 import { ImagesState } from '@/components/uploader/types'
-import Uploader from '@/components/uploader'
 import { deleteFilesAction } from '@/actions/files'
+import ImagesDialog from './images-dialog'
+import dynamic from 'next/dynamic'
+
+const PreventNavigation = dynamic(() => import('./prevent-navigation'), {
+  ssr: false
+})
 
 const keysFromSchema = formSchema.keyof().options
 type Keys = (typeof keysFromSchema)[number]
@@ -55,6 +59,7 @@ export function EditProductForm({
       brand: product.brand!,
       description: product.description!,
       price: product.price,
+      discount: product.percentage_off,
       featured: product.featured,
       archived: product.status === 'archived',
       department: product.department,
@@ -115,6 +120,7 @@ export function EditProductForm({
   }
 
   const deleteFile = async (key: string, src?: string) => {
+    const oldImages = newImages
     setImages(currentImages => ({
       ...currentImages,
       uploadedImages: currentImages.uploadedImages.filter(
@@ -130,7 +136,6 @@ export function EditProductForm({
     }
 
     const result = await deleteFilesAction(key)
-
     if (
       result?.serverError ||
       result?.validationErrors ||
@@ -141,6 +146,8 @@ export function EditProductForm({
         description: result?.serverError || result?.data?.error || 'Error',
         variant: 'destructive'
       })
+
+      setImages(oldImages)
     }
   }
 
@@ -176,7 +183,9 @@ export function EditProductForm({
       Object.keys(dirtyData).length < 1
         ? null
         : {
-            ...dirtyData
+            ...dirtyData,
+            discount: !!form.getValues('discount'),
+            percentage_off: Number(form.getValues('discount'))
           }
 
     if (!!thumbnail) {
@@ -308,7 +317,7 @@ export function EditProductForm({
               />
               <ProductDepartment control={form.control} />
               <ProductImage thumbnail={thumbnail}>
-                <Uploader
+                <ImagesDialog
                   deleteFile={deleteFile}
                   thumbnail={thumbnail}
                   setThumbnail={addThumbnail}
