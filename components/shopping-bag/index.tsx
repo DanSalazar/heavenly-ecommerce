@@ -1,7 +1,7 @@
 import { getBag } from '@/server/actions'
 import Link from 'next/link'
-import { ShoppingBagIcon } from '../icons'
 import ShoppingBagWrapper from './shopping-bag-wrapper'
+import { LucideShoppingBag } from 'lucide-react'
 
 export default async function ShoppingBag() {
   const bag = await getBag()
@@ -14,7 +14,7 @@ export default async function ShoppingBag() {
         </div>
       )}
       <Link href={'/bag'}>
-        <ShoppingBagIcon />
+        <LucideShoppingBag strokeWidth={1.5} />
         <span className="sr-only">Shopping Bag</span>
       </Link>
       <ShoppingBagWrapper bag={bag?.bagItem ?? []} />

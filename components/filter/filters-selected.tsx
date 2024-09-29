@@ -1,9 +1,9 @@
 import { MouseEvent } from 'react'
 import useUrlState from '@/hooks/useUrlState'
 import { Button } from '../ui/button'
-import { MarkIcon } from '../icons'
 import { NOT_LISTED_FILTERS } from '@/lib/constants'
 import { usePathname, useRouter } from 'next/navigation'
+import { X } from 'lucide-react'
 
 export default function FiltersSelected() {
   const pathname = usePathname()
@@ -37,7 +37,9 @@ export default function FiltersSelected() {
 
   return (
     <>
-      {!!filtersSelected.length && <div className="border-r border-primary" />}
+      {!!filtersSelected.length && (
+        <div className="border-r border-secondary" />
+      )}
       <div
         onClick={handleRemoveFilter}
         className="hidden md:flex flex-wrap gap-2">
@@ -47,12 +49,13 @@ export default function FiltersSelected() {
               key={value + j}
               data-key={key}
               data-value={value}
-              className="uppercase gap-2"
+              className="uppercase gap-2 border-primary"
               variant={'outline'}>
               {value}{' '}
-              <MarkIcon
+              <X
                 width={20}
                 height={20}
+                strokeWidth={1.5}
                 className="pointer-events-none"
               />
             </Button>
@@ -65,7 +68,7 @@ export default function FiltersSelected() {
             variant={'outline'}
             onClick={removePrice}>
             ${priceFrom || '0'} - ${priceTo || '...'}{' '}
-            <MarkIcon width={20} height={20} className="pointer-events-none" />
+            <X width={20} height={20} className="pointer-events-none" />
           </Button>
         )}
       </div>

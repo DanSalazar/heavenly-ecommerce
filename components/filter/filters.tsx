@@ -74,7 +74,7 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
                     data-value={category}
                     className="rounded-lg capitalize"
                     variant={
-                      getState('category')?.includes(category + '')
+                      getState('category')?.includes(category)
                         ? 'default'
                         : 'outline'
                     }>
@@ -95,9 +95,7 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
                     data-value={color}
                     className="rounded-lg capitalize"
                     variant={
-                      getState('color')?.includes(color + '')
-                        ? 'default'
-                        : 'outline'
+                      getState('color')?.includes(color) ? 'default' : 'outline'
                     }>
                     {color}
                   </Button>
@@ -115,9 +113,9 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
                     key={size + idx}
                     data-key="size"
                     data-value={size}
-                    className="rounded-lg capitalize"
+                    className="rounded-lg uppercase"
                     variant={
-                      getState('size')?.includes(size + '')
+                      getState('size')?.split(',')?.includes(size)
                         ? 'default'
                         : 'outline'
                     }>

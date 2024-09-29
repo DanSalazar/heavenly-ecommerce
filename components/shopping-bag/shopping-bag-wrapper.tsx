@@ -29,9 +29,10 @@ function ShoppingBagWrapper({ bag }: { bag: BagItem[] }) {
   return (
     <div
       className={cn(
-        'max-h-[500px] transition-transform ease-in-out duration-700 transform -translate-y-[500px] group-hover:translate-y-0 flex flex-col gap-4 p-4 -z-20 bg-white w-[300px] md:w-[350px] absolute right-0 top-[63px] border-b border-r border-l border-zinc-200',
+        'max-h-[500px] transition-transform ease-in-out duration-700 transform -translate-y-[500px] flex flex-col gap-4 p-4 -z-20 bg-white w-[300px] md:w-[350px] absolute right-0 top-[63px] border-b border-r border-l border-zinc-200',
         {
-          'translate-y-0': isOpen
+          'translate-y-0': isOpen,
+          'group-hover:translate-y-0': bag.length
         }
       )}>
       <div className="flex gap-2 items-center justify-between">

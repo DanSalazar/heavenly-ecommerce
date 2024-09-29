@@ -24,7 +24,7 @@ export default function LikeButton({ productId }: { productId: string }) {
   return (
     <Button
       onClick={handleLike}
-      className={cn('h-full border-primary/60 w-20 group')}
+      className={cn('h-full border-primary/40 w-20 group')}
       type="button"
       variant={'outline'}>
       <div className="relative">

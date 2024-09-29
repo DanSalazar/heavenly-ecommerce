@@ -54,7 +54,7 @@ const OptionButton = ({
 
   return (
     <Button
-      className={cn({
+      className={cn('border-primary/40 uppercase', {
         [NOT_AVAILABLE_BUTTON_CLASS]: !isAvailable
       })}
       size={'sm'}

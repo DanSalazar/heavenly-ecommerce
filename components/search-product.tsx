@@ -36,17 +36,14 @@ export default function SearchProduct({
 
   return (
     <form onSubmit={onSubmit} className={cn('relative', className)}>
-      <SearchIcon
-        strokeWidth={1.5}
-        className="absolute left-2.5 top-2.5 h-4 w-4 text-primary"
-      />
+      <SearchIcon className="absolute left-3 top-2.5 h-4 w-4 text-primary/60" />
       <Input
         name="search"
         placeholder={placeholder || 'Search for products...'}
         type="search"
         defaultValue={searchParams?.get('q') || ''}
         autoComplete="off"
-        className="w-full rounded-lg pl-8"
+        className="w-full rounded-full pl-8 justify-center border-primary/20"
       />
     </form>
   )

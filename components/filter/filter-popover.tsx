@@ -5,7 +5,7 @@ import {
   PopoverContent
 } from '@/components/ui/popover'
 import { PopoverClose } from '@radix-ui/react-popover'
-import { Settings2Icon, XIcon } from 'lucide-react'
+import { XIcon } from 'lucide-react'
 
 export default function FilterPopover({
   children
@@ -22,7 +22,6 @@ export default function FilterPopover({
         sideOffset={8}
         align="start">
         <div className="flex items-center gap-2">
-          <Settings2Icon strokeWidth={1.5} />
           <h3 className="text-lg font-medium">Filters</h3>
         </div>
         {children}

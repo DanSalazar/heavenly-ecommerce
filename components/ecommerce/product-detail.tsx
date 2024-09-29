@@ -38,7 +38,7 @@ export default async function ProductDetail({ id }: { id: string }) {
   return (
     <>
       <BreadcrumbWrapper pathname={`/${product.department}/${product.name}`} />
-      <main className="min-h-[600px] flex flex-col md:grid grid-cols-2 gap-4 md:gap-12 mt-4 mb-12">
+      <main className="min-h-[600px] flex flex-col md:grid grid-cols-2 gap-4 md:gap-12 mt-2 mb-12">
         <ProductImagesContainer
           thumbnail={product.thumbnail}
           images={product.images}
@@ -53,7 +53,7 @@ export default async function ProductDetail({ id }: { id: string }) {
             discount={product.discount}
             discount_percentage={product.percentage_off}
           />
-          <p className="text-zinc-700 mb-4">
+          <p className="text-zinc-700 ">
             {product.description ||
               `Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
             Similique cum facere quibusdam, iste enim repellat fugiat deleniti voluptatem`}
