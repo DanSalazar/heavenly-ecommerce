@@ -21,10 +21,8 @@ import {
   filtersSchema,
   departmentSchema
 } from '@/db/utils'
-import { SQL, and, asc, eq, inArray, sql } from 'drizzle-orm'
-import { revalidatePath } from 'next/cache'
+import { and, asc, eq, inArray, sql } from 'drizzle-orm'
 import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
 import { cache } from 'react'
 import { z } from 'zod'
 

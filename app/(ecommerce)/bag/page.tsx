@@ -15,7 +15,7 @@ export default async function Page() {
   return (
     <>
       <BreadcrumbWrapper />
-      <div className="mt-12 flex flex-col md:grid md:grid-cols-3 gap-8">
+      <div className="my-12 flex flex-col md:grid md:grid-cols-3 gap-8">
         <div className="col-span-2">
           <header className="mb-8 flex justify-between items-center flex-wrap">
             <h2 className="uppercase text-7xl font-medium">Shopping Bag</h2>

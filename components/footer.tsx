@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import HeavenlyIcon from './heavenly-icon'
 import { SocialsSkeletons } from './skeletons'
 import SocialMedia from './social-media'
+import { MasterCardSVG, PaypalSVG, VisaSVG } from './icons'
 
 const NavigationList: { title: string; list: string[] }[] = [
   {
@@ -40,6 +41,16 @@ export default function Footer() {
         </Suspense>
       </div>
       <div className="flex flex-wrap justify-between md:gap-16">
+        <div className="flex flex-col gap-4">
+          <h2 className="font-semibold text-black uppercase">
+            Our Payment Methods
+          </h2>
+          <div className="flex gap-2">
+            <PaypalSVG />
+            <VisaSVG />
+            <MasterCardSVG />
+          </div>
+        </div>
         {NavigationList.map(navigationItem => (
           <ul key={navigationItem.title}>
             <li className="font-semibold text-black uppercase">

@@ -39,7 +39,7 @@ export default function SearchProduct({
       <SearchIcon className="absolute left-3 top-2.5 h-4 w-4 text-primary/60" />
       <Input
         name="search"
-        placeholder={placeholder || 'Search for products...'}
+        placeholder={placeholder || 'Search'}
         type="search"
         defaultValue={searchParams?.get('q') || ''}
         autoComplete="off"

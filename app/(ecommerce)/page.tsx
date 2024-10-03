@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import ProductsWrapper from '@/components/ecommerce/products-wrapper'
 import { db } from '@/db'
 import ProductComponent from '@/components/ecommerce/product-component'
+import { Mail } from 'lucide-react'
 
 export default async function Page() {
   const featuredProducts = await db.query.product.findMany({
@@ -45,7 +46,10 @@ export default async function Page() {
             placeholder="Email your email"
             className="shadow xl:w-[250px]"
           />
-          <Button className="shadow-md w-28">Subscribe</Button>
+          <Button className="shadow-md gap-2">
+            Subscribe
+            <Mail className="w-4 h-4" />
+          </Button>
         </div>
       </div>
     </main>

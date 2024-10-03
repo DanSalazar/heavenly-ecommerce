@@ -38,7 +38,7 @@ export default function Price({
   discount_percentage = 0
 }: PriceProps) {
   return (
-    <div className={cn('flex gap-2 flex-wrap', className)}>
+    <div className={cn('flex gap-2 flex-wrap font-medium', className)}>
       <p
         className={cn(priceStyles({ variant, size }), {
           'line-through': discount
@@ -48,7 +48,7 @@ export default function Price({
       <p
         className={cn(
           priceStyles({ size }),
-          'hidden text-red-500 font-medium',
+          'hidden text-red-500 font-semibold',
           {
             block: discount
           }

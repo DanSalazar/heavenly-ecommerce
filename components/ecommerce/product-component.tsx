@@ -23,6 +23,11 @@ export default function ProductComponent({ product }: ProductComponentProps) {
           src={product.thumbnail}
           alt={product.name}
         />
+        {product.discount && (
+          <span className="text-sm bg-red-600 text-white font-medium absolute top-8 left-0 px-2">
+            -{product.percentage_off}%
+          </span>
+        )}
       </div>
       <div>
         <p className="uppercase font-medium">{product.brand}</p>
