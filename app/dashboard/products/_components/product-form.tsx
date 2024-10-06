@@ -43,7 +43,8 @@ export const formSchema = z.object({
     .string({
       required_error: 'Brand is required'
     })
-    .min(1),
+    .min(1)
+    .max(50),
   description: z.string().optional(),
   price: z.coerce
     .number({

@@ -16,8 +16,9 @@ export default function ColorSelector({
           <button
             key={name}
             onClick={() => add('color', name)}
+            title={`Color ${name}`}
             className={cn(
-              'w-8 h-8 rounded-full transition-all duration-200 ease-in-out hover:ring-1 hover:ring-primary hover:ring-offset-2',
+              'w-6 h-6 rounded-full transition-all duration-200 ease-in-out hover:ring-1 hover:ring-primary hover:ring-offset-2',
               {
                 'ring-1 ring-primary ring-offset-2':
                   getState('color')?.toLowerCase() === name,

@@ -1,6 +1,6 @@
 'use client'
 
-import { createOrder } from '@/actions/order'
+import { createOrders } from '@/actions/order'
 import { CreateOrderType } from '@/actions/order-schema'
 import { useToast } from '@/components/ui/use-toast'
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js'
@@ -55,7 +55,7 @@ export default function Paypal() {
             payment_method: 'paypal'
           }
 
-          const result = await createOrder(orderDetails)
+          const result = await createOrders(orderDetails)
 
           if (result?.serverError || result?.validationErrors) {
             generateErrorToast()

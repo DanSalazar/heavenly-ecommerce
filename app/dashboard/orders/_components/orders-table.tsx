@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Table,
   TableBody,
@@ -8,10 +10,12 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { OrderType } from '@/db/schema'
+import { centsToPrice } from '@/lib/utils'
+import { formatDate, formatPrice } from '@/utils'
 
 export default async function OrdersTable({ orders }: { orders: OrderType[] }) {
   return (
-    <Table>
+    <Table className="table-fixed">
       <TableHeader>
         <TableRow>
           <TableHead>Customer</TableHead>
@@ -36,14 +40,16 @@ export default async function OrdersTable({ orders }: { orders: OrderType[] }) {
               {order.payment_method}
             </TableCell>
             <TableCell className="hidden sm:table-cell">
-              <Badge className="text-xs" variant="secondary">
+              <Badge className="text-sm" variant="secondary">
                 {order.order_status}
               </Badge>
             </TableCell>
             <TableCell className="hidden md:table-cell">
-              {order.order_created_at}
+              {formatDate(order.order_created_at)}
             </TableCell>
-            <TableCell className="text-right">${order.total_amount}</TableCell>
+            <TableCell className="text-right font-medium">
+              ${formatPrice(centsToPrice(order.total_amount))}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

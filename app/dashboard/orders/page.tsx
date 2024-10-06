@@ -47,6 +47,7 @@ export default async function Page({ searchParams }: { searchParams: any }) {
       )
     },
     limit: PRODUCTS_PER_ROW,
+    orderBy: ({ order_created_at }, { desc }) => desc(order_created_at),
     offset
   })
 

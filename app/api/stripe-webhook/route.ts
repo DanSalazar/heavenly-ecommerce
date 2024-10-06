@@ -1,5 +1,4 @@
-import { db } from '@/db'
-import { OrderType, order } from '@/db/schema'
+import { createOrders } from '@/actions/order'
 import { NextRequest } from 'next/server'
 import Stripe from 'stripe'
 
@@ -22,22 +21,21 @@ export async function POST(request: NextRequest) {
   switch (event.type) {
     case 'checkout.session.completed':
       const checkoutSessionCompleted = event.data.object
-      const orderObject: Omit<OrderType, 'id'> = {
-        order_created_at: new Date().toISOString(),
-        customer_name: checkoutSessionCompleted.customer_details?.name!,
-        customer_email: checkoutSessionCompleted.customer_details?.email!,
-        order_status: checkoutSessionCompleted.status!,
-        payment_method: checkoutSessionCompleted.payment_method_types[0],
-        total_amount: checkoutSessionCompleted.amount_total!
-      }
 
-      try {
-        await db.insert(order).values(orderObject)
-      } catch (err) {
-        return new Response(null, {
-          status: 400
+      const result = await createOrders({
+        customer_email: checkoutSessionCompleted.customer_details?.email!,
+        customer_name: checkoutSessionCompleted.customer_details?.name!,
+        total_amount: checkoutSessionCompleted.amount_total!,
+        payment_method: checkoutSessionCompleted.payment_method_types[0]
+      })
+
+      if (result?.data?.error) {
+        return new Response(JSON.stringify({ error: result.data.error }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' }
         })
       }
+
       break
   }
 

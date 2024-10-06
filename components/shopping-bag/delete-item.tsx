@@ -1,4 +1,5 @@
-import { MarkIcon } from '../icons'
+import { XIcon } from 'lucide-react'
+import { Button } from '../ui/button'
 
 export default function DeleteItem({
   className,
@@ -10,13 +11,15 @@ export default function DeleteItem({
   id: number
 }) {
   return (
-    <button
+    <Button
+      variant={'ghost'}
+      size={'icon'}
       onClick={() => {
         deleteAction(id)
       }}
       className={className}>
-      <MarkIcon width={22} height={22} />
+      <XIcon width={20} height={20} strokeWidth={1.5} />
       <span className="sr-only">Remove item from bag</span>
-    </button>
+    </Button>
   )
 }

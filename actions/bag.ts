@@ -61,7 +61,7 @@ export const addProductInBag = baseAction
 
 const updateQuantitySchema = z.object({
   id: idSchema,
-  quantity: z.coerce.number().min(1).max(10)
+  quantity: z.coerce.number().min(1)
 })
 
 export const updateQuantityInBag = baseAction

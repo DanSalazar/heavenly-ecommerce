@@ -8,8 +8,7 @@ const SHIPPING_PRICE = 0
 export default function Summary({ total }: { total: number }) {
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-4xl font-semibold break-words">Summary</h2>
-      <div className="border-b border-zinc-200 pb-4">
+      <div className="border-b border-zinc-200 pb-4 space-y-2">
         <OrderSummary title="Articles" price={total} />
         <OrderSummary title="Shipping" price={SHIPPING_PRICE} />
       </div>

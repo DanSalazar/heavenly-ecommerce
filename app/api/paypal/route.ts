@@ -56,6 +56,21 @@ export async function POST(req: NextRequest) {
     )
   }
 
+  try {
+    bag.bagItem.forEach(({ product_variant, quantity }) => {
+      if (quantity > product_variant.stock || product_variant.stock < 1) {
+        throw new Error('Quantity exceeds available stock.')
+      }
+    })
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: `Quantity exceeds available stock.`
+      },
+      { status: 400 }
+    )
+  }
+
   const totalAmount = bag.bagItem.reduce(
     (acc, { product_variant, quantity }) => {
       const { discount, percentage_off, price } = product_variant.product

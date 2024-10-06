@@ -25,7 +25,7 @@ export const product = createTable(
     brand: varchar('brand', { length: 50 }).notNull(),
     description: text('description'),
     price: integer('price').notNull(),
-    discount: boolean('discount').default(false),
+    discount: boolean('discount').notNull().default(false),
     percentage_off: integer('percentage_off').notNull(),
     thumbnail: text('image').notNull(),
     department: departmentEnum('department').notNull(),
@@ -40,9 +40,6 @@ export const product = createTable(
     categoryIdx: index('category_idx').on(table.category_id)
   })
 )
-
-export type Product = typeof product.$inferSelect
-export type ProductInsert = typeof product.$inferInsert
 
 export const productRelations = relations(product, ({ many, one }) => ({
   productVariations: many(productVariations),
@@ -80,10 +77,6 @@ export const category = createTable('category', {
 export const categoryRelations = relations(category, ({ many }) => ({
   product: many(product)
 }))
-
-export type Color = typeof color.$inferSelect
-export type Size = typeof size.$inferSelect
-export type Category = typeof category.$inferSelect
 
 export const productVariations = createTable(
   'product_variations',
@@ -126,20 +119,6 @@ export const productVariationsRelations = relations(
   })
 )
 
-export type ProductVariants = typeof productVariations.$inferSelect
-export type ProductVariantsInsert = Omit<ProductVariants, 'id'> & {
-  id?: number
-}
-export type ProductVariantWithJoins = Pick<ProductVariants, 'id' | 'stock'> & {
-  product?: Product | null
-  color?: Color | null
-  size?: Size | null
-}
-
-export type ProductWithVariants = Product & {
-  productVariations?: ProductVariantWithJoins[]
-}
-
 export const bag = createTable('bag', {
   id: varchar('id', { length: 37 }).primaryKey(),
   expires_at: timestamp('expires_at').default(
@@ -156,7 +135,7 @@ export const bagItem = createTable(
   {
     id: serial('id').primaryKey(),
     bag_id: varchar('bag_id', { length: 37 })
-      .references(() => bag.id)
+      .references(() => bag.id, { onDelete: 'cascade' })
       .notNull(),
     item_id: serial('item_id')
       .references(() => productVariations.id, { onDelete: 'cascade' })
@@ -180,11 +159,6 @@ export const bagItemRelations = relations(bagItem, ({ one }) => ({
   })
 }))
 
-export type Bag = typeof bagItem.$inferSelect
-export type BagItem = Bag & {
-  product_variant: ProductVariantWithJoins
-}
-
 export const order = createTable(
   'order',
   {
@@ -201,8 +175,6 @@ export const order = createTable(
     emailIdx: index('emailIdx').on(table.customer_email)
   })
 )
-
-export type OrderType = typeof order.$inferSelect
 
 export const imagesTable = createTable('images', {
   id: serial('id').primaryKey(),
@@ -223,15 +195,9 @@ export const imagesRelations = relations(imagesTable, ({ one }) => ({
   })
 }))
 
-export type ImageSelect = typeof imagesTable.$inferSelect
-export type ImageInsert = typeof imagesTable.$inferInsert
-export type ImageInsertNoProductId = Omit<ImageInsert, 'product_id'>
-
 export const shopInformation = createTable('shop_information', {
   id: serial('id').primaryKey(),
   facebook: varchar('facebook', { length: 255 }),
   x: varchar('x', { length: 255 }),
   instagram: varchar('instagram', { length: 255 })
 })
-
-export type ShopInformation = typeof shopInformation.$inferSelect

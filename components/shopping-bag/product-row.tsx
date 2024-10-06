@@ -4,26 +4,29 @@ import Link from 'next/link'
 import Price from '../ecommerce/price'
 import { QuantitySelector } from './quantity-selector'
 import Image from 'next/image'
-import { Product } from '@/db/schema'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import DeleteItem from './delete-item'
 import { useAction } from 'next-safe-action/hooks'
 import { removeProductFromBag, updateQuantityInBag } from '@/actions/bag'
 import { useToast } from '../ui/use-toast'
+import { formatPrice, getDiscountPrice } from '@/utils'
+import { Product } from '@/db/types'
 
 export default function ProductRow({
   id,
   product,
   quantity,
   color,
-  size
+  size,
+  stock
 }: {
   id: number
   product: Product
   quantity: number
   color: string
   size: string
+  stock: number
 }) {
   const { execute: removeProduct, isPending: isRemovePending } =
     useAction(removeProductFromBag)
@@ -32,6 +35,16 @@ export default function ProductRow({
 
   const handleQuantityChange = async (value: number) => {
     setPending(true)
+
+    if (value > stock) {
+      toast({
+        title: 'Quantity Limit Exceeded',
+        description: `You cannot add more than ${stock} items of this product.`,
+        variant: 'destructive'
+      })
+      setPending(false)
+      return
+    }
 
     const result = await updateQuantityInBag({ id, quantity: value })
 
@@ -46,11 +59,7 @@ export default function ProductRow({
         title: 'Error',
         description: result.serverError
           ? `Server Error: ${result.serverError}`
-          : result.data?.error
-            ? `Error: ${result.data.error}`
-            : (result.validationErrors?.quantity &&
-                'Quantity cannot exceed 10 items') ||
-              'Unable to update quantity. Please try again later.'
+          : `Error: ${result.data?.error}`
       })
       return
     }
@@ -65,32 +74,54 @@ export default function ProductRow({
         }
       )}>
       <Image
-        className="self-center"
         src={product.thumbnail}
         width={200}
         height={200}
         alt={product.name}
       />
-      <div className="overflow-hidden col-span-2 flex flex-col gap-2 pr-2">
-        <Link href={'/'} className={'font-medium truncate uppercase'}>
+
+      <div className="overflow-hidden">
+        <Link
+          href={`/${product.department}/${product.id}`}
+          className="font-medium break-words uppercase block">
+          {product.brand}
+        </Link>
+        <Link
+          href={`/${product.department}/${product.id}`}
+          className={'font-medium break-words uppercase'}>
           {product.name}
         </Link>
+
+        <div className="my-2">
+          <p className="font-medium">
+            $
+            {product.discount
+              ? formatPrice(
+                  getDiscountPrice(product.price, product.percentage_off)
+                )
+              : formatPrice(product.price)}
+          </p>
+          {product.discount && (
+            <div className="flex gap-2">
+              <p className="">Original Price: ${formatPrice(product.price)}</p>
+              <span className="text-red-600">-{product.percentage_off}%</span>
+            </div>
+          )}
+        </div>
+
         <p>
-          Color <span className="capitalize">{color}</span>
+          Color: <span className="capitalize">{color}</span>
         </p>
-        <p>Size {size.toUpperCase()}</p>
-        <Price
-          price={product.price}
-          variant={'black'}
-          discount={product.discount}
-          discount_percentage={product.percentage_off}
-        />
+        <p className="mb-2">Size: {size.toUpperCase()}</p>
+
         <QuantitySelector
+          max={stock}
           quantity={quantity}
           handleChange={handleQuantityChange}
         />
         {isPending && <UpdateLoading />}
       </div>
+
       <DeleteItem
         className="absolute right-0 bottom-2"
         id={id}

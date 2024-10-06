@@ -10,22 +10,24 @@ import {
 
 export function QuantitySelector({
   quantity,
-  handleChange
+  handleChange,
+  max
 }: {
   quantity: number
   handleChange: (value: number) => void
+  max: number
 }) {
   return (
     <div className="flex gap-2 items-center">
-      <p className="font-medium">Qty:</p>
+      <p className="font-medium">Quantity:</p>
       <Select onValueChange={value => handleChange(Number(value))}>
-        <SelectTrigger className="border-zinc-400 w-[70px]" value={quantity}>
+        <SelectTrigger className="w-[80px]" value={quantity}>
           <SelectValue placeholder={quantity} />
         </SelectTrigger>
-        <SelectContent className="border-zinc-400 max-h-[250px]">
+        <SelectContent className="max-h-[250px]">
           <SelectGroup>
             <SelectLabel>Quantity</SelectLabel>
-            {Array(12)
+            {Array(max)
               .fill(null)
               .map((_, i) => (
                 <SelectItem key={i} value={`${i + 1}`}>

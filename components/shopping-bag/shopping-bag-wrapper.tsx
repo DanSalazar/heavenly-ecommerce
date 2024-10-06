@@ -5,10 +5,10 @@ import { buttonVariants } from '../ui/button'
 import { cn } from '../../lib/utils'
 import Link from 'next/link'
 import ProductBag from './product-bag'
-import { BagItem } from '@/db/schema'
 import { reduceBagPrice } from '@/utils'
 import { OrderSummary } from './order-summary'
 import { useShoppingBagContext } from '../providers/shopping-bag-provider'
+import { BagItem } from '@/db/types'
 
 function ShoppingBagWrapper({ bag }: { bag: BagItem[] }) {
   const { isOpen, handleOpen } = useShoppingBagContext()
@@ -54,10 +54,23 @@ function ShoppingBagWrapper({ bag }: { bag: BagItem[] }) {
       </div>
       <div className="flex max-h-[250px] scrollbar scrollbar-rounded scrollbar-thin scrollbar-thumb-zinc-300 scrollbar-track-zinc-50 overflow-y-auto flex-col gap-4 pr-2">
         {bag.map(bag_item => {
-          return <ProductBag key={bag_item.id} bagItem={bag_item} />
+          return (
+            <ProductBag
+              key={bag_item.id}
+              name={bag_item.product_variant.product.name}
+              thumbnail={bag_item.product_variant.product.thumbnail}
+              price={bag_item.product_variant.product.price}
+              discount={bag_item.product_variant.product.discount}
+              percentage_off={bag_item.product_variant.product.percentage_off}
+              color={bag_item.product_variant.color.name}
+              size={bag_item.product_variant.size.name}
+              quantity={bag_item.quantity}
+              id={bag_item.id}
+            />
+          )
         })}
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 mt-2">
         <OrderSummary title="Shipping" price={0.0} />
         <OrderSummary title="Total" price={total} />
       </div>
