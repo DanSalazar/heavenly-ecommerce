@@ -1,4 +1,4 @@
-import { BagItem } from '@/db/schema'
+import { BagItem } from '@/db/types'
 
 type BreadcrumbType = {
   href: string
@@ -52,8 +52,13 @@ export const reduceBagPrice = (bag: BagItem[]) => {
     if (!bag_item.product_variant) return acc + 0
     const { product_variant } = bag_item
 
-    const price = product_variant.product ? product_variant.product.price : 0
+    let price = product_variant.product ? product_variant.product.price : 0
     const quantity = Number(bag_item.quantity)
+
+    const discount = bag_item.product_variant.product?.discount
+    const percentage_off = bag_item.product_variant.product?.percentage_off || 0
+
+    price = discount ? getDiscountPrice(price, percentage_off) : price
 
     return acc + quantity * price
   }, 0)

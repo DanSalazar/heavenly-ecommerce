@@ -3,7 +3,7 @@
 import useLightbox from '@/hooks/useLightbox'
 import Image from 'next/image'
 import NextJsImage from '../gallery/next-js-image'
-import { ImageSelect } from '@/db/schema'
+import { ImageSelect } from '@/db/types'
 
 export default function ProductImagesContainer({
   thumbnail,

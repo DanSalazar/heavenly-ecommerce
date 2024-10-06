@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import Price from './price'
-import type { Product } from '@/db/schema'
+import { Product } from '@/db/types'
 
 type ProductComponentProps = {
   product: Product
@@ -19,7 +19,7 @@ export default function ProductComponent({ product }: ProductComponentProps) {
       <div className="relative h-[400px] flex overflow-hidden">
         <Image
           fill
-          objectFit="contain"
+          objectFit="cover"
           src={product.thumbnail}
           alt={product.name}
         />
@@ -30,8 +30,8 @@ export default function ProductComponent({ product }: ProductComponentProps) {
         )}
       </div>
       <div>
-        <p className="uppercase font-medium">{product.brand}</p>
-        <p className="uppercase font-medium">{product.name}</p>
+        <p className="uppercase font-medium break-words">{product.brand}</p>
+        <p className="uppercase font-medium break-words">{product.name}</p>
         <Price
           price={product.price}
           discount={product.discount}

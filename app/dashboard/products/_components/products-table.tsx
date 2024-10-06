@@ -15,7 +15,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { Product } from '@/db/schema'
 import Image from 'next/image'
 import { MoreHorizontalIcon } from '@/components/icons'
 import { Button } from '@/components/ui/button'
@@ -23,6 +22,7 @@ import Link from 'next/link'
 import { formatDate, formatPrice } from '@/utils'
 import { deleteProduct } from '@/actions/product'
 import { useToast } from '@/components/ui/use-toast'
+import { Product } from '@/db/types'
 
 export default function ProductsTable({ products }: { products: Product[] }) {
   const { toast } = useToast()
@@ -54,7 +54,7 @@ export default function ProductsTable({ products }: { products: Product[] }) {
   }
 
   return (
-    <Table>
+    <Table className="table-fixed">
       <TableHeader>
         <TableRow>
           <TableHead className="hidden w-[120px] sm:table-cell">
@@ -74,14 +74,16 @@ export default function ProductsTable({ products }: { products: Product[] }) {
             <TableCell className="hidden sm:table-cell">
               <Image
                 alt="Product image"
-                className="aspect-square rounded-md object-cover"
+                className="rounded-md object-cover"
                 height="72"
                 src={product.thumbnail}
                 width="72"
               />
             </TableCell>
-            <TableCell className="font-medium">{product.name}</TableCell>
-            <TableCell className="hidden md:table-cell">
+            <TableCell className="font-medium break-words">
+              {product.name}
+            </TableCell>
+            <TableCell className="hidden md:table-cell font-medium">
               ${formatPrice(product.price)}
             </TableCell>
             <TableCell className="hidden md:table-cell">

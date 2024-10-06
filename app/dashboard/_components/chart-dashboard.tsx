@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/card'
 import dynamic from 'next/dynamic'
 import { useThemeContext } from '@/components/providers/theme-provider'
-import { OrderType } from '@/db/schema'
+import { OrderType } from '@/db/types'
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 

@@ -36,7 +36,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 
-import { Category } from '@/db/schema'
+import { Category } from '@/db/types'
 import { VariantFields } from '../new/page'
 import { Checkbox } from '@/components/ui/checkbox'
 import Image from 'next/image'

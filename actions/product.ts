@@ -5,8 +5,7 @@ import { db } from '@/db'
 import {
   productVariations,
   imagesTable,
-  product as ProductTable,
-  product
+  product as ProductTable
 } from '@/db/schema'
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
@@ -53,7 +52,7 @@ export const deleteProduct = safeAction
   )
   .action(async ({ parsedInput: { id } }) => {
     try {
-      await db.delete(product).where(eq(product.id, id))
+      await db.delete(ProductTable).where(eq(ProductTable.id, id))
 
       revalidatePath('/dashboard/products')
 

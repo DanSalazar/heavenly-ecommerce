@@ -1,4 +1,4 @@
-import { ImageInsertNoProductId } from '@/db/schema'
+import { ImageInsertNoProductId } from '@/db/types'
 
 export type ImagesState = {
   pendingImages: ImageInsertNoProductId[]

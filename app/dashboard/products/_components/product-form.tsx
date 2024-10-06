@@ -19,7 +19,7 @@ import {
   ImageInsert,
   ImageInsertNoProductId,
   ProductVariantsInsert
-} from '@/db/schema'
+} from '@/db/types'
 import { VariantFields } from '../new/page'
 import { createProduct } from '@/actions/product'
 import { ProductSchema } from '@/actions/product-schema'

@@ -1,6 +1,6 @@
 import { getNewProductFields } from '@/server/actions'
 import { ProductForm } from '../_components/product-form'
-import { Category, Color, Size } from '@/db/schema'
+import { Category, Color, Size } from '@/db/types'
 
 export type VariantFields = {
   categories: Category[] | null

@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatPrice } from '@/utils'
 import { CreditCardIcon, DollarSignIcon, PackageIcon } from '@/components/icons'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { OrderType } from '@/db/schema'
+import { OrderType } from '@/db/types'
 
 export default async function Page() {
   const { productsInStock, orders, totalRevenue } = await getDashboardStats()

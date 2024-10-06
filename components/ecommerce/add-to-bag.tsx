@@ -2,17 +2,27 @@
 
 import { useSearchParams } from 'next/navigation'
 import ButtonAddBag from './button-add-bag'
-import { ProductVariantWithJoins } from '@/db/schema'
+import {
+  Color,
+  ProductVariants,
+  ProductVariantWithJoins,
+  Size
+} from '@/db/types'
 import LikeButton from './like-button'
 import useUrlState from '@/hooks/useUrlState'
 import PickOption from './pick-option'
 import ColorSelector from './color-selector'
 
+export type Variants = Pick<ProductVariants, 'id' | 'stock'> & {
+  color: Color
+  size: Size
+}
+
 export default function AddToBag({
   variants,
   productId
 }: {
-  variants: ProductVariantWithJoins[]
+  variants: Variants[]
   productId: string
 }) {
   const searchParams = useSearchParams()

@@ -22,7 +22,7 @@ import {
   Product,
   ProductVariantsInsert,
   ProductVariantWithJoins
-} from '@/db/schema'
+} from '@/db/types'
 import { VariantFields } from '../new/page'
 import Link from 'next/link'
 import { FormSchema, formSchema } from './product-form'

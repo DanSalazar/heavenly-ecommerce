@@ -7,7 +7,7 @@ import {
 } from 'uploadthing/client'
 import { cn } from '@/lib/utils'
 import { ImageItem, UploadImage, UploadImagePending } from './images'
-import { ImageInsertNoProductId } from '@/db/schema'
+import { ImageInsertNoProductId } from '@/db/types'
 import { UploaderProps } from './types'
 import { useDropzone } from '@uploadthing/react'
 import { useToast } from '../ui/use-toast'

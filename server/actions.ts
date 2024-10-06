@@ -1,20 +1,8 @@
 'use server'
 
 import { db } from '@/db'
-import {
-  ImageInsert,
-  Product,
-  ProductInsert,
-  ProductVariantsInsert,
-  bag,
-  bagItem,
-  category,
-  color,
-  imagesTable,
-  product,
-  productVariations,
-  size
-} from '@/db/schema'
+import { category, color, product, productVariations, size } from '@/db/schema'
+import { Product } from '@/db/types'
 import {
   ordersByMap,
   makeFiltersBySearchParams,
@@ -22,9 +10,7 @@ import {
   departmentSchema
 } from '@/db/utils'
 import { and, asc, eq, inArray, sql } from 'drizzle-orm'
-import { cookies } from 'next/headers'
 import { cache } from 'react'
-import { z } from 'zod'
 
 export const getProducts = cache(async () => {
   return await db.query.product.findMany({
@@ -136,42 +122,6 @@ export const getProductsCount = async ({
 
   return data.length
 }
-
-const variantsFields = z.object({
-  stock: z.number(),
-  color_id: z.number(),
-  size_id: z.number(),
-  product_id: z.string(),
-  id: z.number().optional()
-})
-const updateProductVariantSchema = z.array(variantsFields)
-
-export const getBag = cache(async () => {
-  const bagId = cookies().get('bag_id')?.value || ''
-  const bag = await db.query.bag.findFirst({
-    where: (field, { eq }) => eq(field.id, bagId),
-    with: {
-      bagItem: {
-        with: {
-          product_variant: {
-            columns: {
-              id: true,
-              stock: true
-            },
-            with: {
-              product: true,
-              size: true,
-              color: true
-            }
-          }
-        },
-        orderBy: (bagItem, { asc }) => [asc(bagItem.created_at)]
-      }
-    }
-  })
-
-  return bag
-})
 
 export const getFilters = async (ids: string[]) => {
   if (!ids.length) return null

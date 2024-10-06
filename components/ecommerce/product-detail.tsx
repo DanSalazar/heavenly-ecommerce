@@ -44,7 +44,8 @@ export default async function ProductDetail({ id }: { id: string }) {
           images={product.images}
         />
         <div className="flex flex-col gap-2">
-          <p className={marcellus.className + ' text-3xl uppercase'}>
+          <p
+            className={marcellus.className + ' text-3xl uppercase break-words'}>
             {product.name}
           </p>
           <Price
@@ -53,11 +54,7 @@ export default async function ProductDetail({ id }: { id: string }) {
             discount={product.discount}
             discount_percentage={product.percentage_off}
           />
-          <p className="text-zinc-700 ">
-            {product.description ||
-              `Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-            Similique cum facere quibusdam, iste enim repellat fugiat deleniti voluptatem`}
-          </p>
+          <p className="text-zinc-700 break-words">{product.description}</p>
 
           <AddToBag
             variants={product.productVariations}
