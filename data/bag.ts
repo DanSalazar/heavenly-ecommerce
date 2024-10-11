@@ -2,14 +2,21 @@ import 'server-only'
 import { cache } from 'react'
 import { cookies } from 'next/headers'
 import { db } from '@/db'
+import { BagItem } from '@/db/types'
 
-export const getBag = cache(async () => {
+type BagFetchType = Omit<BagItem, 'item_id' | 'bag_id'>
+
+export const getBag = cache(async (): Promise<BagFetchType[]> => {
   const bagId = cookies().get('bag_id')?.value || ''
 
   const bag = await db.query.bag.findFirst({
     where: (field, { eq }) => eq(field.id, bagId),
     with: {
       bagItem: {
+        columns: {
+          item_id: false,
+          bag_id: false
+        },
         with: {
           product_variant: {
             columns: {
