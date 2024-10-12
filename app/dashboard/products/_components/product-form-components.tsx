@@ -35,9 +35,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-
-import { Category } from '@/db/types'
-import { VariantFields } from '../new/page'
+import { Category, VariantFields } from '@/db/types'
 import { Checkbox } from '@/components/ui/checkbox'
 import Image from 'next/image'
 import { X } from 'lucide-react'

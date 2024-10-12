@@ -51,7 +51,10 @@ export default function Navigation() {
       </nav>
       <Sheet open={open} onOpenChange={value => setOpen(value)}>
         <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="shrink-0 md:hidden">
+          <Button
+            variant="outline"
+            size="icon"
+            className="shrink-0 md:hidden self-center">
             <MenuIcon />
             <span className="sr-only">Toggle navigation menu</span>
           </Button>

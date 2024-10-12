@@ -18,14 +18,12 @@ export const addMultipleConditions = (column: PgColumn, string: string) => {
   return sqlQuery || sql.empty()
 }
 
-export const ordersByMap: { [k: string]: SQL<unknown> } = {
+export const sortProductsBy: { [k: string]: SQL<unknown> } = {
   'low to high': asc(product.price),
   'high to low': desc(product.price)
 }
 
-export const makeFiltersBySearchParams = (
-  filters: z.infer<typeof filtersSchema>
-) => {
+export const makeFiltersByQuery = (filters: z.infer<typeof filtersSchema>) => {
   const conditions: SQL[] = []
 
   if (filters.category) {

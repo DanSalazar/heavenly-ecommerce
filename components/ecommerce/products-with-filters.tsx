@@ -1,28 +1,28 @@
-import {
-  getFilters,
-  getProductBySearchParams,
-  getProductsByDepartment
-} from '@/server/actions'
 import ProductsWrapper from './products-wrapper'
 import ProductComponent from './product-component'
 import Filters from '../filter/filters'
 import { PRODUCTS_PER_PAGE } from '@/lib/constants'
+import {
+  getFilters,
+  getProductsByDepartment,
+  getProductsByQuery
+} from '@/data/products'
 
 export default async function ProductsWithFilters({
   department = '',
-  searchParams
+  searchParams = {}
 }: {
   department?: string
-  searchParams?: any
+  searchParams: Record<string, string>
 }) {
-  const offset = searchParams?.page
-    ? Number(searchParams?.page - 1) * PRODUCTS_PER_PAGE
-    : 0
+  const page = searchParams?.page ? Number(searchParams.page) : 0
+  const offset = page > 0 ? (page - 1) * PRODUCTS_PER_PAGE : 0
+
   const products =
     Object.keys(searchParams).length > 0
-      ? await getProductBySearchParams({
+      ? await getProductsByQuery({
+          query: searchParams,
           department,
-          searchParams,
           offset,
           limit: PRODUCTS_PER_PAGE
         })
@@ -40,6 +40,7 @@ export default async function ProductsWithFilters({
     )
 
   const ids = products.map(({ product }) => product.id)
+
   const filters = await getFilters(ids)
 
   const productsWithinPriceRange =

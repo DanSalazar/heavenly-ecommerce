@@ -20,10 +20,10 @@ import {
   ImageInsertNoProductId,
   ImageSelect,
   Product,
+  VariantsJoined,
   ProductVariantsInsert,
-  ProductVariantWithJoins
+  VariantFields
 } from '@/db/types'
-import { VariantFields } from '../new/page'
 import Link from 'next/link'
 import { FormSchema, formSchema } from './product-form'
 import { deleteProductVariant, updateProduct } from '@/actions/product'
@@ -49,7 +49,7 @@ export function EditProductForm({
 }: {
   variantFields: VariantFields
   product: Product
-  variants: ProductVariantWithJoins[]
+  variants: VariantsJoined[]
   images: ImageSelect[]
 }) {
   const form = useForm<FormSchema>({

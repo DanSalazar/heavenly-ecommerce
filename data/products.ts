@@ -64,98 +64,110 @@ export const getProductsWithVariants = cache(async () => {
   })
 })
 
-export const getProductsByDepartment = async ({
-  department,
-  offset = 0,
-  limit = 0
-}: {
-  department: string
-  offset?: number
-  limit?: number
-}) => {
-  try {
-    const parsedDepartment = departmentSchema.parse(department)
-    const products = await db
-      .select({
+export const getProductsByDepartment = cache(
+  async ({
+    department,
+    offset = 0,
+    limit = 0
+  }: {
+    department: string
+    offset?: number
+    limit?: number
+  }) => {
+    try {
+      const parsedDepartment = departmentSchema.parse(department)
+      const products = await db
+        .select({
+          product
+        })
+        .from(product)
+        .where(eq(product.department, parsedDepartment))
+        .limit(limit)
+        .offset(offset)
+        .orderBy(asc(product.name))
+
+      return products
+    } catch (err) {
+      return []
+    }
+  }
+)
+
+export const getProductsByQuery = cache(
+  async ({
+    department,
+    query,
+    limit,
+    offset
+  }: {
+    department?: string
+    query: Record<string, string>
+    limit?: number
+    offset?: number
+  }) => {
+    const filtersByQuery = makeFiltersByQuery(query)
+    const parsedDepartment = departmentSchema.safeParse(department)
+
+    const data = await db
+      .selectDistinct({
         product
       })
       .from(product)
-      .where(eq(product.department, parsedDepartment))
-      .limit(limit)
-      .offset(offset)
-      .orderBy(asc(product.name))
+      .leftJoin(category, eq(product.category_id, category.id))
+      .leftJoin(productVariations, eq(product.id, productVariations.product_id))
+      .leftJoin(color, eq(productVariations.color_id, color.id))
+      .leftJoin(size, eq(productVariations.size_id, size.id))
+      .where(
+        parsedDepartment?.data
+          ? and(
+              eq(product.department, parsedDepartment.data),
+              ...filtersByQuery
+            )
+          : and(...filtersByQuery)
+      )
+      .offset(offset || 0)
+      .limit(limit || 0)
+      .orderBy(sortProductsBy[query.order] || asc(product.name))
 
-    return products
-  } catch (err) {
-    return []
+    return data
   }
-}
+)
 
-export const getProductsByQuery = async ({
-  department,
-  query,
-  limit,
-  offset
-}: {
-  department?: string
-  query: Record<string, string>
-  limit?: number
-  offset?: number
-}) => {
-  const filtersByQuery = makeFiltersByQuery(query)
-  const parsedDepartment = departmentSchema.safeParse(department)
+export const getProductsLength = cache(
+  async ({
+    query,
+    department
+  }: {
+    query: Record<string, string>
+    department?: string
+  }) => {
+    const filtersByParams = makeFiltersByQuery(query)
+    const parsedDepartment = departmentSchema.safeParse(department)
 
-  const data = await db
-    .selectDistinct({
-      product
-    })
-    .from(product)
-    .leftJoin(category, eq(product.category_id, category.id))
-    .leftJoin(productVariations, eq(product.id, productVariations.product_id))
-    .leftJoin(color, eq(productVariations.color_id, color.id))
-    .leftJoin(size, eq(productVariations.size_id, size.id))
-    .where(
-      parsedDepartment?.data
-        ? and(eq(product.department, parsedDepartment.data), ...filtersByQuery)
-        : and(...filtersByQuery)
-    )
-    .offset(offset || 0)
-    .limit(limit || 0)
-    .orderBy(sortProductsBy[query.order] || asc(product.name))
+    const data = await db
+      .selectDistinctOn([product.id, product.name, product.price], {
+        product
+      })
+      .from(product)
+      .leftJoin(category, eq(product.category_id, category.id))
+      .leftJoin(productVariations, eq(product.id, productVariations.product_id))
+      .leftJoin(color, eq(productVariations.color_id, color.id))
+      .leftJoin(size, eq(productVariations.size_id, size.id))
+      .where(
+        parsedDepartment?.data
+          ? and(
+              eq(product.department, parsedDepartment.data),
+              ...filtersByParams
+            )
+          : and(...filtersByParams)
+      )
+      .orderBy(sortProductsBy[query.order] || asc(product.name))
 
-  return data
-}
+    return data.length
+  }
+)
 
-export const getProductsLength = async ({
-  query,
-  department
-}: {
-  query: Record<string, string>
-  department?: string
-}) => {
-  const filtersByParams = makeFiltersByQuery(query)
-  const parsedDepartment = departmentSchema.safeParse(department)
-
-  const data = await db
-    .selectDistinctOn([product.id, product.name, product.price], {
-      product
-    })
-    .from(product)
-    .leftJoin(category, eq(product.category_id, category.id))
-    .leftJoin(productVariations, eq(product.id, productVariations.product_id))
-    .leftJoin(color, eq(productVariations.color_id, color.id))
-    .leftJoin(size, eq(productVariations.size_id, size.id))
-    .where(
-      parsedDepartment?.data
-        ? and(eq(product.department, parsedDepartment.data), ...filtersByParams)
-        : and(...filtersByParams)
-    )
-    .orderBy(sortProductsBy[query.order] || asc(product.name))
-
-  return data.length
-}
-
-export const getFilters = async (ids: string[]) => {
+export const getFilters = cache(async (ids: string[]) => {
   if (!ids.length) return null
 
   const minAndMaxPrice = await db
@@ -198,21 +210,19 @@ export const getFilters = async (ids: string[]) => {
       ? [minAndMaxPrice[0].min as number, minAndMaxPrice[0].max as number]
       : [0, 0]
   }
-}
+})
 
-export const getFavorites = async (ids: string[]) => {
-  if (!ids.length) return []
-  const favorites = await db.query.product.findMany({
-    where: ({ id }, { inArray }) => inArray(id, ids)
-  })
-
-  return favorites
-}
-
-export const getNewProductFields = async () => {
+export const getNewProductFields = cache(async () => {
   const categories = await db.query.category.findMany({})
   const colors = await db.query.color.findMany({})
   const size = await db.query.size.findMany({})
 
   return { categories, colors, size }
-}
+})
+
+export const getFeaturedProducts = cache(async () => {
+  return await db.query.product.findMany({
+    where: ({ featured }, { eq }) => eq(featured, true),
+    limit: 4
+  })
+})

@@ -2,6 +2,7 @@ import Price from '@/components/ecommerce/price'
 import { OrderSummary } from '@/components/shopping-bag/order-summary'
 import Paypal from './paypal'
 import Stripe from './stripe'
+import { MasterCardSVG, PaypalSVG, VisaSVG } from '@/components/icons'
 
 const SHIPPING_PRICE = 0
 
@@ -24,6 +25,12 @@ export default function Summary({ total }: { total: number }) {
 
       <Stripe />
       <Paypal />
+
+      <div className="flex gap-2">
+        <PaypalSVG />
+        <VisaSVG />
+        <MasterCardSVG />
+      </div>
     </div>
   )
 }

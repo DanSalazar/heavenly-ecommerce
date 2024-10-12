@@ -80,7 +80,7 @@ export default function ProductRow({
         alt={product.name}
       />
 
-      <div className="overflow-hidden">
+      <div>
         <Link
           href={`/${product.department}/${product.id}`}
           className="font-medium break-words uppercase block">
@@ -93,7 +93,10 @@ export default function ProductRow({
         </Link>
 
         <div className="my-2">
-          <p className="font-medium">
+          <p
+            className={cn('font-medium', {
+              'text-red-600': product.discount
+            })}>
             $
             {product.discount
               ? formatPrice(

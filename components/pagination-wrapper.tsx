@@ -1,5 +1,5 @@
 import PaginationComponent from '@/components/pagination'
-import { getProductsCount } from '@/server/actions'
+import { getProductsLength } from '@/data/products'
 
 type PaginationWrapperProps = {
   searchParams?: any
@@ -12,7 +12,10 @@ export default async function PaginationWrapper({
   productsPerPage,
   department
 }: PaginationWrapperProps) {
-  const productsCount = await getProductsCount({ searchParams, department })
+  const productsCount = await getProductsLength({
+    query: searchParams,
+    department
+  })
 
   return (
     <PaginationComponent

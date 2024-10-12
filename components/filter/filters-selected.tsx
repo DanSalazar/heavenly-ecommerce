@@ -49,12 +49,12 @@ export default function FiltersSelected() {
               key={value + j}
               data-key={key}
               data-value={value}
-              className="uppercase gap-2 border-primary"
+              className="uppercase gap-2"
               variant={'outline'}>
               {value}{' '}
               <X
-                width={20}
-                height={20}
+                width={18}
+                height={18}
                 strokeWidth={1.5}
                 className="pointer-events-none"
               />

@@ -4,9 +4,7 @@ import { cookies } from 'next/headers'
 import { db } from '@/db'
 import { BagItem } from '@/db/types'
 
-type BagFetchType = Omit<BagItem, 'item_id' | 'bag_id'>
-
-export const getBag = cache(async (): Promise<BagFetchType[]> => {
+export const getBag = cache(async (): Promise<BagItem[]> => {
   const bagId = cookies().get('bag_id')?.value || ''
 
   const bag = await db.query.bag.findFirst({

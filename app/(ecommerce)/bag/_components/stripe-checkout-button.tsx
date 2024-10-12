@@ -12,7 +12,7 @@ export const StripeCheckoutButton = () => {
           Processing...
         </SpinnerStatus>
       ) : (
-        'Checkout'
+        'PROCEED TO CHECKOUT'
       )}
     </Button>
   )

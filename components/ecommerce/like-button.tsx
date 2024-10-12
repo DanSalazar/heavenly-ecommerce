@@ -24,21 +24,19 @@ export default function LikeButton({ productId }: { productId: string }) {
   return (
     <Button
       onClick={handleLike}
-      className={cn('h-full border-primary/40 w-20 group')}
+      className={cn('h-full w-20 group')}
       type="button"
       variant={'outline'}>
       <div className="relative">
-        <HeartIcon width={24} height={24} />
-        <HeartIconSolid
-          width={24}
-          height={24}
-          className={cn(
-            'scale-0 group-hover:scale-100 absolute inset-0 text-red-500 transition-transform duration-200',
-            {
-              'scale-100': like
-            }
-          )}
-        />
+        {like ? (
+          <HeartIcon width={24} height={24} />
+        ) : (
+          <HeartIconSolid
+            width={24}
+            height={24}
+            className={cn('text-red-500 animate-heart')}
+          />
+        )}
       </div>
     </Button>
   )

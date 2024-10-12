@@ -1,21 +1,18 @@
 import ProductsTable from './products-table'
 import { PRODUCTS_PER_ROW } from '@/lib/constants'
-import { db } from '@/db'
-import { makeFiltersBySearchParams } from '@/db/utils'
+import { getProducts } from '@/data/products'
 
 export default async function ProductsTableContainer({
   searchParams
 }: {
-  searchParams?: any
+  searchParams: Record<string, string>
 }) {
-  const offset = searchParams?.page
-    ? Number(searchParams?.page - 1) * PRODUCTS_PER_ROW
-    : 0
-  const filterByParams = makeFiltersBySearchParams(searchParams)
-  const products = await db.query.product.findMany({
+  const page = searchParams?.page ? Number(searchParams.page) : 0
+  const offset = page > 0 ? (page - 1) * PRODUCTS_PER_ROW : 0
+  const products = await getProducts({
+    query: searchParams,
     limit: PRODUCTS_PER_ROW,
-    offset,
-    where: (_fields, { and }) => and(...filterByParams)
+    offset
   })
 
   return <ProductsTable products={products} />

@@ -1,24 +1,10 @@
-import { getNewProductFields } from '@/server/actions'
 import { EditProductForm } from '../../_components/edit-form'
-import { VariantFields } from '../../new/page'
-import { db } from '@/db'
-import { eq } from 'drizzle-orm'
-import { product as productSchema } from '@/db/schema'
+import { getFullProduct, getNewProductFields } from '@/data/products'
+import { Category, Color, Size, VariantFields } from '@/db/types'
 
 export default async function Page({ params }: { params: { id: string } }) {
   const variantFields: VariantFields = await getNewProductFields()
-  const product = await db.query.product.findFirst({
-    where: eq(productSchema.id, params.id),
-    with: {
-      productVariations: {
-        with: {
-          color: true,
-          size: true
-        }
-      },
-      images: true
-    }
-  })
+  const product = await getFullProduct({ id: params.id })
 
   if (!product)
     return (

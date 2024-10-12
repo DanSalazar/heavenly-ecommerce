@@ -21,10 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <ShoppingBagProvider>
         <body
-          style={{
-            padding: '0 1.75rem'
-          }}
-          className={mainFont.className + ' flex flex-col gap-4'}>
+          className={
+            mainFont.className + ' flex flex-col gap-4 !px-8 md:!px-12'
+          }>
           <Navbar />
           {children}
           <Footer />

@@ -39,7 +39,7 @@ export default function SearchInput({
         type="search"
         defaultValue={searchParams?.get('q') || ''}
         autoComplete="off"
-        className="rounded-lg pl-8"
+        className="pl-8"
       />
     </form>
   )

@@ -18,9 +18,9 @@ import { useState } from 'react'
 import {
   ImageInsert,
   ImageInsertNoProductId,
-  ProductVariantsInsert
+  ProductVariantsInsert,
+  VariantFields
 } from '@/db/types'
-import { VariantFields } from '../new/page'
 import { createProduct } from '@/actions/product'
 import { ProductSchema } from '@/actions/product-schema'
 import { useToast } from '@/components/ui/use-toast'

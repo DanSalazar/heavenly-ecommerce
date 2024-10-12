@@ -11,45 +11,17 @@ import SearchInput from '../_components/search-input'
 import FilterByOrders from './_components/filter-by-orders'
 import { PRODUCTS_PER_ROW } from '@/lib/constants'
 import PaginationComponent from '@/components/pagination'
-import { db } from '@/db'
+import { getOrders, getOrdersLength } from '@/data/orders'
 
 export default async function Page({ searchParams }: { searchParams: any }) {
-  const { payment, q } = searchParams
-
-  const ordersLength = (
-    await db.query.order.findMany({
-      where: (fields, { ilike, eq, and, or }) => {
-        const { payment_method, customer_name, customer_email } = fields
-
-        return and(
-          payment ? eq(payment_method, payment) : undefined,
-          q
-            ? or(ilike(customer_name, q + '%'), ilike(customer_email, q + '%'))
-            : undefined
-        )
-      }
-    })
-  ).length
-
-  const offset = searchParams?.page
-    ? Number(searchParams?.page - 1) * PRODUCTS_PER_ROW
-    : 0
-
-  const orders = await db.query.order.findMany({
-    where: (fields, { ilike, eq, and, or }) => {
-      const { payment_method, customer_name, customer_email } = fields
-
-      return and(
-        payment ? eq(payment_method, payment) : undefined,
-        q
-          ? or(ilike(customer_name, q + '%'), ilike(customer_email, q + '%'))
-          : undefined
-      )
-    },
+  const page = searchParams?.page ? Number(searchParams.page) : 0
+  const offset = page > 0 ? (page - 1) * PRODUCTS_PER_ROW : 0
+  const orders = await getOrders({
+    query: searchParams,
     limit: PRODUCTS_PER_ROW,
-    orderBy: ({ order_created_at }, { desc }) => desc(order_created_at),
     offset
   })
+  const ordersLength = await getOrdersLength(searchParams)
 
   return (
     <>

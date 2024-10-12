@@ -43,7 +43,10 @@ export default function ProductBag({
         <h2 className="font-medium text-sm uppercase truncate">{name}</h2>
 
         <div className="mt-2">
-          <p className="font-medium text-sm">
+          <p
+            className={cn('font-medium text-sm', {
+              'text-red-600': discount
+            })}>
             $
             {discount
               ? formatPrice(getDiscountPrice(price, percentage_off))
@@ -63,7 +66,7 @@ export default function ProductBag({
 
         <div className="w-full mt-2 text-sm">
           <p>
-            Size <span>{size.toUpperCase()}</span>
+            Size: <span>{size.toUpperCase()}</span>
           </p>
           <p>Color: {color}</p>
           <p>Quantity: {quantity}</p>

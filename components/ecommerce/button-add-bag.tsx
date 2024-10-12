@@ -22,7 +22,7 @@ export default function ButtonAddBag({
   const { handleOpen } = useShoppingBagContext()
 
   const buttonClasses = 'transition-opacity h-full flex-1 uppercase rounded-lg'
-  const disabledClasses = 'cursor-not-allowed opacity-60 hover:opacity-60'
+  const disabledClasses = 'cursor-not-allowed opacity-50 hover:opacity-50'
 
   if (!variantSelected || !variantSelectedId)
     return (

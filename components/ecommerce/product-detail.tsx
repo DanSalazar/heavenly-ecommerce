@@ -38,16 +38,16 @@ export default async function ProductDetail({ id }: { id: string }) {
   return (
     <>
       <BreadcrumbWrapper pathname={`/${product.department}/${product.name}`} />
-      <main className="min-h-[600px] flex flex-col md:grid grid-cols-2 gap-4 md:gap-12 mt-2 mb-12">
+      <main className="relative min-h-[600px] flex flex-col md:grid grid-cols-2 gap-4 md:gap-12 mt-2 mb-12">
         <ProductImagesContainer
           thumbnail={product.thumbnail}
           images={product.images}
         />
-        <div className="flex flex-col gap-2">
-          <p
+        <div className="flex flex-col gap-2 sticky">
+          <h2
             className={marcellus.className + ' text-3xl uppercase break-words'}>
             {product.name}
-          </p>
+          </h2>
           <Price
             size={'lg'}
             price={product.price}

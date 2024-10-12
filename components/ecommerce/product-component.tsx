@@ -18,13 +18,13 @@ export default function ProductComponent({ product }: ProductComponentProps) {
       className="animate-fade flex flex-col gap-2 cursor-pointer hover:opacity-80 transition-opacity group">
       <div className="relative h-[400px] flex overflow-hidden">
         <Image
+          className="object-cover"
           fill
-          objectFit="cover"
           src={product.thumbnail}
           alt={product.name}
         />
         {product.discount && (
-          <span className="text-sm bg-red-600 text-white font-medium absolute top-8 left-0 px-2">
+          <span className="bg-red-600 text-white font-medium absolute bottom-8 left-0 px-2">
             -{product.percentage_off}%
           </span>
         )}

@@ -1,8 +1,8 @@
 'use client'
 
-import { MoonIcon, SunIcon } from '@/components/icons'
 import { useThemeContext } from '@/components/providers/theme-provider'
 import { Button } from '@/components/ui/button'
+import { MoonIcon, SunIcon } from 'lucide-react'
 
 export default function ToggleTheme({ className }: { className?: string }) {
   const theme = useThemeContext()

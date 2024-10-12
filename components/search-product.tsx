@@ -21,7 +21,7 @@ export default function SearchProduct({
     e.preventDefault()
     const form = e.target as HTMLFormElement
     const search = form.search as HTMLInputElement
-    const newParams = new URLSearchParams(searchParams.toString())
+    const newParams = new URLSearchParams()
 
     if (search.value) {
       newParams.set('q', search.value)
@@ -36,14 +36,14 @@ export default function SearchProduct({
 
   return (
     <form onSubmit={onSubmit} className={cn('relative', className)}>
-      <SearchIcon className="absolute left-3 top-2.5 h-4 w-4 text-primary/60" />
+      <SearchIcon className="absolute left-3 top-2.5 h-4 w-4 text-primary" />
       <Input
         name="search"
         placeholder={placeholder || 'Search'}
         type="search"
         defaultValue={searchParams?.get('q') || ''}
         autoComplete="off"
-        className="w-full rounded-full pl-8 justify-center border-primary/20"
+        className="w-full pl-8 justify-center border-none bg-secondary"
       />
     </form>
   )

@@ -15,7 +15,7 @@ export default async function Page({
   searchParams
 }: {
   params: { department: string }
-  searchParams: unknown
+  searchParams: Record<string, string>
 }) {
   return (
     <>
