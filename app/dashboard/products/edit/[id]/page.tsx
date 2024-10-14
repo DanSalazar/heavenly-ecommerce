@@ -1,6 +1,6 @@
 import { EditProductForm } from '../../_components/edit-form'
 import { getFullProduct, getNewProductFields } from '@/data/products'
-import { Category, Color, Size, VariantFields } from '@/db/types'
+import { VariantFields } from '@/db/types'
 
 export default async function Page({ params }: { params: { id: string } }) {
   const variantFields: VariantFields = await getNewProductFields()

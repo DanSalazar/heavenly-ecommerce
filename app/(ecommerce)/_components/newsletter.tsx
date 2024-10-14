@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input'
 export default function Newsletter() {
   return (
     <section className="mt-8 h-[300px] flex flex-col gap-2 items-center justify-center border-t border-zinc-200">
-      <h2 className="text-xl xl:px-40 xl:text-4xl font-bold text-center">
+      <h2 className="text-xl xl:px-36 xl:text-4xl font-bold text-center">
         Subscribe to our newsletter to get updates to our latest collections
       </h2>
       <p className="text-foreground text-sm md:text-base text-center">

@@ -1,10 +1,10 @@
-import { getDashboardStats } from '@/server/actions'
 import ChartDashboard from '../_components/chart-dashboard'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { formatPrice } from '@/utils'
+import { formatPrice } from '@/lib/utils'
 import { CreditCardIcon, DollarSignIcon, PackageIcon } from '@/components/icons'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { OrderType } from '@/db/types'
+import { getDashboardStats } from '@/data/dashboard'
 
 export default async function Page() {
   const { productsInStock, orders, totalRevenue } = await getDashboardStats()

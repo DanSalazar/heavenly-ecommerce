@@ -5,7 +5,7 @@ import { buttonVariants } from '../ui/button'
 import { cn } from '../../lib/utils'
 import Link from 'next/link'
 import ProductBag from './product-bag'
-import { reduceBagPrice } from '@/utils'
+import { reduceBagPrice } from '@/lib/utils'
 import { OrderSummary } from './order-summary'
 import { useShoppingBagContext } from '../providers/shopping-bag-provider'
 import { BagItem } from '@/db/types'
@@ -15,6 +15,18 @@ function ShoppingBagWrapper({ bag }: { bag: BagItem[] }) {
   const total = reduceBagPrice(bag)
   const className =
     'max-h-[500px] transition-transform ease-in-out duration-700 transform -translate-y-[500px] group-hover:translate-y-0 flex flex-col gap-2 px-4 py-6 -z-20 bg-white w-[300px] md:w-[350px] absolute right-0 top-[63px] border-b border-r border-l border-zinc-200'
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout
+
+    if (isOpen) {
+      timer = setTimeout(() => {
+        handleOpen(false)
+      }, 3000)
+    }
+
+    return () => clearTimeout(timer)
+  }, [handleOpen, isOpen])
 
   if (!bag.length)
     return (
@@ -28,18 +40,6 @@ function ShoppingBagWrapper({ bag }: { bag: BagItem[] }) {
         </Link>
       </div>
     )
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout
-
-    if (isOpen) {
-      timer = setTimeout(() => {
-        handleOpen(false)
-      }, 3000)
-    }
-
-    return () => clearTimeout(timer)
-  }, [handleOpen, isOpen])
 
   return (
     <div

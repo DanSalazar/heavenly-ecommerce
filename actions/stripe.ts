@@ -1,7 +1,7 @@
 'use server'
 
 import { db } from '@/db'
-import { capitalizeWord, getDiscountPrice } from '@/utils'
+import { capitalizeWord, getDiscountPrice } from '@/lib/utils'
 import { cookies, headers } from 'next/headers'
 import Stripe from 'stripe'
 

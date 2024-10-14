@@ -22,7 +22,7 @@ export default function RootLayout({
       <ShoppingBagProvider>
         <body
           className={
-            mainFont.className + ' flex flex-col gap-4 !px-8 md:!px-12'
+            mainFont.className + ' flex flex-col gap-4 !px-4 md:!px-12'
           }>
           <Navbar />
           {children}

@@ -2,7 +2,7 @@
 
 import { VariantProps, cva } from 'class-variance-authority'
 import { cn } from '../../lib/utils'
-import { formatPrice, getDiscountPrice } from '@/utils'
+import { formatPrice, getDiscountPrice } from '@/lib/utils'
 
 const priceStyles = cva('', {
   variants: {

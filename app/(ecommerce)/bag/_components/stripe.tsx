@@ -1,6 +1,6 @@
 'use client'
 
-import { createSession } from '@/server/stripe'
+import { createSession } from '@/actions/stripe'
 import { StripeCheckoutButton } from './stripe-checkout-button'
 import { useToast } from '@/components/ui/use-toast'
 

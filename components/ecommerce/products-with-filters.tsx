@@ -89,8 +89,9 @@ function NoProductsAvailable() {
     <>
       <p className="text-3xl">Oops! No Products Found in This Department</p>
       <p>
-        It seems we don't have any products available right now. Please consider
-        exploring other departments or check back later for new arrivals.
+        It seems we don&apos;t have any products available right now. Please
+        consider exploring other departments or check back later for new
+        arrivals.
       </p>
     </>
   )
@@ -101,7 +102,7 @@ function NoSearchResults() {
     <>
       <p className="text-3xl">No products matched your search</p>
       <p>
-        We couldn't find any products matching your search criteria. Please
+        We couldn&apos;t find any products matching your search criteria. Please
         check your spelling, try using broader terms, or explore our popular
         categories for more options.
       </p>

@@ -1,6 +1,6 @@
 import useUrlState from '@/hooks/useUrlState'
 import { cn } from '@/lib/utils'
-import { capitalizeWord } from '@/utils'
+import { capitalizeWord } from '@/lib/utils'
 
 export default function ColorSelector({
   colors

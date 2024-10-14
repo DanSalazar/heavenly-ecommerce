@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import DeleteItem from './delete-item'
 import { useAction } from 'next-safe-action/hooks'
 import { removeProductFromBag } from '@/actions/bag'
-import { formatPrice, getDiscountPrice } from '@/utils'
+import { formatPrice, getDiscountPrice } from '@/lib/utils'
 
 type ProductBagProps = {
   name: string

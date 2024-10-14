@@ -9,13 +9,13 @@ import {
   TableRow
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { OrderType } from '@/db/schema'
 import { centsToPrice } from '@/lib/utils'
-import { formatDate, formatPrice } from '@/utils'
+import { formatDate, formatPrice } from '@/lib/utils'
+import { OrderType } from '@/db/types'
 
-export default async function OrdersTable({ orders }: { orders: OrderType[] }) {
+export default function OrdersTable({ orders }: { orders: OrderType[] }) {
   return (
-    <Table className="table-fixed">
+    <Table>
       <TableHeader>
         <TableRow>
           <TableHead>Customer</TableHead>

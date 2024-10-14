@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import paypal from '@paypal/checkout-server-sdk'
 import { db } from '@/db'
-import { getDiscountPrice } from '@/utils'
+import { getDiscountPrice } from '@/lib/utils'
 
 const environment = new paypal.core.SandboxEnvironment(
   process.env.PAYPAL_CLIENT_ID!,

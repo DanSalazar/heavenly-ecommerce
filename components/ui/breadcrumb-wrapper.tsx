@@ -1,6 +1,6 @@
 'use client'
 
-import { createPathObject } from '@/utils'
+import { createPathObject } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
 import {
   Breadcrumb,

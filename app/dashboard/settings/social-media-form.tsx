@@ -12,13 +12,12 @@ import {
 } from '@/components/ui/form'
 import * as z from 'zod'
 import { Button } from '@/components/ui/button'
-import type { ShopInformation } from '@/db/schema'
 import { useToast } from '@/components/ui/use-toast'
 import { useForm } from 'react-hook-form'
-import { addShopInformation } from './actions'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { SpinnerStatus } from '@/components/ui/spinner'
 import { updateSocialMedia } from '@/actions/social-media'
+import { ShopInformation } from '@/db/types'
 
 const formSchema = z.object({
   facebook: z.string().url().or(z.literal('')),

@@ -1,24 +1,36 @@
-'use client'
-
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { HeartIcon, HeartIconSolid } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { isInFavorites, removeItemFromLocal, saveItemInLocal } from '@/utils'
 
 export default function LikeButton({ productId }: { productId: string }) {
   const [like, setLike] = useState(false)
-  const isLiked = isInFavorites(productId)
+
+  useEffect(() => {
+    const favorites = window.localStorage.getItem('items_saved')
+
+    if (favorites) {
+      const favoritesList = JSON.parse(favorites) as string[]
+      setLike(favoritesList.includes(productId))
+    }
+  }, [productId])
 
   const handleLike = () => {
-    if (!isLiked && !like) {
+    const favorites = window.localStorage.getItem('items_saved')
+    const favoritesList = favorites ? (JSON.parse(favorites) as string[]) : []
+
+    if (!like) {
       setLike(true)
-      saveItemInLocal(productId)
+      favoritesList.push(productId)
+      window.localStorage.setItem('items_saved', JSON.stringify(favoritesList))
       return
     }
 
     setLike(false)
-    removeItemFromLocal(productId)
+    window.localStorage.setItem(
+      'items_saved',
+      JSON.stringify(favoritesList.filter(id => id !== productId))
+    )
   }
 
   return (
@@ -29,13 +41,13 @@ export default function LikeButton({ productId }: { productId: string }) {
       variant={'outline'}>
       <div className="relative">
         {like ? (
-          <HeartIcon width={24} height={24} />
-        ) : (
           <HeartIconSolid
             width={24}
             height={24}
             className={cn('text-red-500 animate-heart')}
           />
+        ) : (
+          <HeartIcon width={24} height={24} />
         )}
       </div>
     </Button>

@@ -1,23 +1,31 @@
 import { useQuery } from '@tanstack/react-query'
 import { HeartIcon } from '@/components/icons'
 import { buttonVariants } from '@/components/ui/button'
-import { getItemsFromLocal } from '@/utils'
 import Link from 'next/link'
 import ProductsWrapper from '@/components/ecommerce/products-wrapper'
 import ProductComponent from '@/components/ecommerce/product-component'
 import { ProductsWrapperSkeleton } from '@/components/skeletons'
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { getFavorites } from '@/data/favorites'
 
 export default function Favorites() {
-  const ids = getItemsFromLocal()
+  const [favorites, setFavorites] = useState([])
+
+  useEffect(() => {
+    const ids = window.localStorage.getItem('items_saved')
+
+    if (ids) {
+      setFavorites(JSON.parse(ids))
+    }
+  }, [])
+
   const {
     isPending,
     error,
     data: favProducts
   } = useQuery({
-    queryKey: ['favProducts', ids],
-    queryFn: async () => getFavorites(ids)
+    queryKey: ['favProducts', favorites],
+    queryFn: async () => getFavorites(favorites)
   })
 
   if (isPending)

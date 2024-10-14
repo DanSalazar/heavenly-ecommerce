@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import Price from '../ecommerce/price'
 import { QuantitySelector } from './quantity-selector'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -10,7 +9,7 @@ import DeleteItem from './delete-item'
 import { useAction } from 'next-safe-action/hooks'
 import { removeProductFromBag, updateQuantityInBag } from '@/actions/bag'
 import { useToast } from '../ui/use-toast'
-import { formatPrice, getDiscountPrice } from '@/utils'
+import { formatPrice, getDiscountPrice } from '@/lib/utils'
 import { Product } from '@/db/types'
 
 export default function ProductRow({

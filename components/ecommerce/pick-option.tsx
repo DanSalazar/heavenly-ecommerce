@@ -1,7 +1,7 @@
 import useUrlState from '@/hooks/useUrlState'
 import { Button } from '../ui/button'
 import { cn } from '@/lib/utils'
-import { capitalizeWord } from '@/utils'
+import { capitalizeWord } from '@/lib/utils'
 
 export const NOT_AVAILABLE_BUTTON_CLASS =
   'relative z-10 cursor-not-allowed overflow-hidden bg-zinc-100 text-zinc-500 ring-1 ring-zinc-400 before:absolute before:inset-x-0 before:-z-10 before:h-px before:-rotate-45 before:bg-zinc-400 before:transition-transform'

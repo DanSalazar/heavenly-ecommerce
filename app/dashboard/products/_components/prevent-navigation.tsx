@@ -39,7 +39,7 @@ export default function PreventNavigation({
     if (typeof window !== 'undefined') {
       window.history.pushState(null, document.title, window.location.href)
     }
-  }, [window])
+  }, [])
 
   useEffect(() => {
     /**
