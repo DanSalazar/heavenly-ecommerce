@@ -1,16 +1,16 @@
-'use client'
-
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
-import Favorites from './_components/favorites'
 import BreadcrumbWrapper from '@/components/ui/breadcrumb-wrapper'
+import FavoritesWrapper from './_components/favorites-wrapper'
 
-const queryClient = new QueryClient()
+export const metadata = {
+  title: 'Your Favorites Products',
+  description: 'View and manage your favorite products in one place.'
+}
 
 export default function Page() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
       <BreadcrumbWrapper />
-      <Favorites />
-    </QueryClientProvider>
+      <FavoritesWrapper />
+    </>
   )
 }

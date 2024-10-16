@@ -7,8 +7,19 @@ import BreadcrumbWrapper from '@/components/ui/breadcrumb-wrapper'
 import { Suspense } from 'react'
 import PaginationWrapper from '@/components/pagination-wrapper'
 import { PRODUCTS_PER_PAGE } from '@/lib/constants'
+import { capitalizeWord } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
+
+export function generateMetadata({
+  params
+}: {
+  params: { department: string }
+}) {
+  return {
+    title: capitalizeWord(params.department) + ' Products'
+  }
+}
 
 export default async function Page({
   params,

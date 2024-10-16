@@ -13,6 +13,10 @@ import { PRODUCTS_PER_ROW } from '@/lib/constants'
 import PaginationComponent from '@/components/pagination'
 import { getOrders, getOrdersLength } from '@/data/orders'
 
+export const metadata = {
+  title: 'Orders'
+}
+
 export default async function Page({ searchParams }: { searchParams: any }) {
   const page = searchParams?.page ? Number(searchParams.page) : 0
   const offset = page > 0 ? (page - 1) * PRODUCTS_PER_ROW : 0

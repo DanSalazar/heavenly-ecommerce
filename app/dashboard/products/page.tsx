@@ -21,6 +21,10 @@ import {
 import PaginationWrapper from '@/components/pagination-wrapper'
 import { PRODUCTS_PER_ROW } from '@/lib/constants'
 
+export const metadata = {
+  title: 'Products'
+}
+
 export default async function Page({ searchParams }: { searchParams: any }) {
   return (
     <>

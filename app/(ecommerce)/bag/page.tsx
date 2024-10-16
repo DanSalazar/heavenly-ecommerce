@@ -5,6 +5,12 @@ import BreadcrumbWrapper from '@/components/ui/breadcrumb-wrapper'
 import Summary from './_components/summary'
 import { getBag } from '@/data/bag'
 
+export const metadata = {
+  title: 'Your Shopping Bag',
+  description:
+    'View and manage the products in your shopping bag, including pricing and quantities.'
+}
+
 export default async function Page() {
   const bag = await getBag()
 

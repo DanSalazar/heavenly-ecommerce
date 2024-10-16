@@ -4,6 +4,10 @@ import { ArrowLeftIcon } from '@radix-ui/react-icons'
 import { Categories, Colors, Sizes } from './properties'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
+export const metadata = {
+  title: 'Product Properties'
+}
+
 const TABS = ['Colors', 'Sizes', 'Categories']
 
 const TAB_TO_COMPONENT = [

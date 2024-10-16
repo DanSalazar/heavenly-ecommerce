@@ -7,6 +7,11 @@ import {
 import { PRODUCTS_PER_PAGE } from '@/lib/constants'
 import { Suspense } from 'react'
 
+export const metadata = {
+  title: 'Search',
+  description: 'Search for products in the store.'
+}
+
 export default async function Page({
   searchParams
 }: {

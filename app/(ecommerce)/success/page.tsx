@@ -1,6 +1,10 @@
 import { buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
 
+export const metadata = {
+  title: 'Order Successful'
+}
+
 export default function Page() {
   return (
     <div className="bg-sky-blue-100 h-[400px] flex items-center justify-center flex-col gap-2">

@@ -2,6 +2,10 @@ import { EditProductForm } from '../../_components/edit-form'
 import { getFullProduct, getNewProductFields } from '@/data/products'
 import { VariantFields } from '@/db/types'
 
+export const metadata = {
+  title: 'Edit Product'
+}
+
 export default async function Page({ params }: { params: { id: string } }) {
   const variantFields: VariantFields = await getNewProductFields()
   const product = await getFullProduct({ id: params.id })
