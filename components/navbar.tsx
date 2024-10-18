@@ -11,7 +11,7 @@ export default function Navbar() {
   return (
     <header className="bg-white relative top-0 h-16 z-20 border-b border-input grid grid-cols-3">
       <Navigation />
-      <div className="bg-white flex items-center md:justify-center">
+      <div className="bg-white flex items-center justify-center">
         <Link href={'/'}>
           <HeavenlyIcon />
         </Link>

@@ -30,11 +30,15 @@ export const getProducts = cache(
   }
 )
 
-export const getFullProduct = cache(async ({ id }: { id: string }) => {
+export const getFullProduct = cache(async (id: string) => {
   const product = await db.query.product.findFirst({
     where: ({ id: productId }, { eq }) => eq(productId, id),
     with: {
       productVariations: {
+        columns: {
+          id: true,
+          stock: true
+        },
         with: {
           color: true,
           size: true

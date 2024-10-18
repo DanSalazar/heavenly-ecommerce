@@ -1,6 +1,3 @@
-import { db } from '@/db'
-import { product as productSchema } from '@/db/schema'
-import { eq } from 'drizzle-orm'
 import ProductImagesContainer from './product-images-container'
 import { marcellus } from '../fonts'
 import Price from './price'
@@ -12,28 +9,13 @@ import {
 } from '@/components/ui/accordion'
 import AddToBag from './add-to-bag'
 import BreadcrumbWrapper from '../ui/breadcrumb-wrapper'
-import ProductNotAvailable from './product-not-available'
+import { getFullProduct } from '@/data/products'
+import { notFound } from 'next/navigation'
 
 export default async function ProductDetail({ id }: { id: string }) {
-  const product = await db.query.product.findFirst({
-    where: eq(productSchema.id, id),
-    with: {
-      productVariations: {
-        columns: {
-          id: true,
-          stock: true
-        },
-        with: {
-          color: true,
-          size: true
-        }
-      },
-      images: true
-    }
-  })
+  const product = await getFullProduct(id)
 
-  if (!product || !product.productVariations.length)
-    return <ProductNotAvailable />
+  if (!product || !product.productVariations.length) return notFound()
 
   return (
     <>

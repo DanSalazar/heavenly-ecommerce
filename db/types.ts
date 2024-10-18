@@ -46,3 +46,8 @@ export type ImageInsert = typeof schema.imagesTable.$inferInsert
 export type ImageInsertNoProductId = Omit<ImageInsert, 'product_id'>
 
 export type ShopInformation = typeof schema.shopInformation.$inferSelect
+
+export type ProductWithJoins = Product & {
+  productVariations: VariantsJoined[]
+  images: ImageSelect[]
+}

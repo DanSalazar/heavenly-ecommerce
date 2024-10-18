@@ -8,8 +8,11 @@ import { Suspense } from 'react'
 import PaginationWrapper from '@/components/pagination-wrapper'
 import { PRODUCTS_PER_PAGE } from '@/lib/constants'
 import { capitalizeWord } from '@/lib/utils'
+import { notFound } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
+
+const departments = ['men', 'women']
 
 export function generateMetadata({
   params
@@ -28,6 +31,8 @@ export default async function Page({
   params: { department: string }
   searchParams: Record<string, string>
 }) {
+  if (!departments.includes(params.department)) return notFound()
+
   return (
     <>
       <BreadcrumbWrapper />
