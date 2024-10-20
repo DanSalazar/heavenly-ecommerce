@@ -28,6 +28,7 @@ import { ImagesState } from '@/components/uploader/types'
 import { deleteFilesAction } from '@/actions/files'
 import dynamic from 'next/dynamic'
 import ImagesDialog from './images-dialog'
+import { ArrowLeftIcon } from 'lucide-react'
 
 const PreventNavigation = dynamic(() => import('./prevent-navigation'), {
   ssr: false
@@ -238,7 +239,16 @@ export function ProductForm({
           className="grid flex-1 auto-rows-max gap-4"
           onSubmit={form.handleSubmit(handleSubmit)}>
           <div className="flex flex-wrap items-center gap-4">
-            <h1 className="flex-1 text-3xl font-semibold tracking-tight">
+            <Link
+              href={'/dashboard/products'}
+              className={buttonVariants({
+                variant: 'outline',
+                size: 'icon'
+              })}>
+              <ArrowLeftIcon width={18} height={18} />
+              <span className="sr-only">Back</span>
+            </Link>
+            <h1 className="flex-1 text-2xl font-semibold tracking-tight">
               Create a new product
             </h1>
             <div className="hidden md:block md:ml-auto space-x-2">

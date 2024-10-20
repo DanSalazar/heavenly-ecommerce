@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
-import './dashboard.css'
 import Providers from '@/components/providers'
 import { mainFont } from '@/components/fonts'
+import '../globals.css'
 import { Toaster } from '@/components/ui/toaster'
 import { ClerkProvider, SignedIn } from '@clerk/nextjs'
 import Header from './_components/header'
-import Sidebar from './_components/sidebar'
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
+import { AppSidebar } from '@/components/app-sidebar'
 
 export const metadata: Metadata = {
   title: {
@@ -23,17 +24,15 @@ export default function RootLayout({
     <ClerkProvider afterSignOutUrl={process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL}>
       <html lang="en">
         <Providers>
-          <body
-            className={
-              mainFont.className +
-              ' grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[240px_1fr]'
-            }>
+          <body className={mainFont.className}>
             <SignedIn>
-              <Sidebar />
-              <main className="bg-muted/40 dark:bg-background h-full flex flex-col gap-4">
-                <Header />
-                <div className="px-6 pb-4">{children}</div>
-              </main>
+              <SidebarProvider>
+                <AppSidebar />
+                <SidebarInset>
+                  <Header />
+                  <div className="px-4 pt-2 pb-8">{children}</div>
+                </SidebarInset>
+              </SidebarProvider>
               <Toaster />
             </SignedIn>
           </body>

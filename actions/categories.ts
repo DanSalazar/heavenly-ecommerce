@@ -14,7 +14,7 @@ export const deleteCategory = safeAction
   .action(async ({ parsedInput: id }) => {
     try {
       await db.delete(category).where(eq(category.id, id))
-      revalidatePath('/dashboard/products/new-properties')
+      revalidatePath('/dashboard/products/properties')
       return { success: 'Category successfully deleted.' }
     } catch (error) {
       return {
@@ -29,7 +29,7 @@ export const deleteColor = safeAction
   .action(async ({ parsedInput: id }) => {
     try {
       await db.delete(color).where(eq(color.id, id))
-      revalidatePath('/dashboard/products/new-properties')
+      revalidatePath('/dashboard/products/properties')
       return { success: 'Color successfully deleted.' }
     } catch (error) {
       return {
@@ -44,7 +44,7 @@ export const deleteSize = safeAction
   .action(async ({ parsedInput: id }) => {
     try {
       await db.delete(size).where(eq(size.id, id))
-      revalidatePath('/dashboard/products/new-properties')
+      revalidatePath('/dashboard/products/properties')
       return { success: 'Size successfully deleted.' }
     } catch (error) {
       return {

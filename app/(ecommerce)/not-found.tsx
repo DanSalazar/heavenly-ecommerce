@@ -8,7 +8,8 @@ export default function NotFound() {
         404 - The page could not be found
       </h2>
       <p className="text-xl font-medium">
-        Sorry, our bad... Seems like we couldn't find what you were looking for.
+        Sorry, our bad... Seems like we couldn&apos;t find what you were looking
+        for.
       </p>
       <Link href={'/'} className={buttonVariants({ variant: 'outline' })}>
         Go to Shopping

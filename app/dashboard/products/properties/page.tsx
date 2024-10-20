@@ -35,10 +35,10 @@ export default function NewProperties() {
             variant: 'outline',
             size: 'icon'
           })}>
-          <ArrowLeftIcon />
+          <ArrowLeftIcon width={18} height={18} />
           <span className="sr-only">Back</span>
         </Link>
-        <h1 className="flex-1 text-xl font-semibold tracking-tight">
+        <h1 className="flex-1 text-2xl font-semibold tracking-tight">
           Add Properties for Products
         </h1>
       </header>

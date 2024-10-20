@@ -12,7 +12,7 @@ const config = {
   prefix: '',
   theme: {
     container: {
-      center: true,
+      center: 'true',
       padding: '2rem',
       screens: {
         '2xl': '1400px'
@@ -52,6 +52,16 @@ const config = {
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
+        },
+        sidebar: {
+          DEFAULT: 'hsl(var(--sidebar-background))',
+          foreground: 'hsl(var(--sidebar-foreground))',
+          primary: 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          accent: 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          border: 'hsl(var(--sidebar-border))',
+          ring: 'hsl(var(--sidebar-ring))'
         }
       },
       borderRadius: {
@@ -61,22 +71,42 @@ const config = {
       },
       keyframes: {
         'accordion-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' }
+          from: {
+            height: '0'
+          },
+          to: {
+            height: 'var(--radix-accordion-content-height)'
+          }
         },
         'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' }
+          from: {
+            height: 'var(--radix-accordion-content-height)'
+          },
+          to: {
+            height: '0'
+          }
         },
         fade: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' }
+          '0%': {
+            opacity: '0'
+          },
+          '100%': {
+            opacity: '1'
+          }
         },
         heart: {
-          '0%': { transform: 'scale(0.6)' },
-          '25%': { transform: 'scale(1)' },
-          '50%': { transform: 'scale(0.8)' },
-          '100%': { transform: 'scale(1)' }
+          '0%': {
+            transform: 'scale(0.6)'
+          },
+          '25%': {
+            transform: 'scale(1)'
+          },
+          '50%': {
+            transform: 'scale(0.8)'
+          },
+          '100%': {
+            transform: 'scale(1)'
+          }
         }
       },
       animation: {

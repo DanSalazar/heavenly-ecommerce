@@ -53,7 +53,7 @@ export default function PreventNavigation({
         event.preventDefault()
 
         confirmationFn.current = () => {
-          router.push(target.href)
+          router?.push(target.href)
         }
 
         setLeavingPage(true)
@@ -68,7 +68,7 @@ export default function PreventNavigation({
         window.history.pushState(null, document.title, window.location.href)
 
         confirmationFn.current = () => {
-          router.push(backHref)
+          router?.push(backHref)
         }
 
         setLeavingPage(true)

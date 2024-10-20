@@ -67,18 +67,18 @@ const chartConfig = {
       }
     },
     grid: {
-      show: true,
-      borderColor: '#dddddd',
-      strokeDashArray: 5,
-      xaxis: {
-        lines: {
-          show: true
-        }
-      },
-      padding: {
-        top: 5,
-        right: 20
-      }
+      show: false
+      // borderColor: '#dddddd',
+      // strokeDashArray: 5,
+      // xaxis: {
+      //   lines: {
+      //     show: true
+      //   }
+      // },
+      // padding: {
+      //   top: 5,
+      //   right: 20
+      // }
     },
     fill: {
       opacity: 0.8

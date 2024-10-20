@@ -33,7 +33,7 @@ export default async function Page({ searchParams }: { searchParams: any }) {
         <div className="flex items-center gap-2">
           <FilterByProducts />
           <Link
-            href={'/dashboard/products/new-properties'}
+            href={'/dashboard/products/properties'}
             className={cn(buttonVariants(), 'gap-1')}>
             <PlusIcon />
             <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
