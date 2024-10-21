@@ -20,18 +20,6 @@ export function NavSecondary({
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
-          <UserButton
-            appearance={{
-              elements: {
-                userButtonAvatarBox: {
-                  height: 36,
-                  width: 36,
-                  marginLeft: 8,
-                  marginBottom: 8
-                }
-              }
-            }}
-          />
           {/* {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>

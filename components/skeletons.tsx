@@ -125,6 +125,10 @@ export const BagPageSkeleton = () => {
 export const DashboardSkeleton = () => {
   return (
     <div className="">
+      <div className="flex items-center justify-between mb-4">
+        <Skeleton className="w-72 h-24" />
+        <Skeleton className="w-28 h-10" />
+      </div>
       {/* Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {[1, 2, 3].map(item => (

@@ -8,25 +8,39 @@ import { getDashboardStats } from '@/data/dashboard'
 
 export default async function Page() {
   const { productsInStock, orders, totalRevenue } = await getDashboardStats()
+  const ordersFromToday = orders.filter(({ order_created_at }) => {
+    return (
+      new Date(order_created_at).toDateString() === new Date().toDateString()
+    )
+  })
+  const totalRevenueFormatted = formatPrice(totalRevenue)
 
   return (
     <>
-      <div className="grid md:grid-cols-3 gap-2 mb-4">
-        <Card>
+      <div className="flex justify-between items-center mb-4">
+        <div>
+          <h2 className="text-2xl md:text-3xl font-bold">Your total Revenue</h2>
+          <span className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-red-500 via-rose-400 to-yellow-500 inline-block text-transparent bg-clip-text">
+            ${totalRevenueFormatted}
+          </span>
+        </div>
+        <div className="hidden md:block ml-auto text-xl font-bold">
+          {new Date().toLocaleDateString()}
+        </div>
+      </div>
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-0 mb-4">
+        <Card className="md:rounded-r-none md:border-r-0">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Orders from Today
+            </CardTitle>
             <DollarSignIcon />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">
-              ${formatPrice(totalRevenue)}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              +20.1% from last month
-            </p>
+            <div className="text-3xl font-bold">{ordersFromToday.length}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="md:rounded-none">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Products in stock
@@ -35,21 +49,15 @@ export default async function Page() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{productsInStock}</div>
-            <p className="text-xs text-muted-foreground">
-              +20.1% from last month
-            </p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="md:rounded-l-none md:border-l-0">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
             <CreditCardIcon />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{orders.length}</div>
-            <p className="text-xs text-muted-foreground">
-              +20.1% from last month
-            </p>
           </CardContent>
         </Card>
       </div>
@@ -67,20 +75,20 @@ function RecentOrders({ orders }: { orders: OrderType[] }) {
       <CardHeader>
         <CardTitle>Recent Orders</CardTitle>
       </CardHeader>
-      <CardContent className="grid gap-8">
+      <CardContent className="grid gap-4">
         {orders.slice(0, 6).map(order => {
           const { customer_name, customer_email, total_amount } = order
           const nameSplitted = customer_name.split(' ')
 
           return (
-            <div key={order.id} className="flex items-center gap-4">
+            <div key={order.id} className="flex flex-wrap items-center gap-4">
               <Avatar className="hidden h-9 w-9 sm:flex">
                 <AvatarImage src="/avatar.png" alt="Avatar" />
                 <AvatarFallback>
                   {nameSplitted[0][0] + nameSplitted[1][0]}
                 </AvatarFallback>
               </Avatar>
-              <div className="grid gap-1">
+              <div className="grid gap-2">
                 <p className="text-sm font-medium leading-none">
                   {customer_name}
                 </p>
@@ -88,7 +96,7 @@ function RecentOrders({ orders }: { orders: OrderType[] }) {
                   {customer_email}
                 </p>
               </div>
-              <div className="ml-auto font-medium">
+              <div className="text-sm sm:ml-auto font-medium">
                 +${formatPrice(total_amount / 100)}
               </div>
             </div>
