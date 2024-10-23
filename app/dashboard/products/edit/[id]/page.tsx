@@ -8,7 +8,7 @@ export const metadata = {
 
 export default async function Page({ params }: { params: { id: string } }) {
   const variantFields: VariantFields = await getNewProductFields()
-  const product = await getFullProduct({ id: params.id })
+  const product = await getFullProduct(params.id)
 
   if (!product)
     return (

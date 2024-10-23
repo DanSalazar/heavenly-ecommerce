@@ -48,7 +48,7 @@ export default function Price({
       <p
         className={cn(
           priceStyles({ size }),
-          'hidden text-red-500 font-semibold',
+          'hidden text-red-600 font-semibold',
           {
             block: discount
           }

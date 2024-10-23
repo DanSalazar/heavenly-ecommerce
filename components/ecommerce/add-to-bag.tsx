@@ -5,8 +5,8 @@ import ButtonAddBag from './button-add-bag'
 import { VariantsJoined } from '@/db/types'
 import LikeButton from './like-button'
 import useUrlState from '@/hooks/useUrlState'
-import PickOption from './pick-option'
 import ColorSelector from './color-selector'
+import SizeSelector from './size-selector'
 
 export default function AddToBag({
   variants,
@@ -69,7 +69,7 @@ export default function AddToBag({
   return (
     <div className="flex flex-col gap-4">
       <ColorSelector colors={colors} />
-      <PickOption optionName="Size" options={sizes} />
+      <SizeSelector sizes={sizes} />
       <div className="flex h-12 flex-wrap gap-2">
         <ButtonAddBag
           variantSelectedId={variantSelected?.id}

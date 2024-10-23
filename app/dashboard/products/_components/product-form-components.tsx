@@ -185,7 +185,7 @@ export const ProductVariantsForm = ({
       <CardHeader>
         <CardTitle>Stock</CardTitle>
         <CardDescription>Manage your stock</CardDescription>
-        {error && <p className="text-red-500 font-medium text-sm">{error}</p>}
+        {error && <p className="text-red-600 font-medium text-sm">{error}</p>}
       </CardHeader>
       <CardContent>
         <Table>

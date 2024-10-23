@@ -13,6 +13,7 @@ export default function Summary({ total }: { total: number }) {
         <OrderSummary title="Articles" price={total} />
         <OrderSummary title="Shipping" price={SHIPPING_PRICE} />
       </div>
+
       <div className="flex py-2 justify-between">
         <p className="font-medium capitalize text-xl">Total</p>
         <Price

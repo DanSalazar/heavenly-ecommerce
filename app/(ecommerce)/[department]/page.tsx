@@ -20,7 +20,8 @@ export function generateMetadata({
   params: { department: string }
 }) {
   return {
-    title: capitalizeWord(params.department) + ' Products'
+    title: capitalizeWord(params.department) + ' Products',
+    description: `Explore our exclusive collection of ${capitalizeWord(params.department)} products, carefully curated to meet your style and needs.`
   }
 }
 

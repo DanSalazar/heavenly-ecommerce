@@ -12,7 +12,7 @@ import {
   SidebarMenu,
   SidebarMenuItem
 } from '@/components/ui/sidebar'
-import { useAuth, UserButton, useUser } from '@clerk/nextjs'
+import { UserButton } from '@clerk/nextjs'
 import ToggleTheme from '@/app/dashboard/_components/toggle-theme'
 
 const data = {
@@ -48,9 +48,6 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const auth = useUser()
-  const userEmail = auth.user?.primaryEmailAddress?.emailAddress
-
   return (
     <Sidebar className="border-r-0" {...props}>
       <SidebarHeader>
@@ -73,8 +70,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   }
                 }}
               />
-              <p className="font-medium text-sm">{userEmail}</p>
-              <ToggleTheme className="ml-auto" />
+              <ToggleTheme />
             </div>
           </SidebarMenuItem>
         </SidebarMenu>

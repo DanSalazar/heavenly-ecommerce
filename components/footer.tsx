@@ -57,9 +57,11 @@ export default function Footer() {
               <li className="font-semibold text-black uppercase">
                 {navigationItem.title}
               </li>
-              <ul className="flex flex-col gap-2 mt-2">
-                <FooterNavigationList list={navigationItem.list} />
-              </ul>
+              <li>
+                <ul className="flex flex-col gap-2 mt-2">
+                  <FooterNavigationList list={navigationItem.list} />
+                </ul>
+              </li>
             </ul>
           ))}
         </div>

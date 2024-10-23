@@ -15,16 +15,16 @@ export default function ColorSelector({
       <h2 className="text-xl">
         Color{color ? ': ' + capitalizeWord(color) : ''}
       </h2>
-      <div className="flex gap-2">
+      <div className="flex gap-4">
         {colors.map(({ name, hex_code, isAvailable }) => (
           <button
             key={name}
             onClick={() => add('color', name)}
             title={`Color ${name}`}
             className={cn(
-              'w-5 h-5 rounded-full hover:ring-1 hover:ring-primary hover:ring-offset-2',
+              'w-6 h-6 rounded-full hover:ring-1 hover:ring-primary hover:ring-offset-4',
               {
-                'ring-1 ring-primary ring-offset-2':
+                'ring-1 ring-primary ring-offset-4':
                   color?.toLowerCase() === name,
                 'opacity-20 pointer-events-none': !isAvailable
               }

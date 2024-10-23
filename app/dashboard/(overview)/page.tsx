@@ -17,14 +17,14 @@ export default async function Page() {
 
   return (
     <>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between mb-4">
         <div>
           <h2 className="text-2xl md:text-3xl font-bold">Your total Revenue</h2>
           <span className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-red-500 via-rose-400 to-yellow-500 inline-block text-transparent bg-clip-text">
             ${totalRevenueFormatted}
           </span>
         </div>
-        <div className="hidden md:block ml-auto text-xl font-bold">
+        <div className="hidden md:block ml-auto text-sm">
           {new Date().toLocaleDateString()}
         </div>
       </div>
@@ -92,11 +92,11 @@ function RecentOrders({ orders }: { orders: OrderType[] }) {
                 <p className="text-sm font-medium leading-none">
                   {customer_name}
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="hidden sm:block text-sm text-muted-foreground">
                   {customer_email}
                 </p>
               </div>
-              <div className="text-sm sm:ml-auto font-medium">
+              <div className="text-sm ml-auto font-medium">
                 +${formatPrice(total_amount / 100)}
               </div>
             </div>

@@ -11,6 +11,7 @@ import AddToBag from './add-to-bag'
 import BreadcrumbWrapper from '../ui/breadcrumb-wrapper'
 import { getFullProduct } from '@/data/products'
 import { notFound } from 'next/navigation'
+import SizeGuide from './size-guide'
 
 export default async function ProductDetail({ id }: { id: string }) {
   const product = await getFullProduct(id)
@@ -28,8 +29,12 @@ export default async function ProductDetail({ id }: { id: string }) {
         <div className="flex flex-col gap-2 sticky">
           <h2
             className={marcellus.className + ' text-3xl uppercase break-words'}>
-            {product.name}
+            {product.brand}
           </h2>
+          <h3
+            className={marcellus.className + ' text-3xl uppercase break-words'}>
+            {product.name}
+          </h3>
           <Price
             size={'lg'}
             price={product.price}

@@ -49,7 +49,7 @@ export default function FiltersSelected() {
               key={value + j}
               data-key={key}
               data-value={value}
-              className="uppercase gap-2"
+              className="uppercase gap-2 border-primary"
               variant={'outline'}>
               {value}{' '}
               <X
@@ -64,7 +64,7 @@ export default function FiltersSelected() {
 
         {(priceFrom || priceTo) && (
           <Button
-            className="uppercase gap-2"
+            className="uppercase gap-2 border-primary"
             variant={'outline'}
             onClick={removePrice}>
             ${priceFrom || '0'} - ${priceTo || '...'}{' '}

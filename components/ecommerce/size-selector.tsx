@@ -2,33 +2,35 @@ import useUrlState from '@/hooks/useUrlState'
 import { Button } from '../ui/button'
 import { cn } from '@/lib/utils'
 import { capitalizeWord } from '@/lib/utils'
+import SizeGuide from './size-guide'
 
 export const NOT_AVAILABLE_BUTTON_CLASS =
   'relative z-10 cursor-not-allowed overflow-hidden bg-zinc-100 text-zinc-500 ring-1 ring-zinc-400 before:absolute before:inset-x-0 before:-z-10 before:h-px before:-rotate-45 before:bg-zinc-400 before:transition-transform'
 
-export default function PickOption({
-  optionName,
-  options
+export default function SizeSelector({
+  sizes
 }: {
-  optionName: string
-  options: { name: string; isAvailable: boolean }[]
+  sizes: { name: string; isAvailable: boolean }[]
 }) {
   const { add, getState } = useUrlState()
 
   return (
-    <div className="flex flex-col gap-2">
-      <h2 className="text-xl">{optionName}</h2>
+    <div className="flex flex-col">
+      <div className="flex justify-between">
+        <h2 className="text-xl">Size</h2>
+        <SizeGuide />
+      </div>
       <div className="flex gap-2 flex-wrap">
-        {options.map(option => {
-          if (!option) return null
+        {sizes.map(size => {
+          if (!size) return null
           return (
-            <OptionButton
-              key={option.name}
-              name={option.name}
-              optionName={optionName}
-              isAvailable={option.isAvailable}
+            <SizeButton
+              key={size.name}
+              name={size.name}
+              optionName={'size'}
+              isAvailable={size.isAvailable}
               add={add}
-              isSelected={getState(optionName.toLowerCase()) === option.name}
+              isSelected={getState('size') === size.name}
             />
           )
         })}
@@ -37,7 +39,7 @@ export default function PickOption({
   )
 }
 
-const OptionButton = ({
+const SizeButton = ({
   optionName,
   name,
   add,
@@ -54,7 +56,7 @@ const OptionButton = ({
 
   return (
     <Button
-      className={cn('border-primary/40 uppercase', {
+      className={cn('border-primary uppercase', {
         [NOT_AVAILABLE_BUTTON_CLASS]: !isAvailable
       })}
       size={'sm'}

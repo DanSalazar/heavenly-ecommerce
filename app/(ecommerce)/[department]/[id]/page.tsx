@@ -11,7 +11,9 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 
   return {
     title: product.name,
-    description: product.description
+    description:
+      product.description ||
+      'This is a great product that meets your needs and expectations.'
   }
 }
 
