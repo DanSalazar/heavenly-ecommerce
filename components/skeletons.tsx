@@ -1,11 +1,6 @@
-import { Button } from './ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from './ui/card'
+import { ArrowLeftIcon } from 'lucide-react'
+import { Button, buttonVariants } from './ui/button'
+import { Card, CardContent, CardHeader } from './ui/card'
 import { Select, SelectTrigger, SelectValue } from './ui/select'
 import { Skeleton } from './ui/skeleton'
 import {
@@ -16,6 +11,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
+import Link from 'next/link'
 
 export const ProductsWrapperSkeleton = () => (
   <div className="grid lg:grid-cols-products gap-4 border-t py-4 border-zinc-200">
@@ -36,7 +32,7 @@ export const ProductsFiltersSkeleton = () => (
   <div className="flex justify-between">
     <Button>Filters</Button>
     <Select>
-      <SelectTrigger className="w-[200px] font-medium">
+      <SelectTrigger className="w-[200px] font-medium border-primary">
         <SelectValue placeholder="Relevance"></SelectValue>
       </SelectTrigger>
     </Select>
@@ -294,69 +290,42 @@ export const SocialsSkeletons = () => (
 )
 
 export const NewProductSkeleton = () => (
-  <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
-    <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
-      <Card className="h-[400px]">
-        <CardHeader>
-          <CardTitle>Product Details</CardTitle>
-          <CardDescription>Add your product details</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Skeleton className="h-[250px] w-full" />
-        </CardContent>
-      </Card>
-
-      <Card className="h-[300px]">
-        <CardHeader>
-          <CardTitle>Product Variants</CardTitle>
-          <CardDescription>Manage your product variants</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Skeleton className="w-full h-full" />
-        </CardContent>
-      </Card>
-
-      <Card className="h-[200px]">
-        <CardHeader>
-          <CardTitle>Product Archive</CardTitle>
-          <CardDescription>Archive your product details</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Skeleton className="w-full h-full" />
-        </CardContent>
-      </Card>
+  <>
+    <div className="flex flex-wrap items-center gap-4 mb-4">
+      <Link
+        href={'/dashboard/products'}
+        className={buttonVariants({
+          variant: 'outline',
+          size: 'icon'
+        })}>
+        <ArrowLeftIcon width={18} height={18} />
+        <span className="sr-only">Back</span>
+      </Link>
+      <h1 className="flex-1 text-2xl font-semibold tracking-tight">
+        Create a new product
+      </h1>
+      <div className="hidden md:block md:ml-auto space-x-2">
+        <Button variant={'outline'}>Cancel</Button>
+        <Button type="submit" disabled={true}>
+          Create Product
+        </Button>
+      </div>
     </div>
+    <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
+      <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
+        <Skeleton className="h-[500px]" />
+        <Skeleton className="h-[300px]" />
+        <div className="grid grid-cols-2 gap-4">
+          <Skeleton className="h-[100px]" />
+          <Skeleton className="h-[100px]" />
+        </div>
+      </div>
 
-    <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
-      <Card className="h-[200px]">
-        <CardHeader>
-          <CardTitle>Product Category</CardTitle>
-          <CardDescription>Select your product category</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Skeleton />
-        </CardContent>
-      </Card>
-
-      <Card className="h-[200px]">
-        <CardHeader>
-          <CardTitle>Product Department</CardTitle>
-          <CardDescription>Select your product department</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Skeleton className="w-full h-full" />
-        </CardContent>
-      </Card>
-
-      <Card className="h-[200px]">
-        <CardHeader>
-          <CardTitle>Product Image</CardTitle>
-          <CardDescription>Upload your product image</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Skeleton className="w-full h-full" />
-        </CardContent>
-      </Card>
+      <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
+        <Skeleton className="h-[150px]" />
+        <Skeleton className="h-[150px]" />
+        <Skeleton className="h-[350px]" />
+      </div>
     </div>
-  </div>
+  </>
 )

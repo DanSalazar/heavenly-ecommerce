@@ -17,7 +17,9 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="flex gap-3 justify-end items-center bg-white">
-        <SearchProduct className="hidden md:block w-[300px]" />
+        <Suspense>
+          <SearchProduct className="hidden md:block w-[300px]" />
+        </Suspense>
         <Link href={'/favorites'} aria-label="View favorites">
           <HeartIcon width={24} height={24} />
         </Link>

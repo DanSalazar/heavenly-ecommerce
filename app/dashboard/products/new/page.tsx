@@ -7,7 +7,6 @@ export const metadata = {
 }
 
 export default async function Page() {
-  await new Promise(resolve => setTimeout(resolve, 20000))
   const variantFields: VariantFields = await getNewProductFields()
 
   return <ProductForm variantFields={variantFields} />

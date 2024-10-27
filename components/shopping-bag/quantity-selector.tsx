@@ -21,10 +21,10 @@ export function QuantitySelector({
     <div className="flex gap-2 items-center">
       <p className="font-medium">Quantity:</p>
       <Select onValueChange={value => handleChange(Number(value))}>
-        <SelectTrigger className="w-[80px]" value={quantity}>
+        <SelectTrigger className="w-[80px] border-primary" value={quantity}>
           <SelectValue placeholder={quantity} />
         </SelectTrigger>
-        <SelectContent className="max-h-[250px]">
+        <SelectContent className="max-h-[250px] border-primary">
           <SelectGroup>
             <SelectLabel>Quantity</SelectLabel>
             {Array(max)
