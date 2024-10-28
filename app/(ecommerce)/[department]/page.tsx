@@ -33,6 +33,8 @@ export default async function Page({
   searchParams: Record<string, string>
 }) {
   if (!departments.includes(params.department)) return notFound()
+  const page = Number(searchParams.page) || 0
+  const paramsLength = Object.keys(searchParams).length + page
 
   return (
     <>
@@ -41,7 +43,7 @@ export default async function Page({
         <h2 className="text-7xl md:text-8xl font-medium uppercase break-words">
           {params.department}
         </h2>
-        <Suspense fallback={<ProductsWithFiltersSkeleton />}>
+        <Suspense key={paramsLength} fallback={<ProductsWithFiltersSkeleton />}>
           <ProductsWithFilters
             department={params.department}
             searchParams={searchParams}

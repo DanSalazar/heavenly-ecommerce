@@ -43,7 +43,7 @@ export default function SearchProduct({
         type="search"
         defaultValue={searchParams?.get('q') || ''}
         autoComplete="off"
-        className="w-full pl-8 justify-center"
+        className="w-full pl-8 justify-center border-primary/20"
       />
     </form>
   )

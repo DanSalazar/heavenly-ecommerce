@@ -15,11 +15,16 @@ export const metadata = {
 export default async function Page({
   searchParams
 }: {
-  searchParams: { q: string }
+  searchParams: { q: string; page: string }
 }) {
+  const paramsLength = Object.keys(searchParams).length
+  const currentPage = Number(searchParams.page || 0)
+
   return (
     <main className="flex flex-col gap-4">
-      <Suspense key={searchParams.q} fallback={<ProductsWithFiltersSkeleton />}>
+      <Suspense
+        key={currentPage + paramsLength + (searchParams.q || '')}
+        fallback={<ProductsWithFiltersSkeleton />}>
         <ProductsWithFilters key={searchParams.q} searchParams={searchParams} />
       </Suspense>
       <Suspense fallback={<PaginationSkeleton />}>

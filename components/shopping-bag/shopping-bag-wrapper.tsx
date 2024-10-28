@@ -14,7 +14,7 @@ function ShoppingBagWrapper({ bag }: { bag: BagItem[] }) {
   const { isOpen, handleOpen } = useShoppingBagContext()
   const total = reduceBagPrice(bag)
   const className =
-    'max-h-[500px] transition-transform ease-in-out duration-700 transform -translate-y-[500px] group-hover:translate-y-0 flex flex-col gap-2 px-4 py-6 -z-20 bg-white w-[300px] md:w-[350px] absolute right-0 top-[63px] border-b border-r border-l border-zinc-200'
+    'max-h-[500px] transition-transform ease-in-out duration-700 transform -translate-y-[500px] group-hover:translate-y-0 flex flex-col gap-2 px-4 py-6 -z-20 bg-white w-[300px] md:w-[350px] absolute right-0 top-[63px] border-b border-r border-l border-primary/20'
 
   useEffect(() => {
     let timer: NodeJS.Timeout

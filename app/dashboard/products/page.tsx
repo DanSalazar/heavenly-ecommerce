@@ -26,7 +26,9 @@ export const metadata = {
 }
 
 export default async function Page({ searchParams }: { searchParams: any }) {
-  const v = searchParams.page || 0
+  const paramsLength = Object.keys(searchParams).length
+  const currentPage = Number(searchParams.page || 0)
+
   return (
     <>
       <div className="flex justify-between gap-2 flex-wrap mb-4">
@@ -59,7 +61,9 @@ export default async function Page({ searchParams }: { searchParams: any }) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Suspense key={v} fallback={<ProductsTableSkeleton />}>
+          <Suspense
+            key={currentPage + paramsLength + (searchParams.q || '')}
+            fallback={<ProductsTableSkeleton />}>
             <ProductsTableContainer searchParams={searchParams} />
           </Suspense>
         </CardContent>

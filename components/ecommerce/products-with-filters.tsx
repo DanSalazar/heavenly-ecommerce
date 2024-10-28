@@ -87,7 +87,9 @@ export default async function ProductsWithFilters({
 function NoProductsAvailable() {
   return (
     <>
-      <p className="text-3xl">Oops! No Products Found in This Department</p>
+      <p className="text-2xl md:text-5xl font-bold">
+        Oops! No Products Found in This Department
+      </p>
       <p>
         It seems we don&apos;t have any products available right now. Please
         consider exploring other departments or check back later for new
@@ -100,7 +102,9 @@ function NoProductsAvailable() {
 function NoSearchResults() {
   return (
     <>
-      <p className="text-3xl">No products matched your search</p>
+      <p className="text-2xl md:text-5xl font-bold">
+        No products matched your search
+      </p>
       <p>
         We couldn&apos;t find any products matching your search criteria. Please
         check your spelling, try using broader terms, or explore our popular
