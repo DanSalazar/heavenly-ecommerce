@@ -20,7 +20,7 @@ export default async function Page() {
       <div className="flex justify-between mb-4">
         <div>
           <h2 className="text-2xl md:text-3xl font-bold">Your total Revenue</h2>
-          <span className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-red-500 via-rose-400 to-yellow-500 inline-block text-transparent bg-clip-text">
+          <span className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-sky-500 via-blue-400 to-indigo-500 inline-block text-transparent bg-clip-text">
             ${totalRevenueFormatted}
           </span>
         </div>

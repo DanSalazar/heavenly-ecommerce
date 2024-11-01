@@ -12,8 +12,9 @@ import {
   SidebarMenu,
   SidebarMenuItem
 } from '@/components/ui/sidebar'
-import { UserButton } from '@clerk/nextjs'
 import ToggleTheme from '@/app/dashboard/_components/toggle-theme'
+import { useUser } from '@clerk/nextjs'
+import { NavUser } from './user-sidebar'
 
 const data = {
   navMain: [
@@ -48,8 +49,15 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user } = useUser()
+  const userData = {
+    name: user?.username || 'Admin',
+    email: user?.emailAddresses[0].emailAddress!,
+    avatar: user?.imageUrl!
+  }
+
   return (
-    <Sidebar className="border-r-0" {...props}>
+    <Sidebar collapsible="icon" className="border-r-0" {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
@@ -58,20 +66,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
       <SidebarFooter>
         <SidebarMenu>
-          <SidebarMenuItem>
-            <div className="flex items-center gap-2">
-              <UserButton
-                appearance={{
-                  elements: {
-                    userButtonAvatarBox: {
-                      height: 42,
-                      width: 42
-                    }
-                  }
-                }}
-              />
-              <ToggleTheme />
-            </div>
+          <SidebarMenuItem className="space-y-2">
+            <ToggleTheme />
+            <NavUser user={userData} />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

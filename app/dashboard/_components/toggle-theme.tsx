@@ -12,13 +12,13 @@ export default function ToggleTheme({ className }: { className?: string }) {
       variant={'ghost'}
       title="Toggle Theme"
       size="icon"
-      className={className + ' rounded-full'}
+      className={className + ' rounded-full md:w-full'}
       onClick={theme?.toggleTheme}>
       <span className="sr-only">Toggle Theme</span>
       {theme?.isDarkTheme ? (
-        <MoonIcon strokeWidth={1.5} />
+        <MoonIcon strokeWidth={1.5} size={18} />
       ) : (
-        <SunIcon strokeWidth={1.5} />
+        <SunIcon strokeWidth={1.5} size={18} />
       )}
     </Button>
   )
