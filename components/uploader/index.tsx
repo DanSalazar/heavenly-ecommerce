@@ -62,7 +62,7 @@ export default function Uploader({
   })
 
   const uploaderClassName =
-    'flex flex-col gap-1 border border-dashed border-zinc-800 rounded-lg p-6 text-center hover:border-blue-600 hover:text-blue-600 transition-colors duration-300 cursor-pointer'
+    'flex flex-col gap-1 border border-dashed border-zinc-700 rounded-lg p-6 text-center hover:border-indigo-500 hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors cursor-pointer'
   const gridClass = getGridClass(
     images.pendingImages.length +
       images.uploadedImages.length +
@@ -110,7 +110,7 @@ export default function Uploader({
     <>
       <div className="mb-4">
         <h3
-          className={cn('text-sm font-medium', {
+          className={cn('font-medium', {
             'mb-4':
               (images.productImages?.length || 0) +
               images.pendingImages.length +
@@ -119,7 +119,7 @@ export default function Uploader({
           Attachments
         </h3>
         <div className={cn('grid gap-6 grid-cols-1', gridClass)}>
-          {images.productImages?.map((image, index) => (
+          {images.productImages?.map(image => (
             <ImageItem
               key={image.key}
               title={image.name}
@@ -134,6 +134,7 @@ export default function Uploader({
               />
             </ImageItem>
           ))}
+
           {images.uploadedImages.length > 0 &&
             images.uploadedImages.map((image, index) => (
               <ImageItem key={index} title={image.name} date={image.created_at}>
@@ -147,6 +148,7 @@ export default function Uploader({
                 />
               </ImageItem>
             ))}
+
           {images.pendingImages.length > 0 &&
             images.pendingImages.map((image, index) => (
               <ImageItem key={index} title={image.name}>

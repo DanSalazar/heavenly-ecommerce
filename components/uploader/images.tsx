@@ -18,7 +18,7 @@ export const Thumbnail = ({
   return (
     <>
       {thumbnail === src && (
-        <span className="z-20 py-1 px-2 text-xs text-white bg-primary rounded-full absolute top-2 right-2">
+        <span className="z-20 py-1 px-2 text-xs text-white bg-indigo-600 rounded-full absolute top-2 right-2">
           Thumbnail
         </span>
       )}
@@ -50,11 +50,10 @@ export const UploadImage = ({
         fill
         className="rounded-lg w-full object-cover"
       />
-      <div className="absolute inset-0 bg-primary/40 opacity-0 rounded-lg group-hover:opacity-100 transition-opacity flex items-end justify-end p-2 gap-2">
+      <div className="absolute inset-0 opacity-0 rounded-lg group-hover:opacity-100 transition-opacity flex items-end justify-end p-2 gap-2">
         <button title="Delete this image">
           <Trash
             onClick={() => deleteFile(uploadKey, src)}
-            strokeWidth={1.5}
             className="w-5 h-5 text-white"
           />
           <span className="sr-only">Delete this image</span>
@@ -62,7 +61,7 @@ export const UploadImage = ({
         <button
           title="Set this image as thumbnail"
           onClick={() => setThumbnail(src)}>
-          <ImageIcon strokeWidth={1.5} className="w-5 h-5 text-white" />
+          <ImageIcon className="w-5 h-5 text-white" />
           <span className="sr-only">Set this image as thumbnail</span>
         </button>
       </div>
