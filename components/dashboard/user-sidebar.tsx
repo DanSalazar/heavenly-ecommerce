@@ -95,7 +95,7 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <SignOutButton>
+              <SignOutButton redirectUrl="/dashboard/sign-in">
                 <button className="flex gap-2 items-center w-full">
                   <LogOut width={18} height={18} strokeWidth={1.5} />
                   Log out

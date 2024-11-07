@@ -39,7 +39,8 @@ function updateProductsStockSQL(stockUpdates: StockUpdate[]): [number[], SQL] {
 
 export const createOrders = baseAction
   .schema(orderSchema, {
-    handleValidationErrorsShape: ve => flattenValidationErrors(ve).fieldErrors
+    handleValidationErrorsShape: async ve =>
+      flattenValidationErrors(ve).fieldErrors
   })
   .action(
     async ({
@@ -50,7 +51,8 @@ export const createOrders = baseAction
         payment_method
       }
     }) => {
-      const bag_id = cookies().get('bag_id')?.value!
+      const ck = await cookies()
+      const bag_id = ck.get('bag_id')?.value!
 
       const bagData = await db.query.bag.findFirst({
         where: ({ id }, { eq }) => eq(id, bag_id),
@@ -81,7 +83,7 @@ export const createOrders = baseAction
             .where(inArray(productVariations.id, ids))
           await db.delete(bag).where(eq(bag.id, bag_id))
 
-          cookies().delete('bag_id')
+          ck.delete('bag_id')
         } catch (error) {
           return { error: 'An error occurred while updating product stock.' }
         }

@@ -27,7 +27,7 @@ export default function Page() {
         <FeaturedProducts />
       </Suspense>
 
-      {/* <Newsletter /> */}
+      <Newsletter />
     </main>
   )
 }

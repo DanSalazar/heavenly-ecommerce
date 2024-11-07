@@ -14,14 +14,15 @@ export const dynamic = 'force-dynamic'
 
 const departments = ['men', 'women']
 
-export function generateMetadata({
+export async function generateMetadata({
   params
 }: {
-  params: { department: string }
+  params: Promise<{ department: string }>
 }) {
+  const department = (await params).department
   return {
-    title: capitalizeWord(params.department) + ' Products',
-    description: `Explore our exclusive collection of ${capitalizeWord(params.department)} products, carefully curated to meet your style and needs.`
+    title: capitalizeWord(department) + ' Products',
+    description: `Explore our exclusive collection of ${capitalizeWord(department)} products, carefully curated to meet your style and needs.`
   }
 }
 
@@ -29,31 +30,32 @@ export default async function Page({
   params,
   searchParams
 }: {
-  params: { department: string }
-  searchParams: Record<string, string>
+  params: Promise<{ department: string }>
+  searchParams: Promise<Record<string, string>>
 }) {
-  if (!departments.includes(params.department)) return notFound()
-  const page = Number(searchParams.page) || 0
-  const paramsLength = Object.keys(searchParams).length + page
+  const query = await searchParams
+  const department = (await params).department
+
+  if (!departments.includes(department)) return notFound()
+
+  const page = Number(query.page) || 0
+  const paramsLength = Object.keys(query).length + page
 
   return (
     <>
       <BreadcrumbWrapper />
       <main className="flex flex-col gap-2 mt-12">
         <h2 className="text-7xl md:text-8xl font-medium uppercase break-words">
-          {params.department}
+          {department}
         </h2>
         <Suspense key={paramsLength} fallback={<ProductsWithFiltersSkeleton />}>
-          <ProductsWithFilters
-            department={params.department}
-            searchParams={searchParams}
-          />
+          <ProductsWithFilters department={department} query={query} />
         </Suspense>
         <Suspense fallback={<PaginationSkeleton />}>
           <PaginationWrapper
             productsPerPage={PRODUCTS_PER_PAGE}
-            department={params.department}
-            searchParams={searchParams}
+            department={department}
+            query={query}
           />
         </Suspense>
       </main>

@@ -13,7 +13,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@clerk/nextjs": "5.2.8",
+    "@clerk/nextjs": "^6.2.0",
     "@clerk/themes": "2.1.14",
     "@hookform/resolvers": "3.3.4",
     "@next/env": "14.2.3",
@@ -43,7 +43,7 @@
     "clsx": "2.1.1",
     "drizzle-orm": "0.30.10",
     "lucide-react": "0.414.0",
-    "next": "14.2.3",
+    "next": "^15.0.2",
     "next-safe-action": "7.9.2",
     "pg": "8.11.5",
     "react": "18",

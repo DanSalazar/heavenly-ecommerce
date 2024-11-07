@@ -16,8 +16,8 @@ export const baseAction = createSafeActionClient({
   }
 })
 
-export const safeAction = baseAction.use(({ next }) => {
-  const { userId } = auth()
+export const safeAction = baseAction.use(async ({ next }) => {
+  const { userId } = await auth()
 
   if (!userId) {
     throw new AuthError('Access denied.')

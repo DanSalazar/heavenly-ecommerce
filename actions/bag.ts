@@ -12,7 +12,8 @@ import { flattenValidationErrors } from 'next-safe-action'
 const idSchema = z.coerce.number()
 
 const getOrCreateBagId = async () => {
-  let bag_id = cookies().get('bag_id')?.value
+  const ck = await cookies()
+  let bag_id = ck.get('bag_id')?.value
 
   if (!bag_id) {
     bag_id = crypto.randomUUID()
@@ -20,7 +21,7 @@ const getOrCreateBagId = async () => {
       id: bag_id
     })
 
-    cookies().set('bag_id', bag_id, {
+    ck.set('bag_id', bag_id, {
       path: '/'
     })
   }
@@ -66,7 +67,8 @@ const updateQuantitySchema = z.object({
 
 export const updateQuantityInBag = baseAction
   .schema(updateQuantitySchema, {
-    handleValidationErrorsShape: ve => flattenValidationErrors(ve).fieldErrors
+    handleValidationErrorsShape: async ve =>
+      flattenValidationErrors(ve).fieldErrors
   })
   .action(async ({ parsedInput: { id, quantity } }) => {
     try {

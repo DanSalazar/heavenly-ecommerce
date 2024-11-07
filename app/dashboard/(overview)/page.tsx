@@ -18,14 +18,9 @@ export default async function Page() {
   return (
     <>
       <div className="flex justify-between mb-4">
-        <div>
-          <h2 className="text-2xl md:text-3xl font-bold">Your total Revenue</h2>
-          <span className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-sky-500 via-blue-400 to-indigo-500 inline-block text-transparent bg-clip-text">
-            ${totalRevenueFormatted}
-          </span>
-        </div>
-        <div className="hidden md:block ml-auto text-sm">
-          {new Date().toLocaleDateString()}
+        <TotalRevenueDisplay totalRevenue={totalRevenueFormatted} />
+        <div className="hidden md:block ml-auto text-sm font-medium">
+          {new Date().toLocaleString()}
         </div>
       </div>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-0 mb-4">
@@ -104,5 +99,16 @@ function RecentOrders({ orders }: { orders: OrderType[] }) {
         })}
       </CardContent>
     </Card>
+  )
+}
+
+function TotalRevenueDisplay({ totalRevenue }: { totalRevenue: string }) {
+  return (
+    <div>
+      <h2 className="text-2xl md:text-3xl font-bold">Your total Revenue</h2>
+      <span className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-fuchsia-600 dark:from-fuchsia-400 via-purple-600 dark:via-purple-400 to-violet-600 dark:to-violet-400 inline-block text-transparent bg-clip-text">
+        ${totalRevenue}
+      </span>
+    </div>
   )
 }

@@ -15,23 +15,21 @@ export const metadata = {
 export default async function Page({
   searchParams
 }: {
-  searchParams: { q: string; page: string }
+  searchParams: Promise<{ q: string; page: string }>
 }) {
-  const paramsLength = Object.keys(searchParams).length
-  const currentPage = Number(searchParams.page || 0)
+  const params = await searchParams
+  const paramsLength = Object.keys(params).length
+  const currentPage = Number(params.page || 0)
 
   return (
     <main className="flex flex-col gap-4">
       <Suspense
-        key={currentPage + paramsLength + (searchParams.q || '')}
+        key={currentPage + paramsLength + (params.q || '')}
         fallback={<ProductsWithFiltersSkeleton />}>
-        <ProductsWithFilters key={searchParams.q} searchParams={searchParams} />
+        <ProductsWithFilters key={params.q} query={params} />
       </Suspense>
       <Suspense fallback={<PaginationSkeleton />}>
-        <PaginationWrapper
-          productsPerPage={PRODUCTS_PER_PAGE}
-          searchParams={searchParams}
-        />
+        <PaginationWrapper productsPerPage={PRODUCTS_PER_PAGE} query={params} />
       </Suspense>
     </main>
   )

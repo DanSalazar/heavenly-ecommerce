@@ -10,18 +10,18 @@ import {
 
 export default async function ProductsWithFilters({
   department = '',
-  searchParams = {}
+  query = {}
 }: {
   department?: string
-  searchParams: Record<string, string>
+  query: Record<string, string>
 }) {
-  const page = searchParams?.page ? Number(searchParams.page) : 0
+  const page = query?.page ? Number(query.page) : 0
   const offset = page > 0 ? (page - 1) * PRODUCTS_PER_PAGE : 0
 
   const products =
-    Object.keys(searchParams).length > 0
+    Object.keys(query).length > 0
       ? await getProductsByQuery({
-          query: searchParams,
+          query: query,
           department,
           offset,
           limit: PRODUCTS_PER_PAGE
@@ -44,11 +44,11 @@ export default async function ProductsWithFilters({
   const filters = await getFilters(ids)
 
   const productsWithinPriceRange =
-    searchParams.price_from || searchParams.price_to
+    query.price_from || query.price_to
       ? products.filter(({ product }) => {
           const price = product.price
-          const price_from = Number(searchParams.price_from)
-          const price_to = Number(searchParams.price_to)
+          const price_from = Number(query.price_from)
+          const price_to = Number(query.price_to)
 
           return (
             (price_from ? price >= price_from : true) &&
@@ -73,12 +73,10 @@ export default async function ProductsWithFilters({
                 product={product.product}
               />
             ))
-          : !searchParams.q && <NoProductsAvailable />}
+          : !query.q && <NoProductsAvailable />}
 
         {/* For search page */}
-        {searchParams?.q && !productsWithinPriceRange.length && (
-          <NoSearchResults />
-        )}
+        {query?.q && !productsWithinPriceRange.length && <NoSearchResults />}
       </ProductsWrapper>
     </>
   )

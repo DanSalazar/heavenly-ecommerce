@@ -25,9 +25,16 @@ export const metadata = {
   title: 'Products'
 }
 
-export default async function Page({ searchParams }: { searchParams: any }) {
-  const paramsLength = Object.keys(searchParams).length
-  const currentPage = Number(searchParams.page || 0)
+export default async function Page({
+  searchParams
+}: {
+  searchParams: Promise<Record<string, string>>
+}) {
+  const query = await searchParams
+  const paramsLength = Object.keys(query).length
+  const currentPage = Number(query.page || 0)
+
+  const suspenseKey = currentPage + paramsLength + (query.q || '')
 
   return (
     <>
@@ -60,18 +67,18 @@ export default async function Page({ searchParams }: { searchParams: any }) {
             Manage your products and view their sales performance.
           </CardDescription>
         </CardHeader>
+
         <CardContent>
-          <Suspense
-            key={currentPage + paramsLength + (searchParams.q || '')}
-            fallback={<ProductsTableSkeleton />}>
-            <ProductsTableContainer searchParams={searchParams} />
+          <Suspense key={suspenseKey} fallback={<ProductsTableSkeleton />}>
+            <ProductsTableContainer query={query} />
           </Suspense>
         </CardContent>
+
         <CardFooter>
-          <Suspense fallback={<PaginationSkeleton />}>
+          <Suspense key={suspenseKey} fallback={<PaginationSkeleton />}>
             <PaginationWrapper
               productsPerPage={PRODUCTS_PER_ROW}
-              searchParams={searchParams}
+              query={query}
             />
           </Suspense>
         </CardFooter>

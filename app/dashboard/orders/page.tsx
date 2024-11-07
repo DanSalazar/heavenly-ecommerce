@@ -17,15 +17,20 @@ export const metadata = {
   title: 'Orders'
 }
 
-export default async function Page({ searchParams }: { searchParams: any }) {
-  const page = searchParams?.page ? Number(searchParams.page) : 0
+export default async function Page({
+  searchParams
+}: {
+  searchParams: Promise<Record<string, string>>
+}) {
+  const query = await searchParams
+  const page = query.page ? Number(query.page) : 0
   const offset = page > 0 ? (page - 1) * PRODUCTS_PER_ROW : 0
   const orders = await getOrders({
-    query: searchParams,
     limit: PRODUCTS_PER_ROW,
+    query,
     offset
   })
-  const ordersLength = await getOrdersLength(searchParams)
+  const ordersLength = await getOrdersLength(query)
 
   return (
     <>

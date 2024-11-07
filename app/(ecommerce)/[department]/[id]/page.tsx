@@ -4,8 +4,13 @@ import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { ProductPageSkeleton } from '@/components/skeletons'
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const product = await getFullProduct(params.id)
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const { id } = await params
+  const product = await getFullProduct(id)
 
   if (!product) return notFound()
 
@@ -20,11 +25,12 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 export default async function Page({
   params
 }: {
-  params: { department: string; id: string }
+  params: Promise<{ department: string; id: string }>
 }) {
+  const { id } = await params
   return (
     <Suspense fallback={<ProductPageSkeleton />}>
-      <ProductDetail id={params.id} />
+      <ProductDetail id={id} />
     </Suspense>
   )
 }

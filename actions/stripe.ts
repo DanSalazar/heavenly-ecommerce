@@ -23,8 +23,8 @@ type LineItem = {
 }
 
 export const createSession = async () => {
-  const url = 'http://' + headers().get('host')
-  const bagId = cookies().get('bag_id')?.value
+  const url = 'http://' + (await headers()).get('host')
+  const bagId = (await cookies()).get('bag_id')?.value
 
   if (!bagId) {
     return {

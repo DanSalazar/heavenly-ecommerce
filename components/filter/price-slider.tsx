@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react'
+import { useState } from 'react'
 import * as SliderPrimitive from '@radix-ui/react-slider'
 import { cn } from '@/lib/utils'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
@@ -64,53 +64,47 @@ type SliderProps = {
   onValueCommit?: (values: number[]) => void
 }
 
-const Slider = forwardRef(
-  (
-    {
-      className,
-      min,
-      max,
-      step,
-      value,
-      onValueChange,
-      onValueCommit,
-      ...props
-    }: SliderProps,
-    ref
-  ) => {
-    const handleValueChange = (newValues: number[]) => {
-      onValueChange(newValues)
-    }
-
-    // Adjust the value array if min and max are the same
-    const adjustedValue = min === max ? [min, max + 1] : value
-
-    return (
-      <SliderPrimitive.Root
-        ref={ref as React.RefObject<HTMLDivElement>}
-        min={min}
-        max={min === max ? max + 1 : max}
-        step={step}
-        value={adjustedValue}
-        onValueChange={handleValueChange}
-        onValueCommit={onValueCommit}
-        className={cn(
-          'relative flex w-full touch-none select-none mb-6 items-center',
-          className
-        )}
-        {...props}>
-        <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-secondary">
-          <SliderPrimitive.Range className="absolute h-full bg-primary" />
-        </SliderPrimitive.Track>
-        {adjustedValue.map((_, index) => (
-          <SliderPrimitive.Thumb
-            key={index}
-            className="cursor-pointer block h-6 w-6 rounded-full bg-background transition ease-in-out border-2 border-primary focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-          />
-        ))}
-      </SliderPrimitive.Root>
-    )
+const Slider = ({
+  className,
+  min,
+  max,
+  step,
+  value,
+  onValueChange,
+  onValueCommit,
+  ...props
+}: SliderProps) => {
+  const handleValueChange = (newValues: number[]) => {
+    onValueChange(newValues)
   }
-)
+
+  // Adjust the value array if min and max are the same
+  const adjustedValue = min === max ? [min, max + 1] : value
+
+  return (
+    <SliderPrimitive.Root
+      min={min}
+      max={min === max ? max + 1 : max}
+      step={step}
+      value={adjustedValue}
+      onValueChange={handleValueChange}
+      onValueCommit={onValueCommit}
+      className={cn(
+        'relative flex w-full touch-none select-none mb-6 items-center',
+        className
+      )}
+      {...props}>
+      <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-secondary">
+        <SliderPrimitive.Range className="absolute h-full bg-primary" />
+      </SliderPrimitive.Track>
+      {adjustedValue.map((_, index) => (
+        <SliderPrimitive.Thumb
+          key={index}
+          className="cursor-pointer block h-6 w-6 rounded-full bg-background transition ease-in-out border-2 border-primary focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+        />
+      ))}
+    </SliderPrimitive.Root>
+  )
+}
 
 Slider.displayName = SliderPrimitive.Root.displayName

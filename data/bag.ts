@@ -5,7 +5,7 @@ import { db } from '@/db'
 import { BagItem } from '@/db/types'
 
 export const getBag = cache(async (): Promise<BagItem[]> => {
-  const bagId = cookies().get('bag_id')?.value || ''
+  const bagId = (await cookies()).get('bag_id')?.value || ''
 
   const bag = await db.query.bag.findFirst({
     where: (field, { eq }) => eq(field.id, bagId),
