@@ -6,6 +6,7 @@ import { mainFont } from '@/components/fonts'
 import { Toaster } from '@/components/ui/toaster'
 import { ShoppingBagProvider } from '@/components/providers/shopping-bag-provider'
 import GoToTopButton from '@/components/go-to-top-button'
+import { cn } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: {
@@ -23,9 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <ShoppingBagProvider>
         <body
-          className={
-            mainFont.className + ' flex flex-col gap-4 !px-4 md:!px-12'
-          }>
+          className={cn('flex flex-col !px-4 md:!px-12', mainFont.className)}>
           <Navbar />
           {children}
           <Footer />

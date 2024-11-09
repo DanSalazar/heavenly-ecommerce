@@ -19,7 +19,7 @@ export default function BreadcrumbWrapper({ pathname }: { pathname?: string }) {
   if (pathObject.length === 1) return null
 
   return (
-    <Breadcrumb>
+    <Breadcrumb className="my-4">
       <BreadcrumbList>
         {pathObject.map((item, i) => (
           <Fragment key={item.id}>

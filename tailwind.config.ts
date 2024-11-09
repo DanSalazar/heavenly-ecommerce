@@ -19,6 +19,9 @@ const config = {
       }
     },
     extend: {
+      screens: {
+        sm: '375px'
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -113,15 +116,18 @@ const config = {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         heart: 'heart 0.2s linear',
-        fade: 'fade 0.2s linear',
-        sexo: 'sexo 400ms ease-in-out'
+        fade: 'fade 0.2s linear'
       },
       gridTemplateColumns: {
         products: 'repeat(auto-fill, minmax(300px, 1fr))'
       }
     }
   },
-  plugins: [require('tailwindcss-animate'), require('tailwind-scrollbar')]
+  plugins: [
+    require('tailwindcss-animate'),
+    require('tailwind-scrollbar'),
+    require('@tailwindcss/typography')
+  ]
 } satisfies Config
 
 export default withUt(config)
