@@ -37,7 +37,13 @@ export default function ProductBag({
       className={cn('relative flex items-start gap-2', {
         'pointer-events-none opacity-20': isPending
       })}>
-      <Image width={92} height={92} src={thumbnail} alt={name} />
+      <Image
+        width={120}
+        height={120}
+        src={thumbnail}
+        className="object-cover"
+        alt={name}
+      />
 
       <div className="relative overflow-hidden">
         <h2 className="font-medium text-sm uppercase truncate">{name}</h2>

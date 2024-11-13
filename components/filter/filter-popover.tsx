@@ -18,7 +18,7 @@ export default function FilterPopover({
         <Button className="gap-2">Filters</Button>
       </PopoverTrigger>
       <PopoverContent
-        className="flex lg:w-[400px] flex-col gap-4 border-primary"
+        className="flex lg:w-[400px] flex-col gap-4"
         sideOffset={8}
         align="start">
         <div className="flex items-center gap-2">

@@ -5,7 +5,7 @@ import { capitalizeWord } from '@/lib/utils'
 import SizeGuide from './size-guide'
 
 export const NOT_AVAILABLE_BUTTON_CLASS =
-  'relative z-10 cursor-not-allowed overflow-hidden bg-zinc-100 text-zinc-500 ring-1 ring-zinc-400 before:absolute before:inset-x-0 before:-z-10 before:h-px before:-rotate-45 before:bg-zinc-400 before:transition-transform'
+  'relative z-10 cursor-not-allowed overflow-hidden bg-zinc-100 text-zinc-500 ring-1 ring-muted before:absolute before:inset-x-0 before:-z-10 before:h-px before:-rotate-45 before:bg-primary/40'
 
 export default function SizeSelector({
   sizes
@@ -56,7 +56,7 @@ const SizeButton = ({
 
   return (
     <Button
-      className={cn('border-primary uppercase', {
+      className={cn('border-primary/20 uppercase', {
         [NOT_AVAILABLE_BUTTON_CLASS]: !isAvailable
       })}
       size={'sm'}

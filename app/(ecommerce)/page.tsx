@@ -1,18 +1,18 @@
-import Image from 'next/image'
-import Hero from '@/public/billboard.jpg'
+// import Image from 'next/image'
+// import Hero from '@/public/billboard.jpg'
 import { Suspense } from 'react'
 import { ProductsWrapperSkeleton } from '@/components/skeletons'
 import FeaturedProducts from './_components/featured-products'
 import Newsletter from './_components/newsletter'
-import { marcellus } from '@/components/fonts'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+// import { marcellus } from '@/components/fonts'
+// import { Button } from '@/components/ui/button'
+// import { cn } from '@/lib/utils'
 import ActiveWear from './_components/active-wear'
 
 export default function Page() {
   return (
     <main className="">
-      <div className="flex justify-between h-[520px] bg-zinc-50">
+      {/* <div className="flex justify-between h-[520px] bg-zinc-50">
         <div className="flex text-center lg:text-start items-center justify-center flex-col gap-4 lg:p-20 lg:w-2/4">
           <h1
             className={cn(
@@ -32,8 +32,8 @@ export default function Page() {
           className="hidden lg:block object-cover w-2/4"
           src={Hero}
         />
-      </div>
-
+      </div> */}
+      {/* 
       <div className="flex gap-4 overflow-hidden p-4 bg-primary text-white font-medium uppercase">
         {Array(5)
           .fill('FREE SHIPPING ON ALL DOMESTIC ORDERS')
@@ -42,7 +42,7 @@ export default function Page() {
               {text}
             </p>
           ))}
-      </div>
+      </div> */}
 
       <ActiveWear />
 

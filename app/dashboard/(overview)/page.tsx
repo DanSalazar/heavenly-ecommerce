@@ -23,8 +23,8 @@ export default async function Page() {
           {new Date().toLocaleString()}
         </div>
       </div>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-0 mb-4">
-        <Card className="md:rounded-r-none md:border-r-0">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Orders from Today
@@ -35,7 +35,7 @@ export default async function Page() {
             <div className="text-3xl font-bold">{ordersFromToday.length}</div>
           </CardContent>
         </Card>
-        <Card className="md:rounded-none">
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Products in stock
@@ -46,7 +46,7 @@ export default async function Page() {
             <div className="text-3xl font-bold">{productsInStock}</div>
           </CardContent>
         </Card>
-        <Card className="md:rounded-l-none md:border-l-0">
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
             <CreditCardIcon />

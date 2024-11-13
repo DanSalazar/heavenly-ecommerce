@@ -69,10 +69,11 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
               <div className="flex gap-2 flex-wrap">
                 {categories.map((category, idx) => (
                   <Button
+                    size={'sm'}
                     key={category + idx}
                     data-key="category"
                     data-value={category}
-                    className="rounded-lg capitalize border-primary"
+                    className="rounded-lg capitalize"
                     variant={
                       getState('category')?.includes(category)
                         ? 'default'
@@ -90,10 +91,11 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
               <div className="flex gap-2 flex-wrap">
                 {colors.map((color, idx) => (
                   <Button
+                    size={'sm'}
                     key={color + idx}
                     data-key="color"
                     data-value={color}
-                    className="rounded-lg capitalize border-primary"
+                    className="rounded-lg capitalize"
                     variant={
                       getState('color')?.includes(color) ? 'default' : 'outline'
                     }>
@@ -113,7 +115,7 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
                     key={size + idx}
                     data-key="size"
                     data-value={size}
-                    className="rounded-lg uppercase border-primary"
+                    className="rounded-lg uppercase"
                     variant={
                       getState('size')?.split(',')?.includes(size)
                         ? 'default'

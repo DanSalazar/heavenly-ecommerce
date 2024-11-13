@@ -66,7 +66,7 @@ export default function Footer() {
           ))}
         </div>
       </footer>
-      <div className="text-center text-sm text-zinc-500">
+      <div className="text-center text-sm text-zinc-500 pb-4">
         <p>&copy; {new Date().getFullYear()} Heavenly. All rights reserved.</p>
       </div>
     </>

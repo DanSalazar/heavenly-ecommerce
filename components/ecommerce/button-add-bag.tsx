@@ -21,7 +21,8 @@ export default function ButtonAddBag({
   const { toast } = useToast()
   const { handleOpen } = useShoppingBagContext()
 
-  const buttonClasses = 'transition-opacity h-full flex-1 uppercase rounded-lg'
+  const buttonClasses =
+    'font-normal transition-opacity h-full flex-1 uppercase rounded-lg'
   const disabledClasses = 'cursor-not-allowed opacity-70 hover:opacity-70'
 
   if (!variantSelected || !variantSelectedId)
@@ -78,9 +79,13 @@ export default function ButtonAddBag({
       aria-label="Add to cart"
       aria-disabled={isPending}
       className={cn(buttonClasses, {
-        [disabledClasses]: isPending
+        [disabledClasses]: true
       })}>
-      {isPending ? <SpinnerStatus srOnly="Adding to bag..." /> : 'Add to bag'}
+      {isPending ? (
+        <SpinnerStatus color="dark" srOnly="Adding to bag..." />
+      ) : (
+        'Add to bag'
+      )}
     </Button>
   )
 }

@@ -36,7 +36,7 @@ export default function LikeButton({ productId }: { productId: string }) {
   return (
     <Button
       onClick={handleLike}
-      className={cn('h-full border-primary w-16 group')}
+      className={cn('h-full border-primary/20 rounded-full group')}
       type="button"
       aria-label={like ? 'Remove from favorites' : 'Add to favorites'}
       variant={'outline'}>

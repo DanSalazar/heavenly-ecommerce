@@ -32,7 +32,7 @@ export const ProductsFiltersSkeleton = () => (
   <div className="flex justify-between">
     <Button>Filters</Button>
     <Select>
-      <SelectTrigger className="w-[200px] font-medium border-primary">
+      <SelectTrigger className="w-[200px] font-medium">
         <SelectValue placeholder="Relevance"></SelectValue>
       </SelectTrigger>
     </Select>

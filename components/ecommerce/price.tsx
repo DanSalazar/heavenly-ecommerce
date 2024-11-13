@@ -7,7 +7,7 @@ import { formatPrice, getDiscountPrice } from '@/lib/utils'
 const priceStyles = cva('', {
   variants: {
     variant: {
-      default: 'text-zinc-600 dark:text-zinc-100',
+      default: 'text-zinc-500 dark:text-zinc-100',
       black: 'text-primary'
     },
     size: {

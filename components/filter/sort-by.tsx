@@ -17,7 +17,7 @@ export default function SortBy() {
         if (value === 'relevance') remove('order')
         else add('order', value)
       }}>
-      <SelectTrigger className="w-[200px] font-medium border-primary">
+      <SelectTrigger className="w-[200px] font-medium">
         <SelectValue placeholder="Sort by"></SelectValue>
       </SelectTrigger>
       <SelectContent className="border-primary">

@@ -1,14 +1,20 @@
+import { cn } from '@/lib/utils'
+
 export const SpinnerStatus = ({
   srOnly = 'Loading...',
-  children
+  children,
+  color = 'light'
 }: {
   srOnly?: string
   children?: React.ReactNode
+  color?: 'dark' | 'light'
 }) => (
   <div className="flex gap-2 items-center" role="status">
     <svg
       aria-hidden="true"
-      className="w-5 h-5 text-primary/40 animate-spin fill-primary"
+      className={cn('w-5 h-5 text-primary/40 animate-spin fill-primary', {
+        'fill-primary/80 text-muted': color === 'dark'
+      })}
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">

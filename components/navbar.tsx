@@ -16,7 +16,7 @@ export default function Navbar() {
           <HeavenlyIcon />
         </Link>
       </div>
-      <div className="flex gap-3 justify-end items-center bg-white">
+      <div className="flex gap-4 justify-end items-center bg-white">
         <Suspense>
           <SearchProduct className="hidden md:block w-[300px]" />
         </Suspense>

@@ -34,8 +34,10 @@ export default function ActiveWear() {
       </div>
 
       <div className="flex gap-8 overflow-hidden p-4 bg-primary text-white font-medium uppercase">
-        {Array(4)
-          .fill('LOOK BETTER, WEAR COMFORTABLE ACTIVE WEAR')
+        {Array(3)
+          .fill(
+            'LOOK BETTER, WEAR COMFORTABLE ACTIVE WEAR. FREE SHIPPING ON ALL DOMESTIC ORDERS'
+          )
           .map((text, index) => (
             <p className="whitespace-nowrap text-sm" key={index}>
               {text}
