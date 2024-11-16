@@ -30,6 +30,36 @@ export const getProducts = cache(
   }
 )
 
+export const getAllProducts = cache(
+  async ({
+    query,
+    limit,
+    offset
+  }: {
+    query: Record<string, string>
+    limit?: number
+    offset?: number
+  }) => {
+    const filtersByQuery = makeFiltersByQuery(query)
+
+    const data = await db
+      .selectDistinct({
+        product
+      })
+      .from(product)
+      .leftJoin(category, eq(product.category_id, category.id))
+      .leftJoin(productVariations, eq(product.id, productVariations.product_id))
+      .leftJoin(color, eq(productVariations.color_id, color.id))
+      .leftJoin(size, eq(productVariations.size_id, size.id))
+      .where(and(...filtersByQuery))
+      .offset(offset || 0)
+      .limit(limit || 0)
+      .orderBy(sortProductsBy[query.order] || asc(product.name))
+
+    return data
+  }
+)
+
 export const getFullProduct = cache(async (id: string) => {
   const product = await db.query.product.findFirst({
     where: ({ id: productId }, { eq }) => eq(productId, id),

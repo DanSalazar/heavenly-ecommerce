@@ -22,7 +22,7 @@ export default async function Page({
   const currentPage = Number(params.page || 0)
 
   return (
-    <main className="flex flex-col gap-4">
+    <main className="flex flex-col gap-4 mt-4 mb-8">
       <Suspense
         key={currentPage + paramsLength + (params.q || '')}
         fallback={<ProductsWithFiltersSkeleton />}>

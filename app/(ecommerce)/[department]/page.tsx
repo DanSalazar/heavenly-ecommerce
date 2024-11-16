@@ -10,8 +10,6 @@ import { PRODUCTS_PER_PAGE } from '@/lib/constants'
 import { capitalizeWord } from '@/lib/utils'
 import { notFound } from 'next/navigation'
 
-export const dynamic = 'force-dynamic'
-
 const departments = ['men', 'women']
 
 export async function generateMetadata({
@@ -44,7 +42,7 @@ export default async function Page({
   return (
     <>
       <BreadcrumbWrapper />
-      <main className="flex flex-col gap-2 mt-12">
+      <main className="flex flex-col gap-2 mt-12 mb-8">
         <h2 className="text-7xl md:text-8xl font-medium uppercase break-words">
           {department}
         </h2>

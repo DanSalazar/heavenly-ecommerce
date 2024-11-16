@@ -20,7 +20,7 @@ export default function SortBy() {
       <SelectTrigger className="w-[200px] font-medium">
         <SelectValue placeholder="Sort by"></SelectValue>
       </SelectTrigger>
-      <SelectContent className="border-primary">
+      <SelectContent>
         <SelectItem value="relevance">Relevance</SelectItem>
         <SelectItem value="low to high">Price: Low to high</SelectItem>
         <SelectItem value="high to low">Price: High to low</SelectItem>

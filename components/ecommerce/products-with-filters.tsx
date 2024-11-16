@@ -3,6 +3,7 @@ import ProductComponent from './product-component'
 import Filters from '../filter/filters'
 import { PRODUCTS_PER_PAGE } from '@/lib/constants'
 import {
+  getAllProducts,
   getFilters,
   getProductsByDepartment,
   getProductsByQuery
@@ -26,22 +27,30 @@ export default async function ProductsWithFilters({
           offset,
           limit: PRODUCTS_PER_PAGE
         })
-      : await getProductsByDepartment({
-          department,
-          offset,
-          limit: PRODUCTS_PER_PAGE
-        })
+      : department
+        ? await getProductsByDepartment({
+            department,
+            offset,
+            limit: PRODUCTS_PER_PAGE
+          })
+        : await getAllProducts({
+            query,
+            offset,
+            limit: PRODUCTS_PER_PAGE
+          })
 
-  if (!products)
+  if (!products.length && query.q) {
+    return <NoSearchResults />
+  }
+
+  if (!products.length)
     return (
       <div className="h-[400px] flex items-center justify-center">
-        <h2 className="text-5xl font-semibold">Department not exist</h2>
+        <h2 className="text-5xl font-semibold">
+          There are not products to show
+        </h2>
       </div>
     )
-
-  const ids = products.map(({ product }) => product.id)
-
-  const filters = await getFilters(ids)
 
   const productsWithinPriceRange =
     query.price_from || query.price_to
@@ -57,26 +66,24 @@ export default async function ProductsWithFilters({
         })
       : products
 
+  if (!productsWithinPriceRange.length) {
+    return <NoProductsAvailable />
+  }
+
+  const ids = products.map(({ product }) => product.id)
+
+  const filters = await getFilters(ids)
+
   return (
     <>
       <Filters filters={filters} />
-      <ProductsWrapper
-        className={
-          !productsWithinPriceRange.length
-            ? 'flex flex-col items-center text-center justify-center gap-2'
-            : ''
-        }>
-        {productsWithinPriceRange.length
-          ? productsWithinPriceRange.map(product => (
-              <ProductComponent
-                key={product.product.id}
-                product={product.product}
-              />
-            ))
-          : !query.q && <NoProductsAvailable />}
-
-        {/* For search page */}
-        {query?.q && !productsWithinPriceRange.length && <NoSearchResults />}
+      <ProductsWrapper>
+        {productsWithinPriceRange.map(product => (
+          <ProductComponent
+            key={product.product.id}
+            product={product.product}
+          />
+        ))}
       </ProductsWrapper>
     </>
   )
@@ -84,30 +91,30 @@ export default async function ProductsWithFilters({
 
 function NoProductsAvailable() {
   return (
-    <>
-      <p className="text-2xl md:text-5xl font-bold">
-        Oops! No Products Found in This Department
-      </p>
+    <div className="min-h-[400px] flex items-center justify-center flex-col gap-2">
+      <h2 className="text-2xl text-5xl font-semibold">
+        There are not products to show
+      </h2>
       <p>
         It seems we don&apos;t have any products available right now. Please
         consider exploring other departments or check back later for new
         arrivals.
       </p>
-    </>
+    </div>
   )
 }
 
 function NoSearchResults() {
   return (
-    <>
-      <p className="text-2xl md:text-5xl font-bold">
+    <div className="min-h-[400px] flex items-center justify-center flex-col gap-2">
+      <h2 className="text-2xl md:text-5xl font-bold">
         No products matched your search
-      </p>
+      </h2>
       <p>
         We couldn&apos;t find any products matching your search criteria. Please
         check your spelling, try using broader terms, or explore our popular
         categories for more options.
       </p>
-    </>
+    </div>
   )
 }

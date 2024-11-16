@@ -27,7 +27,6 @@ export default function SearchProduct({
       newParams.set('q', search.value)
     } else {
       newParams.delete('q')
-      return
     }
 
     router.push('/search?' + newParams.toString())

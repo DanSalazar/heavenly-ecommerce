@@ -1,43 +1,30 @@
 import { marcellus } from '@/components/fonts'
-import Run from '@/public/run.webp'
-import { Button } from '@/components/ui/button'
-import Image from 'next/image'
+import { buttonVariants } from '@/components/ui/button'
+import Link from 'next/link'
 
 export default function ActiveWear() {
   return (
     <>
-      <div className="flex justify-end items-center relative h-[500px] px-8 md:px-12">
-        <Image
-          className="object-cover object-left"
-          fill
-          alt="Men preparing to run"
-          src={Run}
-        />
-
-        <div
-          className="absolute top-0 right-0 bottom-0 left-0"
-          style={{
-            backgroundColor: 'rgba(0, 0, 0, 0.6)'
-          }}></div>
-        <div className="z-10 flex flex-col justify-center w-full lg:w-[600px] md:h-3/4 border border-white">
+      <div className="flex justify-center items-center relative h-[500px] bg-gradient-to-r from-zinc-700 to-zinc-900 px-8 md:px-12">
+        <div className="z-10 flex flex-col justify-center gap-2 w-full lg:w-[600px] md:h-3/4 border border-white">
           <h2
             className={
               marcellus.className +
-              ' text-center text-white font-bold text-2xl sm:text-3xl md:text-7xl uppercase word-break'
+              ' text-center text-white font-bold text-2xl sm:text-3xl md:text-8xl uppercase word-break'
             }>
             Style. Technical. Innovate
           </h2>
-          <Button size={'sm'} className="text-white" variant={'link'}>
-            Shop Active Wear
-          </Button>
+          <Link
+            href={'/search'}
+            className={buttonVariants({ variant: 'link' }) + ' text-white'}>
+            Shop Clothing
+          </Link>
         </div>
       </div>
 
-      <div className="flex gap-8 overflow-hidden p-4 bg-primary text-white font-medium uppercase">
-        {Array(3)
-          .fill(
-            'LOOK BETTER, WEAR COMFORTABLE ACTIVE WEAR. FREE SHIPPING ON ALL DOMESTIC ORDERS'
-          )
+      <div className="flex gap-4 overflow-hidden p-4 bg-primary text-white font-medium uppercase">
+        {Array(5)
+          .fill('FREE SHIPPING ON ALL DOMESTIC ORDERS, ')
           .map((text, index) => (
             <p className="whitespace-nowrap text-sm" key={index}>
               {text}
