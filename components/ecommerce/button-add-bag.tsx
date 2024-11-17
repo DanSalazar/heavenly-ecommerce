@@ -79,7 +79,7 @@ export default function ButtonAddBag({
       aria-label="Add to cart"
       aria-disabled={isPending}
       className={cn(buttonClasses, {
-        [disabledClasses]: true
+        [disabledClasses]: isPending
       })}>
       {isPending ? (
         <SpinnerStatus color="dark" srOnly="Adding to bag..." />

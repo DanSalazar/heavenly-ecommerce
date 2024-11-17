@@ -1,9 +1,10 @@
 import { MouseEvent } from 'react'
 import useUrlState from '@/hooks/useUrlState'
 import { Button } from '../ui/button'
-import { NOT_LISTED_FILTERS } from '@/lib/constants'
+import { NOT_LISTED_FILTERS, SCROLLBAR_CLASS } from '@/lib/constants'
 import { usePathname, useRouter } from 'next/navigation'
 import { X } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export default function FiltersSelected() {
   const pathname = usePathname()
@@ -42,8 +43,12 @@ export default function FiltersSelected() {
       )}
       <div
         onClick={handleRemoveFilter}
-        className="hidden md:flex flex-wrap gap-2">
+        className={cn(
+          'hidden md:flex gap-2 overflow-x-auto scrollbar scrollbar-rounded scrollbar-thin scrollbar-thumb-zinc-300 scrollbar-track-zinc-50'
+        )}>
         {filtersSelected.map(([key, filter]) => {
+          if (!filter.length) return <></>
+
           return filter.split(',').map((value, j) => (
             <Button
               key={value + j}
@@ -52,12 +57,7 @@ export default function FiltersSelected() {
               className="uppercase gap-2 border-primary"
               variant={'outline'}>
               {value}{' '}
-              <X
-                width={18}
-                height={18}
-                strokeWidth={1.5}
-                className="pointer-events-none"
-              />
+              <X width={20} height={20} className="pointer-events-none" />
             </Button>
           ))
         })}

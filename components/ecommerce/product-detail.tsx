@@ -44,7 +44,9 @@ export default async function ProductDetail({ id }: { id: string }) {
             discount={product.discount}
             discount_percentage={product.percentage_off}
           />
-          <p className="text-zinc-700 break-words">{product.description}</p>
+          <p className="text-zinc-700 break-words prose">
+            {product.description}
+          </p>
 
           <AddToBag
             variants={product.productVariations}

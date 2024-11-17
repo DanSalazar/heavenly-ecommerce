@@ -29,13 +29,17 @@ export const ProductsWrapperSkeleton = () => (
 )
 
 export const ProductsFiltersSkeleton = () => (
-  <div className="flex justify-between">
+  <div className="flex">
     <Button>Filters</Button>
-    <Select>
-      <SelectTrigger className="w-[200px] font-medium">
-        <SelectValue placeholder="Relevance"></SelectValue>
-      </SelectTrigger>
-    </Select>
+
+    <div className="ml-auto w-[200px] flex items-center gap-2 text-muted-foreground">
+      <span className="text-sm ">Sort by:</span>
+      <Select>
+        <SelectTrigger className="border-none flex-1 px-0 outline-none text-primary font-medium">
+          <SelectValue placeholder="Relevance"></SelectValue>
+        </SelectTrigger>
+      </Select>
+    </div>
   </div>
 )
 

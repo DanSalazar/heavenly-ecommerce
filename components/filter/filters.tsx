@@ -52,8 +52,8 @@ export default function Filters({ filters }: { filters: AllFiltersType }) {
   const { categories, colors, sizes, minAndMaxPrice } = filters
 
   return (
-    <div className="relative flex justify-between flex-wrap">
-      <div className="flex gap-2 flex-1">
+    <div className="relative flex gap-4">
+      <div className="flex gap-2 overflow-hidden">
         <FilterPopover>
           {minAndMaxPrice[0] !== 0 && minAndMaxPrice[1] !== 0 && (
             <FilterChildren title="Price Range">

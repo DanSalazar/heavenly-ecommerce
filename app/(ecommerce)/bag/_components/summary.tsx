@@ -24,8 +24,10 @@ export default function Summary({ total }: { total: number }) {
         />
       </div>
 
-      <Stripe />
-      <Paypal />
+      <div className="min-h-28 flex flex-col gap-2">
+        <Stripe />
+        <Paypal />
+      </div>
 
       <div className="flex gap-2">
         <PaypalSVG />

@@ -184,7 +184,7 @@ export const ProductVariantsForm = ({
     <Card>
       <CardHeader>
         <CardTitle>Stock</CardTitle>
-        <CardDescription>Manage your stock</CardDescription>
+        <CardDescription>Manage your product stock</CardDescription>
         {error && <p className="text-red-600 font-medium text-sm">{error}</p>}
       </CardHeader>
       <CardContent>
@@ -229,7 +229,7 @@ export const ProductVariantsForm = ({
                             <SelectTrigger
                               id="status"
                               aria-label="Select size"
-                              className="uppercase">
+                              className="capitalize">
                               <SelectValue placeholder="Pick a size" />
                             </SelectTrigger>
                           </FormControl>

@@ -19,7 +19,7 @@
     "@next/env": "14.2.3",
     "@paypal/checkout-server-sdk": "1.0.3",
     "@paypal/react-paypal-js": "8.5.0",
-    "@radix-ui/react-accordion": "1.1.2",
+    "@radix-ui/react-accordion": "1.2.1",
     "@radix-ui/react-alert-dialog": "1.1.1",
     "@radix-ui/react-avatar": "1.1.0",
     "@radix-ui/react-checkbox": "1.0.4",
