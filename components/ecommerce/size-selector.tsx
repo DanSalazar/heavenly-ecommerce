@@ -56,7 +56,7 @@ const SizeButton = ({
 
   return (
     <Button
-      className={cn('border-primary/20 uppercase', {
+      className={cn('border-primary/20 rounded-full uppercase', {
         [NOT_AVAILABLE_BUTTON_CLASS]: !isAvailable
       })}
       size={'sm'}

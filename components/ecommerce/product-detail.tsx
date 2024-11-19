@@ -11,7 +11,6 @@ import AddToBag from './add-to-bag'
 import BreadcrumbWrapper from '../ui/breadcrumb-wrapper'
 import { getFullProduct } from '@/data/products'
 import { notFound } from 'next/navigation'
-import SizeGuide from './size-guide'
 import { cn } from '@/lib/utils'
 
 export default async function ProductDetail({ id }: { id: string }) {
@@ -27,15 +26,11 @@ export default async function ProductDetail({ id }: { id: string }) {
           thumbnail={product.thumbnail}
           images={product.images}
         />
-        <div className="flex flex-col gap-2 sticky">
-          <h2 className={'text-3xl font-semibold uppercase break-words'}>
+        <div className="flex flex-col gap-2">
+          <h2 className={cn('text-3xl break-words', marcellus.className)}>
             {product.brand}
           </h2>
-          <h3
-            className={cn(
-              'text-3xl font-medium uppercase break-words',
-              marcellus.className
-            )}>
+          <h3 className={cn('text-3xl break-words', marcellus.className)}>
             {product.name}
           </h3>
           <Price
@@ -53,7 +48,7 @@ export default async function ProductDetail({ id }: { id: string }) {
             productId={product.id}
           />
 
-          <Accordion type="single" collapsible>
+          <Accordion type="single" defaultValue={'item-1'} collapsible>
             <AccordionItem value="item-1">
               <AccordionTrigger className="uppercase">
                 Payment & Delivery

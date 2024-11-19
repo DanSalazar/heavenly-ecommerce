@@ -36,7 +36,7 @@ export default function LikeButton({ productId }: { productId: string }) {
   return (
     <Button
       onClick={handleLike}
-      className={cn('h-full border-primary/20 rounded-full group')}
+      className={cn('h-full border-primary/40 group')}
       type="button"
       aria-label={like ? 'Remove from favorites' : 'Add to favorites'}
       variant={'outline'}>
@@ -48,7 +48,7 @@ export default function LikeButton({ productId }: { productId: string }) {
             className={cn('text-red-600 animate-heart')}
           />
         ) : (
-          <HeartIcon width={20} height={20} />
+          <HeartIcon width={20} height={20} strokeWidth={1.5} />
         )}
       </div>
     </Button>
