@@ -48,7 +48,7 @@ export default function OrdersTable({ orders }: { orders: OrderType[] }) {
               {formatDate(order.order_created_at)}
             </TableCell>
             <TableCell className="text-right font-medium">
-              ${formatPrice(centsToPrice(order.total_amount))}
+              ${formatPrice(order.total_amount)}
             </TableCell>
           </TableRow>
         ))}

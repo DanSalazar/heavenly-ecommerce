@@ -71,17 +71,16 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const totalAmount = bag.bagItem.reduce(
-    (acc, { product_variant, quantity }) => {
+  const totalAmount = bag.bagItem
+    .reduce((acc, { product_variant, quantity }) => {
       const { discount, percentage_off, price } = product_variant.product
       const productPrice = discount
         ? getDiscountPrice(price, percentage_off)
         : price
 
-      return acc + quantity * productPrice
-    },
-    0
-  )
+      return acc + quantity * (productPrice / 100)
+    }, 0)
+    .toFixed(2)
 
   request.requestBody({
     intent: 'CAPTURE',
@@ -131,8 +130,8 @@ export async function POST(req: NextRequest) {
                 ? getDiscountPrice(
                     item.product_variant.product.price,
                     item.product_variant.product.percentage_off
-                  )
-                : item.product_variant.product.price
+                  ) / 100
+                : item.product_variant.product.price / 100
             }`
           },
           quantity: item.quantity + '',

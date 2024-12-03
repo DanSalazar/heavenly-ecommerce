@@ -92,7 +92,7 @@ function RecentOrders({ orders }: { orders: OrderType[] }) {
                 </p>
               </div>
               <div className="text-sm ml-auto font-medium">
-                +${formatPrice(total_amount / 100)}
+                +${formatPrice(total_amount)}
               </div>
             </div>
           )

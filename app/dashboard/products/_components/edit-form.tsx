@@ -25,7 +25,6 @@ import {
   VariantFields
 } from '@/db/types'
 import Link from 'next/link'
-import { FormSchema, formSchema } from './product-form'
 import { deleteProductVariant, updateProduct } from '@/actions/product'
 import { UpdateProductType } from '@/actions/product-schema'
 import { useToast } from '@/components/ui/use-toast'
@@ -33,6 +32,7 @@ import { ImagesState } from '@/components/uploader/types'
 import { deleteFilesAction } from '@/actions/files'
 import ImagesDialog from './images-dialog'
 import dynamic from 'next/dynamic'
+import { FormSchema, formSchema } from './form-schema'
 
 const PreventNavigation = dynamic(() => import('./prevent-navigation'), {
   ssr: false
@@ -58,7 +58,7 @@ export function EditProductForm({
       name: product.name,
       brand: product.brand!,
       description: product.description!,
-      price: product.price,
+      price: product.price / 100,
       discount: product.percentage_off,
       featured: product.featured,
       archived: product.status === 'archived',
@@ -185,6 +185,7 @@ export function EditProductForm({
         : {
             ...dirtyData,
             discount: !!form.getValues('discount'),
+            price: form.getValues('price') * 100,
             percentage_off: Number(form.getValues('discount'))
           }
 

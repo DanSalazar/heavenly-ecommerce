@@ -4,16 +4,8 @@ import { useForm } from 'react-hook-form'
 import { Form } from '@/components/ui/form'
 import { Button, buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
-import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  ProductArchive,
-  ProductCategory,
-  ProductDepartment,
-  ProductDetailsForm,
-  ProductImage,
-  ProductVariantsForm
-} from './product-form-components'
+import { ProductImage } from './product-form-components'
 import { useState } from 'react'
 import {
   ImageInsert,
@@ -29,54 +21,13 @@ import { deleteFilesAction } from '@/actions/files'
 import dynamic from 'next/dynamic'
 import ImagesDialog from './images-dialog'
 import { ArrowLeftIcon } from 'lucide-react'
+import { formSchema, FormSchema } from './form-schema'
+import ProductInfo from './product-info'
+import ProductTypeForm from './product-type-form'
 
 const PreventNavigation = dynamic(() => import('./prevent-navigation'), {
   ssr: false
 })
-
-export const formSchema = z.object({
-  name: z
-    .string({
-      required_error: 'Name is required'
-    })
-    .min(1),
-  brand: z
-    .string({
-      required_error: 'Brand is required'
-    })
-    .min(1)
-    .max(50),
-  description: z.string().optional(),
-  price: z.coerce
-    .number({
-      required_error: 'Price is required'
-    })
-    .min(1, {
-      message: 'Price must be greater than or equal to 1'
-    }),
-  discount: z.coerce.number().max(99).optional(),
-  variants: z
-    .array(
-      z.object({
-        stock: z.coerce.number().max(99),
-        color: z.string({ required_error: 'Color is required' }),
-        size: z.string({ required_error: 'Size is required' }),
-        ownId: z.number().optional(),
-        id: z.number().optional()
-      })
-    )
-    .min(1, {
-      message: 'You must add at least one variant'
-    }),
-  category: z.string({ required_error: 'Category is required' }),
-  department: z.enum(['men', 'women'], {
-    required_error: 'Department is required'
-  }),
-  archived: z.boolean(),
-  featured: z.boolean()
-})
-
-export type FormSchema = z.infer<typeof formSchema>
 
 export function ProductForm({
   variantFields
@@ -170,17 +121,13 @@ export function ProductForm({
     const product_id = crypto.randomUUID()
 
     const product: ProductSchema = {
-      id: product_id,
-      name: values.name,
-      brand: values.brand,
-      description: values.description || '',
-      price: values.price,
-      department: values.department,
+      ...values,
+      price: values.price * 100,
       discount: Boolean(values.discount),
       percentage_off: values.discount || 0,
+      id: product_id,
       status: values.archived ? 'archived' : 'active',
       created_at: new Date().toISOString(),
-      featured: values.featured,
       category_id: Number(values.category),
       thumbnail
     }
@@ -263,21 +210,13 @@ export function ProductForm({
             </div>
           </div>
           <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
-            <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
-              <ProductDetailsForm control={form.control} />
-              <ProductVariantsForm
-                error={form.formState.errors.variants?.message || ''}
-                control={form.control}
-                variantFields={variantFields}
-              />
-              <ProductArchive control={form.control} />
-            </div>
+            <ProductInfo control={form.control} variantFields={variantFields} />
+
             <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
-              <ProductCategory
-                categories={variantFields.categories}
+              <ProductTypeForm
                 control={form.control}
+                categories={variantFields.categories}
               />
-              <ProductDepartment control={form.control} />
               <ProductImage thumbnail={thumbnail}>
                 <ImagesDialog
                   deleteFile={deleteFile}

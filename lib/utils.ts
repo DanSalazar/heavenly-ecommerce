@@ -44,7 +44,7 @@ export const createPathObject = (pathname: string): BreadcrumbType[] => {
 }
 
 export const formatPrice = (price: number) => {
-  return price.toLocaleString('en', {
+  return (price / 100).toLocaleString('en', {
     style: 'decimal',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
@@ -54,7 +54,7 @@ export const formatPrice = (price: number) => {
 export const getDiscountPrice = (price: number, discount: number) => {
   const discountPrice = price * (discount / 100)
 
-  return price - discountPrice
+  return Number((price - discountPrice).toFixed(0))
 }
 
 export const reduceBagPrice = (bag: BagItem[]) => {
@@ -65,6 +65,7 @@ export const reduceBagPrice = (bag: BagItem[]) => {
     } = bag_item
 
     let price = product.price
+
     const quantity = Number(bag_item.quantity)
 
     const discount = product.discount

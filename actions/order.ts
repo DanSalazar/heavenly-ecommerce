@@ -17,6 +17,15 @@ interface StockUpdate {
   }
 }
 
+/**
+ * Generates SQL for updating product stock based on the provided stock updates.
+ *
+ * @param {StockUpdate[]} stockUpdates - An array of stock updates, where each update contains
+ *                                        the quantity to be deducted and the product variant ID.
+ * @returns {[number[], SQL]} A tuple containing:
+ *          - An array of product variant IDs that were updated.
+ *          - A SQL expression that represents the stock update operation.
+ */
 function updateProductsStockSQL(stockUpdates: StockUpdate[]): [number[], SQL] {
   const sqlChunks: SQL[] = []
   const ids: number[] = []
@@ -36,7 +45,6 @@ function updateProductsStockSQL(stockUpdates: StockUpdate[]): [number[], SQL] {
 
   return [ids, finalSql]
 }
-
 export const createOrders = baseAction
   .schema(orderSchema, {
     handleValidationErrorsShape: async ve =>
@@ -81,6 +89,7 @@ export const createOrders = baseAction
             .update(productVariations)
             .set({ stock: finalSql })
             .where(inArray(productVariations.id, ids))
+
           await db.delete(bag).where(eq(bag.id, bag_id))
 
           ck.delete('bag_id')

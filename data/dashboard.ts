@@ -13,7 +13,7 @@ export const getDashboardStats = cache(async () => {
     orderBy: (field, op) => op.desc(field.order_created_at)
   })
   const totalRevenue = orders.reduce(
-    (acc, order) => acc + order.total_amount / 100,
+    (acc, order) => acc + order.total_amount,
     0
   )
 
