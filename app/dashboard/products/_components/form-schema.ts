@@ -44,4 +44,4 @@ export const formSchema = z.object({
 })
 
 export type FormSchema = z.infer<typeof formSchema>
-export type FormControl = Control<FormSchema>
+export type FormControlType = Control<FormSchema>

@@ -1,5 +1,5 @@
 import { VariantFields } from '@/db/types'
-import { FormControl } from './form-schema'
+import { FormControlType } from './form-schema'
 import {
   ProductArchive,
   ProductDetailsForm,
@@ -10,7 +10,7 @@ export default function ProductInfo({
   control,
   variantFields
 }: {
-  control: FormControl
+  control: FormControlType
   variantFields: VariantFields
 }) {
   return (

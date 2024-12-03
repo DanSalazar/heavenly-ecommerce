@@ -17,7 +17,6 @@ import {
 } from '@/components/ui/table'
 import { PlusIcon } from '@/components/icons'
 import { Control, useFieldArray } from 'react-hook-form'
-import { FormSchema } from './product-form'
 import {
   FormControl,
   FormDescription,
@@ -39,10 +38,13 @@ import { Category, VariantFields } from '@/db/types'
 import { Checkbox } from '@/components/ui/checkbox'
 import Image from 'next/image'
 import { X } from 'lucide-react'
+import { FormControlType } from './form-schema'
 
-type FormControl = Control<FormSchema>
-
-export const ProductDetailsForm = ({ control }: { control: FormControl }) => {
+export const ProductDetailsForm = ({
+  control
+}: {
+  control: FormControlType
+}) => {
   return (
     <Card>
       <CardHeader>
@@ -149,7 +151,7 @@ export const ProductVariantsForm = ({
   addRemoveVariantId
 }: {
   error: string
-  control: FormControl
+  control: FormControlType
   variantFields: VariantFields
   addRemoveVariantId?: (id: number) => void
 }) => {
@@ -315,7 +317,7 @@ export const ProductCategory = ({
   control,
   categories
 }: {
-  control: FormControl
+  control: FormControlType
   categories: Category[] | null
 }) => (
   <Card>
@@ -358,7 +360,11 @@ export const ProductCategory = ({
   </Card>
 )
 
-export const ProductDepartment = ({ control }: { control: FormControl }) => (
+export const ProductDepartment = ({
+  control
+}: {
+  control: FormControlType
+}) => (
   <Card>
     <CardHeader>
       <CardTitle>Product Department</CardTitle>
@@ -417,7 +423,7 @@ export const ProductImage = ({
   </Card>
 )
 
-export const ProductArchive = ({ control }: { control: FormControl }) => (
+export const ProductArchive = ({ control }: { control: FormControlType }) => (
   <div className="grid grid-cols-2 gap-4">
     <FormField
       control={control}
