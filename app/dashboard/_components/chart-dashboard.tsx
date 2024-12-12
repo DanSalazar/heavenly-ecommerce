@@ -95,10 +95,10 @@ function calculateMonthlyRevenue(orders: OrderType[]) {
     const dateParts = order.order_created_at.split('-')
     const month = parseInt(dateParts[1]) - 1
 
-    monthlyRevenue[month] += order.total_amount / 100
+    monthlyRevenue[month] += order.total_amount
   }
 
-  return monthlyRevenue
+  return monthlyRevenue.map(number => number / 100)
 }
 
 export default function ChartDashboard({ data }: { data: OrderType[] }) {

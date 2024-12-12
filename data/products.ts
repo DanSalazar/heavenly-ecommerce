@@ -241,7 +241,10 @@ export const getFilters = cache(async (ids: string[]) => {
     colors,
     sizes,
     minAndMaxPrice: minAndMaxPrice[0]
-      ? [minAndMaxPrice[0].min as number, minAndMaxPrice[0].max as number]
+      ? [
+          (minAndMaxPrice[0].min as number) / 100,
+          (minAndMaxPrice[0].max as number) / 100
+        ]
       : [0, 0]
   }
 })

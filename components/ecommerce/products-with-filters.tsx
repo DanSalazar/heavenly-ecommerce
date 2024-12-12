@@ -45,17 +45,16 @@ export default async function ProductsWithFilters({
 
   if (!products.length)
     return (
-      <div className="h-[400px] flex items-center justify-center">
-        <h2 className="text-5xl font-semibold">
-          There are not products to show
-        </h2>
-      </div>
+      <>
+        <Filters />
+        <NoProductsAvailable />
+      </>
     )
 
   const productsWithinPriceRange =
     query.price_from || query.price_to
       ? products.filter(({ product }) => {
-          const price = product.price
+          const price = product.price / 100
           const price_from = Number(query.price_from)
           const price_to = Number(query.price_to)
 
@@ -67,11 +66,15 @@ export default async function ProductsWithFilters({
       : products
 
   if (!productsWithinPriceRange.length) {
-    return <NoProductsAvailable />
+    return (
+      <>
+        <Filters />
+        <NoProductsAvailable />
+      </>
+    )
   }
 
-  const ids = products.map(({ product }) => product.id)
-
+  const ids = productsWithinPriceRange.map(({ product }) => product.id)
   const filters = await getFilters(ids)
 
   return (
@@ -91,7 +94,7 @@ export default async function ProductsWithFilters({
 
 function NoProductsAvailable() {
   return (
-    <div className="min-h-[400px] flex items-center justify-center flex-col gap-2">
+    <div className="border-t min-h-[400px] flex items-center justify-center flex-col gap-2">
       <h2 className="text-2xl text-5xl font-semibold">
         There are not products to show
       </h2>

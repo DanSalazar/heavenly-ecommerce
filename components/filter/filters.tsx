@@ -17,7 +17,11 @@ export type AllFiltersType = {
   minAndMaxPrice: number[]
 } | null
 
-export default function Filters({ filters }: { filters: AllFiltersType }) {
+export default function Filters({
+  filters = null
+}: {
+  filters?: AllFiltersType
+}) {
   const { getState, push } = useUrlState()
 
   const handleSelectFilter = (event: MouseEvent<HTMLDivElement>) => {

@@ -1,6 +1,6 @@
-import { DM_Sans, Marcellus } from 'next/font/google'
+import { Roboto, Marcellus } from 'next/font/google'
 
-export const mainFont = DM_Sans({
+export const mainFont = Roboto({
   subsets: ['latin'],
   weight: ['400', '500', '700']
 })

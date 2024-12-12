@@ -29,7 +29,7 @@ const links: NavLink[] = [
 ]
 
 const linkClasses =
-  'uppercase underline-offset-4 transition-colors text-zinc-500 hover:underline hover:text-black'
+  'font-medium uppercase underline-offset-4 transition-colors text-zinc-500 hover:underline hover:text-black'
 
 export default function Navigation() {
   const pathname = usePathname()
