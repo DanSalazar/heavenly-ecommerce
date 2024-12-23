@@ -50,7 +50,7 @@ export const formatPrice = (price: number) => {
     maximumFractionDigits: 2
   })
 }
-
+// The price should be passed in cents (e.g., price * 100)
 export const getDiscountPrice = (price: number, discount: number) => {
   const discountPrice = price * (discount / 100)
 
