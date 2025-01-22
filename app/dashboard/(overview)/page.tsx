@@ -7,7 +7,8 @@ import { OrderType } from '@/db/types'
 import { getDashboardStats } from '@/data/dashboard'
 
 export default async function Page() {
-  const { productsInStock, orders, totalRevenue } = await getDashboardStats()
+  const { productsInStock, orders, totalRevenue, chartData } =
+    await getDashboardStats()
   const ordersFromToday = orders.filter(({ order_created_at }) => {
     return (
       new Date(order_created_at).toDateString() === new Date().toDateString()
@@ -56,19 +57,19 @@ export default async function Page() {
           </CardContent>
         </Card>
       </div>
-      <div className="grid md:grid-cols-2 gap-4">
-        <ChartDashboard data={orders} />
-        <RecentOrders orders={orders} />
+      <div className="grid lg:grid-cols-3 gap-4">
+        <ChartDashboard data={chartData} />
+        <RecentSales orders={orders} />
       </div>
     </>
   )
 }
 
-function RecentOrders({ orders }: { orders: OrderType[] }) {
+function RecentSales({ orders }: { orders: OrderType[] }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Recent Orders</CardTitle>
+        <CardTitle>Recent Sales</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-4">
         {orders.slice(0, 6).map(order => {
@@ -76,7 +77,7 @@ function RecentOrders({ orders }: { orders: OrderType[] }) {
           const nameSplitted = customer_name.split(' ')
 
           return (
-            <div key={order.id} className="flex flex-wrap items-center gap-4">
+            <div key={order.id} className="flex flex-wrap items-center gap-2">
               <Avatar className="hidden h-9 w-9 sm:flex">
                 <AvatarImage src="/avatar.png" alt="Avatar" />
                 <AvatarFallback>
@@ -87,11 +88,8 @@ function RecentOrders({ orders }: { orders: OrderType[] }) {
                 <p className="text-sm font-medium leading-none">
                   {customer_name}
                 </p>
-                <p className="hidden sm:block text-sm text-muted-foreground">
-                  {customer_email}
-                </p>
               </div>
-              <div className="text-sm ml-auto font-medium">
+              <div className="text-sm ml-auto">
                 +${formatPrice(total_amount)}
               </div>
             </div>

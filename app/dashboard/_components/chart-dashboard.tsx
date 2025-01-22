@@ -1,137 +1,38 @@
 'use client'
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
-import dynamic from 'next/dynamic'
-import { useThemeContext } from '@/components/providers/theme-provider'
-import { OrderType } from '@/db/types'
+import { useState } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import ChartTab from './chart-tab'
+import { SalesChart } from './sales-chart'
 
-const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
+export type ChartData = {
+  key: string
+  Revenue: number
+}[]
+export type TimePeriodTab = 'weekly' | 'monthly' | 'yearly'
 
-const chartConfig = {
-  options: {
-    chart: {
-      toolbar: {
-        show: false
-      }
-    },
-    dataLabels: {
-      enabled: false
-    },
-    markers: {
-      size: 0
-    },
-    xaxis: {
-      axisTicks: {
-        show: false
-      },
-      axisBorder: {
-        show: false
-      },
-      labels: {
-        style: {
-          colors: '#616161',
-          fontSize: '12px',
-          fontFamily: 'inherit',
-          fontWeight: 400
-        }
-      },
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
-      ]
-    },
-    yaxis: {
-      labels: {
-        style: {
-          colors: '#616161',
-          fontSize: '12px',
-          fontFamily: 'inherit',
-          fontWeight: 400
-        }
-      }
-    },
-    grid: {
-      borderColor: '#dddddd',
-      strokeDashArray: 5,
-      xaxis: {
-        lines: {
-          show: true
-        }
-      },
-      padding: {
-        top: 5,
-        right: 20
-      }
-    },
-    fill: {
-      opacity: 0.8
-    },
-    tooltip: {
-      theme: 'dark'
-    }
+function ChartDashboard({ data }: { data: Record<TimePeriodTab, ChartData> }) {
+  const [timePeriodTab, setTimePeriodTab] = useState<TimePeriodTab>('weekly')
+  const chartData = data[timePeriodTab]
+
+  const onChangeTimePeriodTab = (value: string) => {
+    setTimePeriodTab(value as TimePeriodTab)
   }
-}
-
-function calculateMonthlyRevenue(orders: OrderType[]) {
-  const monthlyRevenue = new Array(12).fill(0)
-
-  for (const order of orders) {
-    const dateParts = order.order_created_at.split('-')
-    const month = parseInt(dateParts[1]) - 1
-
-    monthlyRevenue[month] += order.total_amount
-  }
-
-  return monthlyRevenue.map(number => number / 100)
-}
-
-export default function ChartDashboard({ data }: { data: OrderType[] }) {
-  const monthlyRevenue = calculateMonthlyRevenue(data)
-  const theme = useThemeContext()
 
   return (
-    <Card className="hidden md:block">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-3xl">Sales</CardTitle>
-        <CardDescription>Sales by month</CardDescription>
+    <Card className="col-span-2 hidden md:block">
+      <CardHeader className="pb-4 flex-row">
+        <CardTitle>Sales</CardTitle>
+        <ChartTab
+          timePeriod={timePeriodTab}
+          onValueChange={onChangeTimePeriodTab}
+        />
       </CardHeader>
       <CardContent>
-        <Chart
-          type="bar"
-          options={{
-            ...chartConfig.options,
-            colors: [theme?.isDarkTheme ? '#ecf0f1' : '#020617'],
-            stroke: {
-              lineCap: 'round',
-              curve: 'smooth'
-            }
-          }}
-          series={[
-            {
-              name: 'Sales',
-              data: monthlyRevenue
-            }
-          ]}
-          height={450}
-          width={'100%'}
-        />
+        <SalesChart timePeriod={timePeriodTab} data={chartData} />
       </CardContent>
     </Card>
   )
 }
+
+export default ChartDashboard
