@@ -15,29 +15,29 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
+import { useTranslations } from 'next-intl'
 
 export default function SizeGuide() {
+  const t = useTranslations('sizeGuide')
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={'link'}>Size Guide</Button>
+        <Button variant={'link'}>{t('button')}</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Size Guide</DialogTitle>
-          <DialogDescription>
-            Find the perfect fit with our size guide. Use the measurements below
-            to determine your ideal size for a comfortable and flattering fit.
-          </DialogDescription>
+          <DialogTitle>{t('title')}</DialogTitle>
+          <DialogDescription>{t('description')}</DialogDescription>
         </DialogHeader>
 
         <Table className="min-w-full border-collapse">
           <TableHeader>
             <TableRow>
-              <TableHead>Size</TableHead>
-              <TableHead>Chest (inches)</TableHead>
-              <TableHead>Waist (inches)</TableHead>
-              <TableHead>Hips (inches)</TableHead>
+              <TableHead>{t('size')}</TableHead>
+              <TableHead>{t('chest')}</TableHead>
+              <TableHead>{t('waist')}</TableHead>
+              <TableHead>{t('hips')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

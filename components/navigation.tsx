@@ -8,23 +8,27 @@ import SearchProduct from './search-product'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 
 type NavLink = {
   id: string
   href: string
   title: string
+  key: string
 }
 
 const links: NavLink[] = [
   {
     id: '0',
     href: '/women',
-    title: 'Women'
+    title: 'WOMEN',
+    key: 'women'
   },
   {
     id: '1',
     href: '/men',
-    title: 'Men'
+    title: 'MEN',
+    key: 'men'
   }
 ]
 
@@ -32,12 +36,13 @@ const linkClasses =
   'font-medium uppercase underline-offset-4 transition-colors text-zinc-500 hover:underline hover:text-black'
 
 export default function Navigation() {
+  const t = useTranslations()
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
 
   return (
     <>
-      <nav className="hidden md:flex items-center gap-4">
+      <nav className="hidden lg:flex items-center gap-4">
         {links.map((link, i) => (
           <Link
             key={link.title}
@@ -45,7 +50,7 @@ export default function Navigation() {
               'text-primary underline': pathname.includes(link.href)
             })}
             href={link.href}>
-            {link.title}
+            {t(`navigation.${link.key}`)}
           </Link>
         ))}
       </nav>
@@ -54,9 +59,9 @@ export default function Navigation() {
           <Button
             variant="outline"
             size="icon"
-            className="shrink-0 md:hidden self-center">
+            className="shrink-0 lg:hidden self-center">
             <MenuIcon />
-            <span className="sr-only">Toggle navigation menu</span>
+            <span className="sr-only">{t('navigation.toggleMenu')}</span>
           </Button>
         </SheetTrigger>
         <SheetContent side="left">
@@ -70,7 +75,7 @@ export default function Navigation() {
                       'text-primary': pathname.includes(link.href)
                     })}
                     href={link.href}>
-                    {link.title}
+                    {t(`navigation.${link.key}`)}
                   </Link>
                 </SheetClose>
               ))}

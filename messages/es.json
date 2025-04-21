@@ -1,0 +1,173 @@
+{
+  "navigation": {
+    "women": "MUJERES",
+    "men": "HOMBRES",
+    "search": "Buscar",
+    "title": "NAVEGACIÓN",
+    "about": "ACERCA DE",
+    "userAgreement": "ACUERDO DE USUARIO",
+    "privacyPolicy": "POLÍTICA DE PRIVACIDAD",
+    "toggleMenu": "Alternar menú de navegación"
+  },
+  "style": {
+    "main": "ESTILO. TÉCNICO. INNOVAR",
+    "shopClothing": "Comprar Ropa",
+    "freeShipping": "ENVÍO GRATIS EN TODOS LOS PEDIDOS NACIONALES",
+    "featuredProducts": "Productos Destacados"
+  },
+  "shipping": {
+    "shippingCost": "Envío"
+  },
+  "newsletter": {
+    "subscribeTitle": "Suscríbete a nuestro boletín para recibir actualizaciones sobre nuestras últimas colecciones",
+    "subscribeSubtitle": "Obtén un 20% de descuento en tu primer pedido al suscribirte a nuestro boletín",
+    "emailPlaceholder": "Tu correo electrónico",
+    "subscribeButton": "Suscribirse"
+  },
+  "payment": {
+    "methods": "MÉTODOS DE PAGO",
+    "options": "Opciones de pago: Aceptamos todas las principales tarjetas de crédito y débito, así como PayPal y otros métodos de pago seguros. Su información de pago está encriptada y segura.",
+    "delivery": "PAGO Y ENVÍO",
+    "paymentOptionsTitle": "Opciones de pago",
+    "paymentOptionsDescription": "Aceptamos todas las principales tarjetas de crédito y débito, así como PayPal y otros métodos de pago seguros. Su información de pago está encriptada y segura.",
+    "shippingTitle": "Envío",
+    "shippingDescription": "Ofrecemos opciones de envío rápidas y confiables para asegurar que su pedido llegue a tiempo. Los costos de envío y los tiempos de entrega varían según su ubicación y el método de envío seleccionado al finalizar la compra."
+  },
+  "about": {
+    "navigation": "NAVEGACIÓN",
+    "about": "ACERCA DE",
+    "userAgreement": "ACUERDO DE USUARIO",
+    "privacyPolicy": "POLÍTICA DE PRIVACIDAD",
+    "copyright": "© 2025 Heavenly. Todos los derechos reservados."
+  },
+  "cart": {
+    "emptyTitle": "Tu carrito de compras está vacío",
+    "emptySubtitle": "Agrega artículos a tu carrito para verlos aquí.",
+    "continueShopping": "Continuar comprando",
+    "total": "Total",
+    "proceedToCheckout": "PROCEDER AL PAGO",
+    "yourBag": "Tu carrito",
+    "shipping": "Envío",
+    "viewBag": "Ver carrito",
+    "goToShopping": "Ir de compras",
+    "addFavorites": "Agrega tus artículos favoritos."
+  },
+  "sorting": {
+    "sortBy": "Ordenar por:",
+    "relevance": "Relevancia",
+    "priceLowToHigh": "Precio: Bajo a alto",
+    "priceHighToLow": "Precio: Alto a bajo",
+    "filters": "Filtros",
+    "priceRange": "Rango de precios",
+    "category": "Categoría",
+    "noItemsWithFiltersTitle": "No hay artículos con estos filtros",
+    "noItemsWithFiltersSubtitle": "Ajusta los filtros o busca otros productos",
+    "resetAll": "Restablecer todo"
+  },
+  "products": {
+    "tops": "Camisetas",
+    "colors": "Colores",
+    "black": "Negro",
+    "sizes": "Tallas",
+    "resetAll": "Restablecer todo",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "morePages": "Más páginas",
+    "color": "Color",
+    "size": "Talla",
+    "sizeGuide": "Guía de tallas",
+    "addToBag": "AGREGAR A LA BOLSA",
+    "noProductsToShowTitle": "No hay productos para mostrar",
+    "noProductsToShowSubtitle": "Parece que no tenemos productos disponibles en este momento. Por favor, considere explorar otros departamentos o vuelva más tarde para ver las nuevas llegadas.",
+    "noSearchResultsTitle": "No se encontraron productos",
+    "noSearchResultsSubtitle": "No pudimos encontrar productos que coincidan con sus criterios de búsqueda. Por favor, verifique su ortografía, intente usar términos más generales o explore nuestras categorías populares para más opciones.",
+    "selectOption": "Por favor seleccione una opción",
+    "outOfStock": "Agotado",
+    "addToBagFailed": "Error al agregar al carrito",
+    "addToBagError": "No se pudo agregar el artículo seleccionado a su carrito. Por favor, inténtelo de nuevo. Si el problema persiste, contacte al servicio al cliente.",
+    "addingToBag": "Agregando al carrito..."
+  },
+  "articles": "Artículos",
+  "goToTop": "Ir arriba",
+  "directToPaypal": "Ir a PayPal",
+  "info": {
+    "title": "Heavenly",
+    "about": "La tienda de ropa de marca Heavenly se centra en vender solo artículos de calidad y de marca, colecciones de edición limitada de diseñadores de moda"
+  },
+  "departments": {
+    "men": "HOMBRES",
+    "women": "MUJERES"
+  },
+  "sizeGuide": {
+    "title": "Guía de Tallas",
+    "description": "Encuentra la talla perfecta con nuestra guía. Utiliza las medidas a continuación para determinar tu talla ideal para un ajuste cómodo y favorecedor.",
+    "size": "Talla",
+    "chest": "Pecho (pulgadas)",
+    "waist": "Cintura (pulgadas)",
+    "hips": "Cadera (pulgadas)",
+    "button": "Guía de Tallas"
+  },
+  "favorites": {
+    "title": "Favoritos",
+    "emptyTitle": "Tu lista de favoritos está vacía",
+    "emptySubtitle": "Agrega tus artículos favoritos.",
+    "goToShopping": "Ir de compras",
+    "error": "Ha ocurrido un error"
+  },
+  "bag": {
+    "title": "Tu bolsa",
+    "articles": "Artículos",
+    "shipping": "Envío",
+    "total": "Total"
+  },
+  "checkout": {
+    "proceedToCheckout": "PROCEDER AL PAGO",
+    "processing": "Procesando..."
+  },
+  "quantity": {
+    "label": "Cantidad:",
+    "title": "Cantidad"
+  },
+  "metadata": {
+    "root": {
+      "title": {
+        "template": "%s | Heavenly",
+        "default": "Heavenly"
+      }
+    },
+    "bag": {
+      "title": "Tu Bolsa de Compras",
+      "description": "Ver y gestionar los productos en tu bolsa de compras, incluyendo precios y cantidades."
+    },
+    "favorites": {
+      "title": "Tus Productos Favoritos",
+      "description": "Ver y gestionar tus productos favoritos en un solo lugar."
+    },
+    "search": {
+      "title": "Buscar",
+      "description": "Buscar productos en la tienda."
+    },
+    "success": {
+      "title": "Pedido Exitoso"
+    },
+    "department": {
+      "title": "Productos de {department}",
+      "description": "Explora nuestra exclusiva colección de productos de {department}, cuidadosamente seleccionados para satisfacer tu estilo y necesidades."
+    }
+  },
+  "success": {
+    "message": "¡Gracias por comprar con nosotros!",
+    "goToShopping": "Ir de compras"
+  },
+  "skeletons": {
+    "filters": "Filtros",
+    "sortBy": "Ordenar por:",
+    "relevance": "Relevancia",
+    "bag": "Bolsa",
+    "summary": "Resumen",
+    "articles": "Artículos",
+    "shipping": "Envío",
+    "total": "Total",
+    "checkout": "Pagar"
+  }
+}

@@ -1,17 +1,12 @@
 import ProductImagesContainer from './product-images-container'
 import { marcellus } from '../fonts'
 import Price from './price'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from '@/components/ui/accordion'
 import AddToBag from './add-to-bag'
 import BreadcrumbWrapper from '../ui/breadcrumb-wrapper'
 import { getFullProduct } from '@/data/products'
 import { notFound } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import PaymentDeliveryAccordion from './payment-delivery-accordion'
 
 export default async function ProductDetail({ id }: { id: string }) {
   const product = await getFullProduct(id)
@@ -48,27 +43,7 @@ export default async function ProductDetail({ id }: { id: string }) {
             productId={product.id}
           />
 
-          <Accordion type="single" defaultValue={'item-1'} collapsible>
-            <AccordionItem value="item-1">
-              <AccordionTrigger className="uppercase">
-                Payment & Delivery
-              </AccordionTrigger>
-              <AccordionContent className="flex flex-col gap-4">
-                <p>
-                  <span className="font-medium">Payment Options:</span> We
-                  accept all major credit and debit cards, as well as PayPal and
-                  other secure payment methods. Your payment information is
-                  encrypted and secure.
-                </p>
-                <p>
-                  <span className="font-medium">Shipping:</span> We offer fast
-                  and reliable shipping options to ensure your order reaches you
-                  promptly. Shipping costs and delivery times vary depending on
-                  your location and the shipping method selected at checkout.
-                </p>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+          <PaymentDeliveryAccordion />
         </div>
       </main>
     </>

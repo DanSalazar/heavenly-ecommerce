@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl'
 import {
   Select,
   SelectContent,
@@ -8,11 +9,12 @@ import {
 import useUrlState from '@/hooks/useUrlState'
 
 export default function SortBy() {
+  const t = useTranslations('sorting')
   const { add, remove, getState } = useUrlState()
 
   return (
     <div className="ml-auto w-[200px] flex items-center gap-2 text-muted-foreground">
-      <span className="text-sm ">Sort by:</span>
+      <span className="text-sm ">{t('sortBy')}</span>
       <Select
         defaultValue="relevance"
         value={getState('order') || ''}
@@ -21,12 +23,12 @@ export default function SortBy() {
           else add('order', value)
         }}>
         <SelectTrigger className="border-none flex-1 px-0 outline-none text-primary font-medium">
-          <SelectValue placeholder="Relevance"></SelectValue>
+          <SelectValue placeholder={t('relevance')}></SelectValue>
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="relevance">Relevance</SelectItem>
-          <SelectItem value="low to high">Price: Low to high</SelectItem>
-          <SelectItem value="high to low">Price: High to low</SelectItem>
+          <SelectItem value="relevance">{t('relevance')}</SelectItem>
+          <SelectItem value="low to high">{t('priceLowToHigh')}</SelectItem>
+          <SelectItem value="high to low">{t('priceHighToLow')}</SelectItem>
         </SelectContent>
       </Select>
     </div>

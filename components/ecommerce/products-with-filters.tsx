@@ -8,6 +8,7 @@ import {
   getProductsByDepartment,
   getProductsByQuery
 } from '@/data/products'
+import { NoProductsAvailable, NoSearchResults } from './no-products'
 
 export default async function ProductsWithFilters({
   department = '',
@@ -89,35 +90,5 @@ export default async function ProductsWithFilters({
         ))}
       </ProductsWrapper>
     </>
-  )
-}
-
-function NoProductsAvailable() {
-  return (
-    <div className="border-t min-h-[400px] flex items-center justify-center flex-col gap-2">
-      <h2 className="text-2xl text-5xl font-semibold">
-        There are not products to show
-      </h2>
-      <p>
-        It seems we don&apos;t have any products available right now. Please
-        consider exploring other departments or check back later for new
-        arrivals.
-      </p>
-    </div>
-  )
-}
-
-function NoSearchResults() {
-  return (
-    <div className="min-h-[400px] flex items-center justify-center flex-col gap-2">
-      <h2 className="text-2xl md:text-5xl font-bold">
-        No products matched your search
-      </h2>
-      <p>
-        We couldn&apos;t find any products matching your search criteria. Please
-        check your spelling, try using broader terms, or explore our popular
-        categories for more options.
-      </p>
-    </div>
   )
 }

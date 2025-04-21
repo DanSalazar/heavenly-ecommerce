@@ -1,3 +1,5 @@
+'use client'
+
 import { ArrowLeftIcon } from 'lucide-react'
 import { Button, buttonVariants } from './ui/button'
 import { Card, CardContent, CardHeader } from './ui/card'
@@ -12,6 +14,7 @@ import {
   TableRow
 } from '@/components/ui/table'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 export const ProductsWrapperSkeleton = () => (
   <div className="grid lg:grid-cols-products gap-4 border-t py-4 border-zinc-200">
@@ -28,20 +31,23 @@ export const ProductsWrapperSkeleton = () => (
   </div>
 )
 
-export const ProductsFiltersSkeleton = () => (
-  <div className="flex">
-    <Button>Filters</Button>
+export const ProductsFiltersSkeleton = () => {
+  const t = useTranslations('skeletons')
+  return (
+    <div className="flex">
+      <Button>{t('filters')}</Button>
 
-    <div className="ml-auto w-[200px] flex items-center gap-2 text-muted-foreground">
-      <span className="text-sm ">Sort by:</span>
-      <Select>
-        <SelectTrigger className="border-none flex-1 px-0 outline-none text-primary font-medium">
-          <SelectValue placeholder="Relevance"></SelectValue>
-        </SelectTrigger>
-      </Select>
+      <div className="ml-auto w-[200px] flex items-center gap-2 text-muted-foreground">
+        <span className="text-sm">{t('sortBy')}</span>
+        <Select>
+          <SelectTrigger className="border-none flex-1 px-0 outline-none text-primary font-medium">
+            <SelectValue placeholder={t('relevance')}></SelectValue>
+          </SelectTrigger>
+        </Select>
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export const ProductsWithFiltersSkeleton = () => (
   <>
@@ -82,11 +88,12 @@ export const ProductPageSkeleton = () => (
 )
 
 export const BagPageSkeleton = () => {
+  const t = useTranslations('skeletons')
   return (
     <div className="mt-12 flex flex-col md:grid md:grid-cols-3 gap-8">
       <div className="col-span-2">
         <header className="mb-8 flex justify-between items-center flex-wrap">
-          <h2 className="font-semibold uppercase text-6xl">Bag</h2>
+          <h2 className="font-semibold uppercase text-6xl">{t('bag')}</h2>
           <Skeleton className="h-8 w-6 rounded-md" /> {/* Item count */}
         </header>
         <div className="relative flex gap-4  mb-6 h-[400px] border-b border-t border-zinc-200 py-4">
@@ -103,23 +110,22 @@ export const BagPageSkeleton = () => {
         </div>
       </div>
       <div className="flex flex-col gap-4">
-        <h2 className="text-4xl font-semibold break-words">Summary</h2>
         <div className="border-b border-zinc-200 pb-4">
           <div className="flex py-2 justify-between flex-wrap">
-            <p className="font-medium">Articles</p>
+            <p className="font-medium">{t('articles')}</p>
             <Skeleton className="h-4 w-16" />
           </div>
           <div className="flex py-2 justify-between flex-wrap">
-            <p className="font-medium">Shipping</p>
+            <p className="font-medium">{t('shipping')}</p>
             <Skeleton className="h-4 w-16" />
           </div>
         </div>
         <div className="flex py-2 justify-between flex-wrap">
-          <p className="font-medium capitalize text-xl">Total</p>
+          <p className="font-medium capitalize text-xl">{t('total')}</p>
           <Skeleton className="h-6 w-24" /> {/* Total price */}
         </div>
         <Button className="h-12" disabled>
-          Checkout
+          {t('checkout')}
         </Button>
         {/* PayPal button */}
         <Skeleton className="h-12" />

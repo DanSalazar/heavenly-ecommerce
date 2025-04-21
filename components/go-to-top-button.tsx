@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { ArrowUp } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 
 export default function GoToTopButton() {
+  const t = useTranslations()
   const [visible, setVisible] = useState(false)
 
   const scrollToTop = () => {
@@ -37,7 +39,7 @@ export default function GoToTopButton() {
           'opacity-1': visible
         }
       )}>
-      Go to top
+      {t('goToTop')}
       <ArrowUp width={16} height={16} />
     </Button>
   )

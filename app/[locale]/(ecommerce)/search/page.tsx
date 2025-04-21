@@ -6,10 +6,14 @@ import {
 } from '@/components/skeletons'
 import { PRODUCTS_PER_PAGE } from '@/lib/constants'
 import { Suspense } from 'react'
+import { getTranslations } from 'next-intl/server'
 
-export const metadata = {
-  title: 'Search',
-  description: 'Search for products in the store.'
+export async function generateMetadata() {
+  const t = await getTranslations('metadata.search')
+  return {
+    title: t('title'),
+    description: t('description')
+  }
 }
 
 export default async function Page({

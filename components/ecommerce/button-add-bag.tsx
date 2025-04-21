@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { useToast } from '../ui/use-toast'
 import { useShoppingBagContext } from '../providers/shopping-bag-provider'
 import { addProductInBag } from '@/actions/bag'
+import { useTranslations } from 'next-intl'
 
 export default function ButtonAddBag({
   variantSelected,
@@ -20,6 +21,7 @@ export default function ButtonAddBag({
   const [isPending, setIsPending] = useState(false)
   const { toast } = useToast()
   const { handleOpen } = useShoppingBagContext()
+  const t = useTranslations('products')
 
   const buttonClasses = 'transition-opacity h-full flex-1 uppercase rounded-lg'
   const disabledClasses =
@@ -29,10 +31,10 @@ export default function ButtonAddBag({
     return (
       <Button
         type="button"
-        aria-label="Please select an option"
+        aria-label={t('selectOption')}
         aria-disabled
         className={cn(buttonClasses, disabledClasses)}>
-        Add to bag
+        {t('addToBag')}
       </Button>
     )
 
@@ -42,7 +44,7 @@ export default function ButtonAddBag({
         type="button"
         aria-disabled
         className={cn(buttonClasses, disabledClasses)}>
-        Out of Stock
+        {t('outOfStock')}
       </Button>
     )
 
@@ -59,11 +61,9 @@ export default function ButtonAddBag({
       result?.data?.error
     ) {
       toast({
-        title: 'Add to Bag Failed',
+        title: t('addToBagFailed'),
         description:
-          result?.serverError ||
-          result?.data?.error ||
-          'Unable to add the selected item to your bag. Please try again. If the issue persists,  customer support.',
+          result?.serverError || result?.data?.error || t('addToBagError'),
         variant: 'destructive'
       })
 
@@ -76,15 +76,15 @@ export default function ButtonAddBag({
   return (
     <Button
       onClick={handleAdd}
-      aria-label="Add to cart"
+      aria-label={t('addToBag')}
       aria-disabled={isPending}
       className={cn(buttonClasses, {
         [disabledClasses]: isPending
       })}>
       {isPending ? (
-        <SpinnerStatus color="dark" srOnly="Adding to bag..." />
+        <SpinnerStatus color="dark" srOnly={t('addingToBag')} />
       ) : (
-        'Add to bag'
+        t('addToBag')
       )}
     </Button>
   )

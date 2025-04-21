@@ -1,9 +1,13 @@
 import BreadcrumbWrapper from '@/components/ui/breadcrumb-wrapper'
 import FavoritesWrapper from './_components/favorites-wrapper'
+import { getTranslations } from 'next-intl/server'
 
-export const metadata = {
-  title: 'Your Favorites Products',
-  description: 'View and manage your favorite products in one place.'
+export async function generateMetadata() {
+  const t = await getTranslations('metadata.favorites')
+  return {
+    title: t('title'),
+    description: t('description')
+  }
 }
 
 export default function Page() {

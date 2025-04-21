@@ -1,0 +1,173 @@
+{
+  "navigation": {
+    "women": "レディース",
+    "men": "メンズ",
+    "search": "検索",
+    "title": "ナビゲーション",
+    "about": "会社概要",
+    "userAgreement": "利用規約",
+    "privacyPolicy": "プライバシーポリシー",
+    "toggleMenu": "ナビゲーションメニューの切り替え"
+  },
+  "style": {
+    "main": "スタイル。テクニカル。イノベーション",
+    "shopClothing": "服を買う",
+    "freeShipping": "国内配送はすべて無料",
+    "featuredProducts": "おすすめ商品"
+  },
+  "shipping": {
+    "shippingCost": "送料"
+  },
+  "newsletter": {
+    "subscribeTitle": "ニュースレターを購読して、最新コレクションのアップデートを入手してください",
+    "subscribeSubtitle": "ニュースレターを購読するだけで、最初の注文が20%オフになります",
+    "emailPlaceholder": "メールアドレス",
+    "subscribeButton": "購読"
+  },
+  "payment": {
+    "methods": "お支払い方法",
+    "options": "お支払いオプション：主要なクレジットカード、デビットカード、PayPal、その他の安全な決済方法をご利用いただけます。お支払い情報は暗号化され安全に保護されています。",
+    "delivery": "お支払いと配送",
+    "paymentOptionsTitle": "お支払いオプション",
+    "paymentOptionsDescription": "主要なクレジットカード、デビットカード、PayPal、その他の安全な決済方法をご利用いただけます。お支払い情報は暗号化され安全に保護されています。",
+    "shippingTitle": "配送",
+    "shippingDescription": "お客様のご注文を迅速にお届けするため、迅速で信頼性の高い配送オプションをご提供しています。配送料と配送時間は、お客様のご住所とチェックアウト時に選択された配送方法によって異なります。"
+  },
+  "about": {
+    "navigation": "ナビゲーション",
+    "about": "会社概要",
+    "userAgreement": "利用規約",
+    "privacyPolicy": "プライバシーポリシー",
+    "copyright": "© 2025 Heavenly. 全ての権利を保有します。"
+  },
+  "cart": {
+    "emptyTitle": "ショッピングバッグは空です",
+    "emptySubtitle": "バッグに商品を追加すると、ここに表示されます。",
+    "continueShopping": "ショッピングを続ける",
+    "total": "合計",
+    "proceedToCheckout": "お会計に進む",
+    "yourBag": "ショッピングバッグ",
+    "shipping": "送料",
+    "viewBag": "バッグを表示",
+    "goToShopping": "ショッピングへ",
+    "addFavorites": "お気に入りの商品を追加してください。"
+  },
+  "sorting": {
+    "sortBy": "並び替え:",
+    "relevance": "関連性",
+    "priceLowToHigh": "価格: 安い順",
+    "priceHighToLow": "価格: 高い順",
+    "filters": "フィルター",
+    "priceRange": "価格帯",
+    "category": "カテゴリー",
+    "noItemsWithFiltersTitle": "このフィルターに一致する商品はありません",
+    "noItemsWithFiltersSubtitle": "フィルターを調整するか、他の商品を探してください",
+    "resetAll": "すべてリセット"
+  },
+  "products": {
+    "tops": "トップス",
+    "colors": "カラー",
+    "black": "ブラック",
+    "sizes": "サイズ",
+    "resetAll": "すべてリセット",
+    "previous": "前へ",
+    "next": "次へ",
+    "morePages": "その他のページ",
+    "color": "色",
+    "size": "サイズ",
+    "sizeGuide": "サイズガイド",
+    "addToBag": "バッグに追加",
+    "noProductsToShowTitle": "表示する商品がありません",
+    "noProductsToShowSubtitle": "現在、商品がご利用いただけません。他の部門をご覧いただくか、新商品入荷までしばらくお待ちください。",
+    "noSearchResultsTitle": "検索に一致する商品はありません",
+    "noSearchResultsSubtitle": "検索条件に一致する商品が見つかりませんでした。スペルを確認するか、より一般的な用語を使用するか、人気のカテゴリを探索して、より多くのオプションをご覧ください。",
+    "selectOption": "オプションを選択してください",
+    "outOfStock": "在庫切れ",
+    "addToBagFailed": "カートへの追加に失敗しました",
+    "addToBagError": "選択した商品をカートに追加できませんでした。もう一度お試しください。問題が解決しない場合は、カスタマーサポートまでお問い合わせください。",
+    "addingToBag": "カートに追加中..."
+  },
+  "articles": "記事",
+  "goToTop": "トップへ",
+  "directToPaypal": "PayPalへ直接",
+  "info": {
+    "title": "Heavenly",
+    "about": "オンラインブランド衣料品店Heavenlyは、高品質でブランド品のみを取り扱い、ファッションデザイナーによる限定コレクションに焦点を当てています"
+  },
+  "departments": {
+    "men": "メンズ",
+    "women": "レディース"
+  },
+  "sizeGuide": {
+    "title": "サイズガイド",
+    "description": "サイズガイドでぴったりのサイズを見つけましょう。下記の測定値を使用して、快適で美しいフィット感を得られる理想的なサイズを決定してください。",
+    "size": "サイズ",
+    "chest": "バスト（インチ）",
+    "waist": "ウエスト（インチ）",
+    "hips": "ヒップ（インチ）",
+    "button": "サイズガイド"
+  },
+  "favorites": {
+    "title": "お気に入り",
+    "emptyTitle": "お気に入りリストが空です",
+    "emptySubtitle": "お気に入りの商品を追加してください。",
+    "goToShopping": "ショッピングへ",
+    "error": "エラーが発生しました"
+  },
+  "bag": {
+    "title": "カート",
+    "articles": "商品",
+    "shipping": "配送",
+    "total": "合計"
+  },
+  "checkout": {
+    "proceedToCheckout": "お会計に進む",
+    "processing": "処理中..."
+  },
+  "quantity": {
+    "label": "数量:",
+    "title": "数量"
+  },
+  "metadata": {
+    "root": {
+      "title": {
+        "template": "%s | Heavenly",
+        "default": "Heavenly"
+      }
+    },
+    "bag": {
+      "title": "ショッピングバッグ",
+      "description": "ショッピングバッグ内の商品、価格、数量を表示・管理します。"
+    },
+    "favorites": {
+      "title": "お気に入り商品",
+      "description": "お気に入りの商品を一箇所で表示・管理できます。"
+    },
+    "search": {
+      "title": "検索",
+      "description": "ストア内の商品を検索します。"
+    },
+    "success": {
+      "title": "注文完了"
+    },
+    "department": {
+      "title": "{department}商品",
+      "description": "あなたのスタイルとニーズに合わせて厳選された{department}商品の限定コレクションをご覧ください。"
+    }
+  },
+  "success": {
+    "message": "ご購入ありがとうございます！",
+    "goToShopping": "ショッピングへ"
+  },
+  "skeletons": {
+    "filters": "フィルター",
+    "sortBy": "並び替え:",
+    "relevance": "関連性",
+    "bag": "バッグ",
+    "summary": "概要",
+    "articles": "商品",
+    "shipping": "配送",
+    "total": "合計",
+    "checkout": "チェックアウト"
+  }
+}

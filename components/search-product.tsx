@@ -4,6 +4,7 @@ import { Input } from './ui/input'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { SearchIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 export default function SearchProduct({
   extendOnSubmit,
@@ -14,6 +15,7 @@ export default function SearchProduct({
   className?: string
   placeholder?: string
 }) {
+  const t = useTranslations()
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -38,7 +40,7 @@ export default function SearchProduct({
       <SearchIcon className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
       <Input
         name="search"
-        placeholder={placeholder || 'Search'}
+        placeholder={placeholder || t('navigation.search')}
         type="search"
         defaultValue={searchParams?.get('q') || ''}
         autoComplete="off"

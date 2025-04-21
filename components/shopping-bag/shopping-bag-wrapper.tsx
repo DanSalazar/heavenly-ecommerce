@@ -9,9 +9,11 @@ import { reduceBagPrice } from '@/lib/utils'
 import { OrderSummary } from './order-summary'
 import { useShoppingBagContext } from '../providers/shopping-bag-provider'
 import { BagItem } from '@/db/types'
+import { useTranslations } from 'next-intl'
 
 function ShoppingBagWrapper({ bag }: { bag: BagItem[] }) {
   const { isOpen, handleOpen } = useShoppingBagContext()
+  const t = useTranslations('cart')
   const total = reduceBagPrice(bag)
   const className =
     'max-h-[500px] transition-transform ease-in-out duration-700 transform -translate-y-[500px] group-hover:translate-y-0 flex flex-col gap-2 px-4 py-6 -z-20 bg-white w-[300px] md:w-[350px] absolute right-0 top-[63px] border-b border-r border-l border-primary/20'
@@ -31,12 +33,10 @@ function ShoppingBagWrapper({ bag }: { bag: BagItem[] }) {
   if (!bag.length)
     return (
       <div className={cn(className, 'text-center')}>
-        <h2 className="text-lg font-semibold">Your shopping bag is empty</h2>
-        <p className="text-sm text-zinc-500">
-          Add items to your bag to see them here.
-        </p>
+        <h2 className="text-lg font-semibold">{t('emptyTitle')}</h2>
+        <p className="text-sm text-zinc-500">{t('emptySubtitle')}</p>
         <Link href="/" className={buttonVariants() + ' mt-4'}>
-          Continue Shopping
+          {t('continueShopping')}
         </Link>
       </div>
     )
@@ -47,7 +47,7 @@ function ShoppingBagWrapper({ bag }: { bag: BagItem[] }) {
         'translate-y-0': isOpen
       })}>
       <div className="flex gap-2 items-center justify-between">
-        <p className="font-medium uppercase">Your Bag</p>
+        <p className="font-medium uppercase">{t('yourBag')}</p>
         <span className="text-sm font-medium bg-primary py-1 px-2 rounded-md text-white">
           {bag.length}
         </span>
@@ -71,12 +71,12 @@ function ShoppingBagWrapper({ bag }: { bag: BagItem[] }) {
         })}
       </div>
       <div className="flex flex-col gap-2 mt-2">
-        <OrderSummary title="Shipping" price={0.0} />
-        <OrderSummary title="Total" price={total} />
+        <OrderSummary title={t('shipping')} price={0.0} />
+        <OrderSummary title={t('total')} price={total} />
       </div>
       <footer>
         <Link href={'/bag'} className={buttonVariants() + ' h-[42px] w-full '}>
-          View bag
+          {t('viewBag')}
         </Link>
       </footer>
     </div>

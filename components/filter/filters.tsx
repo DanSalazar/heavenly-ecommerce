@@ -9,6 +9,7 @@ import FiltersSelected from './filters-selected'
 import { PriceRange } from './price-slider'
 import { usePathname, useRouter } from 'next/navigation'
 import FilterPopover from './filter-popover'
+import { useTranslations } from 'next-intl'
 
 export type AllFiltersType = {
   categories: string[]
@@ -22,6 +23,7 @@ export default function Filters({
 }: {
   filters?: AllFiltersType
 }) {
+  const t = useTranslations('sorting')
   const { getState, push } = useUrlState()
 
   const handleSelectFilter = (event: MouseEvent<HTMLDivElement>) => {
@@ -39,9 +41,9 @@ export default function Filters({
           <FilterPopover>
             <div className="flex flex-col text-center py-4">
               <h2 className="text-xl font-medium">
-                No items to show with these filters
+                {t('noItemsWithFiltersTitle')}
               </h2>
-              <p>Adjust filters or try looking for other products</p>
+              <p>{t('noItemsWithFiltersSubtitle')}</p>
             </div>
             <div className="flex justify-end">
               <ResetAll />
@@ -145,6 +147,7 @@ export default function Filters({
 }
 
 export const ResetAll = () => {
+  const t = useTranslations('sorting')
   const { replace } = useRouter()
   const pathname = usePathname()
 
@@ -157,5 +160,5 @@ export const ResetAll = () => {
     replace(pathname, { scroll: false })
   }
 
-  return <Button onClick={resetAll}>Reset all</Button>
+  return <Button onClick={resetAll}>{t('resetAll')}</Button>
 }

@@ -1,8 +1,11 @@
 import { marcellus } from '@/components/fonts'
 import { buttonVariants } from '@/components/ui/button'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 
 export default function ActiveWear() {
+  const t = useTranslations('style')
+
   return (
     <>
       <div className="flex justify-center items-center relative h-[500px] bg-gradient-to-r from-zinc-700 to-zinc-900 px-8 md:px-12">
@@ -12,7 +15,7 @@ export default function ActiveWear() {
               marcellus.className +
               ' text-center text-white font-bold text-2xl sm:text-3xl md:text-8xl uppercase word-break'
             }>
-            Style. Technical. Innovate
+            {t('main')}
           </h2>
           <Link
             href={'/search'}
@@ -24,7 +27,7 @@ export default function ActiveWear() {
 
       <div className="flex gap-4 overflow-hidden p-4 bg-primary text-white font-medium uppercase">
         {Array(5)
-          .fill('FREE SHIPPING ON ALL DOMESTIC ORDERS, ')
+          .fill(t('freeShipping') + ', ')
           .map((text, index) => (
             <p className="whitespace-nowrap text-sm" key={index}>
               {text}

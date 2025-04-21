@@ -3,19 +3,22 @@ import { OrderSummary } from '@/components/shopping-bag/order-summary'
 import Paypal from './paypal'
 import Stripe from './stripe'
 import { MasterCardSVG, PaypalSVG, VisaSVG } from '@/components/icons'
+import { useTranslations } from 'next-intl'
 
 const SHIPPING_PRICE = 0
 
 export default function Summary({ total }: { total: number }) {
+  const t = useTranslations('bag')
+
   return (
     <div className="flex flex-col gap-4">
       <div className="border-b border-zinc-200 pb-4 space-y-2">
-        <OrderSummary title="Articles" price={total} />
-        <OrderSummary title="Shipping" price={SHIPPING_PRICE} />
+        <OrderSummary title={t('articles')} price={total} />
+        <OrderSummary title={t('shipping')} price={SHIPPING_PRICE} />
       </div>
 
       <div className="flex py-2 justify-between">
-        <p className="font-medium capitalize text-xl">Total</p>
+        <p className="font-medium capitalize text-xl">{t('total')}</p>
         <Price
           size={'lg'}
           variant={'black'}

@@ -1,17 +1,17 @@
+'use client'
+
 import { buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
-export const metadata = {
-  title: 'Order Successful'
-}
+export default function SuccessContent() {
+  const t = useTranslations('success')
 
-export default function Page() {
   return (
     <div className="bg-sky-blue-100 h-[400px] flex items-center justify-center flex-col gap-2">
-      <h1 className="text-4xl font-semibold">Success</h1>
-      <p className="text-2xl font-medium">Thanks for buying us!</p>
+      <h1 className="text-4xl font-semibold">{t('message')}</h1>
       <Link href="/" className={buttonVariants()}>
-        Go to shopping
+        {t('goToShopping')}
       </Link>
     </div>
   )

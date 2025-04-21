@@ -1,0 +1,173 @@
+{
+  "navigation": {
+    "women": "WOMEN",
+    "men": "MEN",
+    "search": "Search",
+    "title": "NAVIGATION",
+    "about": "ABOUT",
+    "userAgreement": "USER AGREEMENT",
+    "privacyPolicy": "PRIVACY POLICY",
+    "toggleMenu": "Toggle navigation menu"
+  },
+  "style": {
+    "main": "STYLE. TECHNICAL. INNOVATE",
+    "shopClothing": "Shop Clothing",
+    "freeShipping": "FREE SHIPPING ON ALL DOMESTIC ORDERS",
+    "featuredProducts": "Featured Products"
+  },
+  "shipping": {
+    "shippingCost": "Shipping"
+  },
+  "newsletter": {
+    "subscribeTitle": "Subscribe to our newsletter to get updates to our latest collections",
+    "subscribeSubtitle": "Get 20% off on your first order just by subscribing to our newsletter",
+    "emailPlaceholder": "Email your email",
+    "subscribeButton": "Subscribe"
+  },
+  "payment": {
+    "methods": "PAYMENT METHODS",
+    "options": "Payment Options: We accept all major credit and debit cards, as well as PayPal and other secure payment methods. Your payment information is encrypted and secure.",
+    "delivery": "PAYMENT & DELIVERY",
+    "paymentOptionsTitle": "Payment Options",
+    "paymentOptionsDescription": "We accept all major credit and debit cards, as well as PayPal and other secure payment methods. Your payment information is encrypted and secure.",
+    "shippingTitle": "Shipping",
+    "shippingDescription": "We offer fast and reliable shipping options to ensure your order reaches you promptly. Shipping costs and delivery times vary depending on your location and the shipping method selected at checkout."
+  },
+  "about": {
+    "navigation": "NAVIGATION",
+    "about": "ABOUT",
+    "userAgreement": "USER AGREEMENT",
+    "privacyPolicy": "PRIVACY POLICY",
+    "copyright": "© 2025 Heavenly. All rights reserved."
+  },
+  "cart": {
+    "emptyTitle": "Your shopping bag is empty",
+    "emptySubtitle": "Add items to your bag to see them here.",
+    "continueShopping": "Continue Shopping",
+    "total": "Total",
+    "proceedToCheckout": "PROCEED TO CHECKOUT",
+    "yourBag": "Your Bag",
+    "shipping": "Shipping",
+    "viewBag": "View bag",
+    "goToShopping": "Go to Shopping",
+    "addFavorites": "Add your favorite items in it."
+  },
+  "sorting": {
+    "sortBy": "Sort by:",
+    "relevance": "Relevance",
+    "priceLowToHigh": "Price: Low to high",
+    "priceHighToLow": "Price: High to low",
+    "filters": "Filters",
+    "priceRange": "Price Range",
+    "category": "Category",
+    "noItemsWithFiltersTitle": "No items to show with these filters",
+    "noItemsWithFiltersSubtitle": "Adjust filters or try looking for other products",
+    "resetAll": "Reset all"
+  },
+  "products": {
+    "tops": "Tops",
+    "colors": "Colors",
+    "black": "Black",
+    "sizes": "Sizes",
+    "resetAll": "Reset all",
+    "previous": "Previous",
+    "next": "Next",
+    "morePages": "More pages",
+    "color": "Color",
+    "size": "Size",
+    "sizeGuide": "Size Guide",
+    "addToBag": "ADD TO BAG",
+    "noProductsToShowTitle": "There are not products to show",
+    "noProductsToShowSubtitle": "It seems we don't have any products available right now. Please consider exploring other departments or check back later for new arrivals.",
+    "noSearchResultsTitle": "No products matched your search",
+    "noSearchResultsSubtitle": "We couldn't find any products matching your search criteria. Please check your spelling, try using broader terms, or explore our popular categories for more options.",
+    "selectOption": "Please select an option",
+    "outOfStock": "Out of Stock",
+    "addToBagFailed": "Add to Bag Failed",
+    "addToBagError": "Unable to add the selected item to your bag. Please try again. If the issue persists, contact customer support.",
+    "addingToBag": "Adding to bag..."
+  },
+  "articles": "Articles",
+  "goToTop": "Go to top",
+  "directToPaypal": "Direkt zu PayPal",
+  "info": {
+    "title": "Heavenly",
+    "about": "Online brand clothing store Heavenly focuses on seling only qualify and branded items, limited edition collections by fashion designers"
+  },
+  "departments": {
+    "men": "MEN",
+    "women": "WOMEN"
+  },
+  "sizeGuide": {
+    "title": "Size Guide",
+    "description": "Find the perfect fit with our size guide. Use the measurements below to determine your ideal size for a comfortable and flattering fit.",
+    "size": "Size",
+    "chest": "Chest (inches)",
+    "waist": "Waist (inches)",
+    "hips": "Hips (inches)",
+    "button": "Size Guide"
+  },
+  "favorites": {
+    "title": "Favorites",
+    "emptyTitle": "Your favorite list is empty",
+    "emptySubtitle": "Add your favorite items in it.",
+    "goToShopping": "Go to Shopping",
+    "error": "Error has occurred"
+  },
+  "bag": {
+    "title": "Your bag",
+    "articles": "Articles",
+    "shipping": "Shipping",
+    "total": "Total"
+  },
+  "checkout": {
+    "proceedToCheckout": "PROCEED TO CHECKOUT",
+    "processing": "Processing..."
+  },
+  "quantity": {
+    "label": "Quantity:",
+    "title": "Quantity"
+  },
+  "metadata": {
+    "root": {
+      "title": {
+        "template": "%s | Heavenly",
+        "default": "Heavenly"
+      }
+    },
+    "bag": {
+      "title": "Your Shopping Bag",
+      "description": "View and manage the products in your shopping bag, including pricing and quantities."
+    },
+    "favorites": {
+      "title": "Your Favorites Products",
+      "description": "View and manage your favorite products in one place."
+    },
+    "search": {
+      "title": "Search",
+      "description": "Search for products in the store."
+    },
+    "success": {
+      "title": "Order Successful"
+    },
+    "department": {
+      "title": "{department} Products",
+      "description": "Explore our exclusive collection of {department} products, carefully curated to meet your style and needs."
+    }
+  },
+  "skeletons": {
+    "filters": "Filters",
+    "sortBy": "Sort by:",
+    "relevance": "Relevance",
+    "bag": "Bag",
+    "summary": "Summary",
+    "articles": "Articles",
+    "shipping": "Shipping",
+    "total": "Total",
+    "checkout": "Checkout"
+  },
+  "success": {
+    "message": "Thanks for buying from us!",
+    "goToShopping": "Go to shopping"
+  }
+}

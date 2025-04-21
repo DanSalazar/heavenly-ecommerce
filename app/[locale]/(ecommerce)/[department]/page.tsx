@@ -9,6 +9,8 @@ import PaginationWrapper from '@/components/pagination-wrapper'
 import { PRODUCTS_PER_PAGE } from '@/lib/constants'
 import { capitalizeWord } from '@/lib/utils'
 import { notFound } from 'next/navigation'
+import DepartmentTitle from './department-title'
+import { getTranslations } from 'next-intl/server'
 
 const departments = ['men', 'women']
 
@@ -17,10 +19,11 @@ export async function generateMetadata({
 }: {
   params: Promise<{ department: string }>
 }) {
+  const t = await getTranslations('metadata.department')
   const department = (await params).department
   return {
-    title: capitalizeWord(department) + ' Products',
-    description: `Explore our exclusive collection of ${capitalizeWord(department)} products, carefully curated to meet your style and needs.`
+    title: t('title', { department: capitalizeWord(department) }),
+    description: t('description', { department: capitalizeWord(department) })
   }
 }
 
@@ -43,9 +46,7 @@ export default async function Page({
     <>
       <BreadcrumbWrapper />
       <main className="flex flex-col gap-2 mt-12 mb-8">
-        <h2 className="text-7xl md:text-8xl font-medium uppercase break-words">
-          {department}
-        </h2>
+        <DepartmentTitle department={department} />
         <Suspense key={paramsLength} fallback={<ProductsWithFiltersSkeleton />}>
           <ProductsWithFilters department={department} query={query} />
         </Suspense>

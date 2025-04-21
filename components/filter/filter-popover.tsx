@@ -6,23 +6,26 @@ import {
 } from '@/components/ui/popover'
 import { PopoverClose } from '@radix-ui/react-popover'
 import { XIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 export default function FilterPopover({
   children
 }: {
   children: React.ReactNode
 }) {
+  const t = useTranslations('sorting')
+
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button className="gap-2">Filters</Button>
+        <Button className="gap-2">{t('filters')}</Button>
       </PopoverTrigger>
       <PopoverContent
         className="flex lg:w-[400px] flex-col gap-4"
         sideOffset={8}
         align="start">
         <div className="flex items-center gap-2">
-          <h3 className="text-lg font-medium">Filters</h3>
+          <h3 className="text-lg font-medium">{t('filters')}</h3>
         </div>
         {children}
         <PopoverClose asChild>
