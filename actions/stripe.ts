@@ -69,8 +69,10 @@ export const createSession = async () => {
     ({ quantity, product_variant }) => {
       const { product } = product_variant
       const amount = product.discount
-        ? getDiscountPrice(product.price, product.percentage_off)
-        : product.price / 100
+        ? Math.floor(
+            product.price - product.price * (product.percentage_off / 100)
+          )
+        : product.price
 
       return {
         price_data: {
