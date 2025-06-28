@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
       const checkoutSessionCompleted = event.data.object
 
       const result = await createOrders({
+        bag_id: checkoutSessionCompleted.metadata?.bag_id!,
         customer_email: checkoutSessionCompleted.customer_details?.email!,
         customer_name: checkoutSessionCompleted.customer_details?.name!,
         total_amount: checkoutSessionCompleted.amount_total!,

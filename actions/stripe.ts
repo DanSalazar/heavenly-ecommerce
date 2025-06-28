@@ -98,7 +98,10 @@ export const createSession = async () => {
       success_url: url + '/success',
       cancel_url: url + '/bag',
       line_items: lineItems,
-      mode: 'payment'
+      mode: 'payment',
+      metadata: {
+        bag_id: bagId
+      }
     })
   } catch (error) {
     return {

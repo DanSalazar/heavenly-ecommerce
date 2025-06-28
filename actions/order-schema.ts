@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 export const orderSchema = z.object({
+  bag_id: z.string().max(255).optional(),
   customer_name: z.string().max(255),
   customer_email: z.string().max(255),
   payment_method: z.string().max(255),

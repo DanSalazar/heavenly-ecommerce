@@ -73,15 +73,16 @@ function RecentSales({ orders }: { orders: OrderType[] }) {
       </CardHeader>
       <CardContent className="grid gap-4">
         {orders.slice(0, 6).map(order => {
-          const { customer_name, customer_email, total_amount } = order
-          const nameSplitted = customer_name.split(' ')
+          const { customer_name, total_amount } = order
+          const [firstName, lastName] = customer_name.split(' ')
 
           return (
             <div key={order.id} className="flex flex-wrap items-center gap-2">
               <Avatar className="hidden h-9 w-9 sm:flex">
                 <AvatarImage src="/avatar.png" alt="Avatar" />
                 <AvatarFallback>
-                  {nameSplitted[0][0] + nameSplitted[1][0]}
+                  {firstName?.charAt(0).toUpperCase() +
+                    (lastName?.charAt(0).toUpperCase() || '')}
                 </AvatarFallback>
               </Avatar>
               <div className="grid gap-2">

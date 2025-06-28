@@ -45,6 +45,7 @@ function updateProductsStockSQL(stockUpdates: StockUpdate[]): [number[], SQL] {
 
   return [ids, finalSql]
 }
+
 export const createOrders = baseAction
   .schema(orderSchema, {
     handleValidationErrorsShape: async ve =>
@@ -53,17 +54,23 @@ export const createOrders = baseAction
   .action(
     async ({
       parsedInput: {
+        bag_id,
         customer_name,
         customer_email,
         total_amount,
         payment_method
       }
     }) => {
-      const ck = await cookies()
-      const bag_id = ck.get('bag_id')?.value!
+      // Cookie for server action
+      const bag_id_cookie = (await cookies()).get('bag_id')
+      const id = bag_id_cookie?.value || bag_id
+
+      if (!id) {
+        return { error: 'Bag ID not found.' }
+      }
 
       const bagData = await db.query.bag.findFirst({
-        where: ({ id }, { eq }) => eq(id, bag_id),
+        where: ({ id }, { eq }) => eq(id, id),
         columns: {},
         with: {
           bagItem: {
@@ -90,9 +97,7 @@ export const createOrders = baseAction
             .set({ stock: finalSql })
             .where(inArray(productVariations.id, ids))
 
-          await db.delete(bag).where(eq(bag.id, bag_id))
-
-          ck.delete('bag_id')
+          await db.delete(bag).where(eq(bag.id, id))
         } catch (error) {
           return { error: 'An error occurred while updating product stock.' }
         }
